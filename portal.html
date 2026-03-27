@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SENAI · Portal de Estudos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;900&family=IBM+Plex+Mono:wght@400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── TOKENS ─────────────────────────────────────────────── */
+    :root {
+      --bg:        #0a0d11;
+      --bg2:       #111520;
+      --bg3:       #181d2a;
+      --bg4:       #1e2535;
+      --border:    rgba(255,255,255,0.08);
+      --text:      #e2e8f0;
+      --text2:     #94a3b8;
+      --text3:     #475569;
+      --grid:      rgba(0,229,255,0.045);
+      --trans:     0.25s cubic-bezier(.4,0,.2,1);
+      --radius:    14px;
+      --bar-h:     52px;
+
+      --mvf:       #00d4ff;
+      --mvf-dim:   rgba(0,212,255,0.12);
+      --mvf-glow:  0 0 30px rgba(0,212,255,0.20);
+      --easa:      #76ff03;
+      --easa-dim:  rgba(118,255,3,0.10);
+      --easa-glow: 0 0 30px rgba(118,255,3,0.18);
+      --portal:    #c084ff;
+    }
+
+    [data-theme="light"] {
+      --bg:        #eef2f8;
+      --bg2:       #ffffff;
+      --bg3:       #f4f7fc;
+      --bg4:       #e8eef6;
+      --border:    rgba(0,0,0,0.09);
+      --text:      #0d1117;
+      --text2:     #374151;
+      --text3:     #9ca3af;
+      --grid:      rgba(0,80,160,0.04);
+      --mvf:       #0088bb;
+      --mvf-dim:   rgba(0,136,187,0.10);
+      --mvf-glow:  0 0 30px rgba(0,136,187,0.15);
+      --easa:      #2d8a00;
+      --easa-dim:  rgba(45,138,0,0.10);
+      --easa-glow: 0 0 30px rgba(45,138,0,0.15);
+      --portal:    #8b44e0;
+    }
+
+    /* ── RESET ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; overflow: hidden; }
+    html { transition: background-color .25s, color .25s; }
+
+    body {
+      font-family: 'Exo 2', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       BARRA DE NAVEGAÇÃO (topo)
+    ══════════════════════════════════════════════════════════ */
+    .navbar {
+      height: var(--bar-h);
+      min-height: var(--bar-h);
+      background: rgba(10,13,17,0.96);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      gap: 4px;
+      z-index: 200;
+      position: relative;
+    }
+
+    /* Logo */
+    .nav-logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--text3);
+      padding: 0 10px 0 4px;
+      margin-right: 4px;
+      border-right: 1px solid var(--border);
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .logo-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--portal);
+      box-shadow: 0 0 8px var(--portal);
+      animation: blink 2.5s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.35; }
+    }
+
+    /* Abas */
+    .tabs {
+      display: flex;
+      gap: 2px;
+      flex: 1;
+    }
+
+    .tab {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: background var(--trans), border-color var(--trans), color var(--trans);
+      white-space: nowrap;
+      color: var(--text3);
+      user-select: none;
+    }
+
+    .tab:hover {
+      background: var(--bg3);
+      color: var(--text2);
+    }
+
+    /* Indicador colorido por aba */
+    .tab-pip {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      transition: box-shadow var(--trans);
+    }
+
+    .tab[data-app="home"]  .tab-pip { background: var(--portal); }
+    .tab[data-app="mvf"]   .tab-pip { background: var(--mvf);    }
+    .tab[data-app="easa"]  .tab-pip { background: var(--easa);   }
+
+    /* Aba ativa */
+    .tab.active[data-app="home"]  { background: rgba(192,132,255,0.10); border-color: rgba(192,132,255,0.25); color: var(--portal); }
+    .tab.active[data-app="mvf"]   { background: var(--mvf-dim);          border-color: rgba(0,212,255,0.25);   color: var(--mvf);    }
+    .tab.active[data-app="easa"]  { background: var(--easa-dim);         border-color: rgba(118,255,3,0.25);   color: var(--easa);   }
+
+    .tab.active .tab-pip { box-shadow: 0 0 7px currentColor; }
+
+    /* Ações à direita */
+    .nav-actions {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-left: 12px;
+      border-left: 1px solid var(--border);
+    }
+
+    .icon-btn {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      color: var(--text2);
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background var(--trans), border-color var(--trans);
+      flex-shrink: 0;
+    }
+    .icon-btn:hover { background: var(--bg4); }
+
+    /* Botão "Abrir em nova aba" — muda cor conforme app ativo */
+    #btn-external {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      width: auto;
+      padding: 0 10px;
+      gap: 5px;
+      display: flex;
+      align-items: center;
+    }
+    #btn-external[data-app="mvf"]  { color: var(--mvf);  border-color: rgba(0,212,255,0.25); }
+    #btn-external[data-app="easa"] { color: var(--easa); border-color: rgba(118,255,3,0.25);  }
+    #btn-external[data-app="home"] { display: none; }
+
+    /* ══════════════════════════════════════════════════════════
+       ÁREA DE CONTEÚDO
+    ══════════════════════════════════════════════════════════ */
+    .content-area {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Painel genérico */
+    .panel {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--trans);
+    }
+    .panel.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* iframes */
+    .panel iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       PAINEL HOME (portal)
+    ══════════════════════════════════════════════════════════ */
+    #panel-home {
+      overflow-y: auto;
+      background: var(--bg);
+    }
+
+    /* Grid PCB fundo */
+    #panel-home::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background-image:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    .home-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 840px;
+      margin: 0 auto;
+      padding: 56px 24px 64px;
+    }
+
+    /* Hero */
+    .hero-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--easa);
+      margin-bottom: 14px;
+    }
+
+    .hero-title {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+    }
+    .hl-mvf   { color: var(--mvf);    }
+    .hl-easa  { color: var(--easa);   }
+
+    .hero-sub {
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.65;
+      max-width: 440px;
+      margin-bottom: 48px;
+    }
+
+    /* Stats */
+    .stats {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      margin-bottom: 52px;
+    }
+    .stat { text-align: center; }
+    .stat-val {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--mvf);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-lbl {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--text3);
+      text-transform: uppercase;
+    }
+    .stat-div { width: 1px; height: 32px; background: var(--border); }
+
+    /* Cards */
+    .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+    .app-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px 26px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      cursor: pointer;
+      transition: transform var(--trans), border-color var(--trans), box-shadow var(--trans);
+      position: relative;
+      overflow: hidden;
+    }
+    .app-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      opacity: 0;
+      transition: opacity var(--trans);
+    }
+    .card-mvf  { border-color: rgba(0,212,255,0.13); }
+    .card-mvf::before  { background: radial-gradient(ellipse at top left, rgba(0,212,255,0.08), transparent 60%); }
+    .card-mvf:hover    { transform: translateY(-3px); border-color: rgba(0,212,255,0.4); box-shadow: var(--mvf-glow); }
+    .card-mvf:hover::before  { opacity: 1; }
+
+    .card-easa { border-color: rgba(118,255,3,0.10); }
+    .card-easa::before { background: radial-gradient(ellipse at top right, rgba(118,255,3,0.07), transparent 60%); }
+    .card-easa:hover   { transform: translateY(-3px); border-color: rgba(118,255,3,0.38); box-shadow: var(--easa-glow); }
+    .card-easa:hover::before { opacity: 1; }
+
+    .card-header { display: flex; align-items: flex-start; gap: 14px; position: relative; z-index: 1; }
+
+    .card-icon {
+      width: 46px; height: 46px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .card-mvf  .card-icon { background: var(--mvf-dim);  color: var(--mvf);  border: 1px solid rgba(0,212,255,0.22); }
+    .card-easa .card-icon { background: var(--easa-dim); color: var(--easa); border: 1px solid rgba(118,255,3,0.22); }
+
+    .card-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .card-mvf  .card-tag { color: var(--mvf); }
+    .card-easa .card-tag { color: var(--easa); }
+
+    .card-name {
+      font-size: 18px; font-weight: 800;
+      letter-spacing: -0.01em; line-height: 1.2; margin-bottom: 2px;
+    }
+    .card-version { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text3); }
+
+    .card-desc {
+      font-size: 13px; color: var(--text2); line-height: 1.6;
+      position: relative; z-index: 1;
+    }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 5px; position: relative; z-index: 1; }
+    .chip {
+      font-size: 10px; font-weight: 600;
+      padding: 2px 8px; border-radius: 5px;
+      background: var(--bg3); border: 1px solid var(--border); color: var(--text2);
+    }
+    .card-mvf  .chip { border-color: rgba(0,212,255,0.15); }
+    .card-easa .chip { border-color: rgba(118,255,3,0.12); }
+
+    .card-btn {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 11px 16px; border-radius: 10px;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.05em;
+      border: none; cursor: pointer;
+      transition: filter var(--trans);
+      position: relative; z-index: 1;
+    }
+    .card-btn:hover { filter: brightness(1.12); }
+    .card-mvf  .card-btn { background: var(--mvf-dim);  color: var(--mvf);  border: 1px solid rgba(0,212,255,0.28); }
+    .card-easa .card-btn { background: var(--easa-dim); color: var(--easa); border: 1px solid rgba(118,255,3,0.28); }
+    .card-btn .arrow { transition: transform var(--trans); }
+    .app-card:hover .card-btn .arrow { transform: translateX(4px); }
+
+    .card-bg-word {
+      position: absolute; bottom: -14px; right: -8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 80px; font-weight: 900; opacity: 0.025;
+      letter-spacing: -0.05em; pointer-events: none; line-height: 1;
+    }
+
+    /* Footer */
+    .home-footer {
+      text-align: center; padding-top: 40px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px; color: var(--text3); letter-spacing: 0.06em;
+    }
+    .home-footer span { color: var(--mvf); }
+
+    /* ══ LOADING SPINNER ══ */
+    .loader {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 14px; background: var(--bg);
+      z-index: 10;
+      transition: opacity .4s;
+    }
+    .loader.hidden { opacity: 0; pointer-events: none; }
+    .spinner {
+      width: 32px; height: 32px;
+      border: 2px solid var(--border);
+      border-top-color: currentColor;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+    .loader[data-app="mvf"]  .spinner { color: var(--mvf); }
+    .loader[data-app="easa"] .spinner { color: var(--easa); }
+    .loader-lbl {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px; letter-spacing: 0.1em; color: var(--text3);
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ══ RESPONSIVO ══ */
+    @media (max-width: 620px) {
+      .cards { grid-template-columns: 1fr; }
+      .stats { gap: 16px; }
+      .stat-div { display: none; }
+      .tab span { display: none; }
+      .tab { padding: 6px 10px; }
+      #btn-external span { display: none; }
+      #btn-external { padding: 0 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     BARRA DE NAVEGAÇÃO
+══════════════════════════════════════════════════════════ -->
+<nav class="navbar">
+  <div class="nav-logo">
+    <div class="logo-dot"></div>
+    SENAI
+  </div>
+
+  <div class="tabs">
+    <!-- Aba Portal -->
+    <div class="tab active" data-app="home" onclick="switchTo('home')">
+      <div class="tab-pip"></div>
+      <span>Portal</span>
+    </div>
+
+    <!-- Aba MVF -->
+    <div class="tab" data-app="mvf" onclick="switchTo('mvf')">
+      <div class="tab-pip"></div>
+      <span>MVF</span>
+    </div>
+
+    <!-- Aba EASA -->
+    <div class="tab" data-app="easa" onclick="switchTo('easa')">
+      <div class="tab-pip"></div>
+      <span>EASA</span>
+    </div>
+  </div>
+
+  <div class="nav-actions">
+    <!-- Abrir app atual em nova aba -->
+    <button class="icon-btn" id="btn-external" data-app="home"
+            onclick="openExternal()" title="Abrir em nova aba">
+      <span>NOVA ABA</span>
+      ↗
+    </button>
+
+    <!-- Tema -->
+    <button class="icon-btn" id="theme-btn" onclick="toggleTheme()" title="Mudar tema">☀</button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════
+     ÁREA DE CONTEÚDO
+══════════════════════════════════════════════════════════ -->
+<div class="content-area">
+
+  <!-- Painel: Portal/Home -->
+  <div class="panel visible" id="panel-home">
+    <div class="home-inner">
+      <div class="hero-label">⬡ Portal de Estudos Técnicos — SENAI</div>
+      <h1 class="hero-title">
+        Dois apps,<br>
+        <span class="hl-mvf">uma navegação</span>
+      </h1>
+      <p class="hero-sub">
+        Alterne entre os apps SENAI pelas abas acima —
+        sem precisar abrir novos links. Clique num card para acessar direto.
+      </p>
+
+      <!-- Stats -->
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-val">13</div>
+          <div class="stat-lbl">Módulos MVF</div>
+        </div>
+        <div class="stat-div"></div>
+        <div class="stat">
+          <div class="stat-val">66+</div>
+          <div class="stat-lbl">Flashcards</div>
+        </div>
+        <div class="stat-div"></div>
+        <div class="stat">
+          <div class="stat-val">2</div>
+          <div class="stat-lbl">Apps</div>
+        </div>
+        <div class="stat-div"></div>
+        <div class="stat">
+          <div class="stat-val">0↺</div>
+          <div class="stat-lbl">Recargas</div>
+        </div>
+      </div>
+
+      <!-- Cards -->
+      <div class="cards">
+
+        <!-- MVF -->
+        <div class="app-card card-mvf" onclick="switchTo('mvf')">
+          <div class="card-header">
+            <div class="card-icon">MVF</div>
+            <div>
+              <div class="card-tag">Variáveis Físicas Industriais</div>
+              <div class="card-name">SENAI · MVF</div>
+              <div class="card-version">v5.4</div>
+            </div>
+          </div>
+          <p class="card-desc">
+            Pressão, nível, vazão e temperatura com simuladores, flashcards, quiz e calculadoras interativas.
+          </p>
+          <div class="chips">
+            <div class="chip">Pressão</div>
+            <div class="chip">Nível</div>
+            <div class="chip">Vazão</div>
+            <div class="chip">Temperatura</div>
+            <div class="chip">Bernoulli ⚡</div>
+            <div class="chip">Quiz</div>
+          </div>
+          <button class="card-btn">
+            <span>Abrir agora</span>
+            <span class="arrow">→</span>
+          </button>
+          <div class="card-bg-word">MVF</div>
+        </div>
+
+        <!-- EASA -->
+        <div class="app-card card-easa" onclick="switchTo('easa')">
+          <div class="card-header">
+            <div class="card-icon">EASA</div>
+            <div>
+              <div class="card-tag">Sistemas Elétricos e Eletrônicos</div>
+              <div class="card-name">SENAI · EASA</div>
+              <div class="card-version">v1</div>
+            </div>
+          </div>
+          <p class="card-desc">
+            Simbologia PCB, circuitos e instrumentação elétrica com interface estilo circuito impresso.
+          </p>
+          <div class="chips">
+            <div class="chip">Circuitos</div>
+            <div class="chip">Simbologia PCB</div>
+            <div class="chip">Eletrônica</div>
+            <div class="chip">Instrumentação</div>
+          </div>
+          <button class="card-btn">
+            <span>Abrir agora</span>
+            <span class="arrow">→</span>
+          </button>
+          <div class="card-bg-word">EASA</div>
+        </div>
+
+      </div>
+
+      <div class="home-footer">
+        SENAI · Portal — <span>Willian</span> · 2025
+      </div>
+    </div>
+  </div>
+
+  <!-- Painel: MVF (iframe) -->
+  <div class="panel" id="panel-mvf">
+    <div class="loader" id="loader-mvf" data-app="mvf">
+      <div class="spinner"></div>
+      <div class="loader-lbl">Carregando MVF...</div>
+    </div>
+    <iframe id="frame-mvf" title="SENAI MVF"></iframe>
+  </div>
+
+  <!-- Painel: EASA (iframe) -->
+  <div class="panel" id="panel-easa">
+    <div class="loader" id="loader-easa" data-app="easa">
+      <div class="spinner"></div>
+      <div class="loader-lbl">Carregando EASA...</div>
+    </div>
+    <iframe id="frame-easa" title="SENAI EASA"></iframe>
+  </div>
+
+</div>
+
+<script>
+  /* ── URLs dos apps ───────────────────────────────────────── */
+  const APPS = {
+    mvf:  'https://willianlsz1.github.io/Senai.MVF/',
+    easa: 'https://willianlsz1.github.io/EASA/'
+  };
+
+  /* Rastreia o que já foi carregado (lazy load) */
+  const loaded = { mvf: false, easa: false };
+  let current = 'home';
+
+  /* ── Troca de painel ─────────────────────────────────────── */
+  function switchTo(app) {
+    if (app === current) return;
+    current = app;
+
+    /* Atualiza abas */
+    document.querySelectorAll('.tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.app === app);
+    });
+
+    /* Atualiza painel visível */
+    document.querySelectorAll('.panel').forEach(p => {
+      p.classList.toggle('visible', p.id === 'panel-' + app);
+    });
+
+    /* Botão "nova aba" */
+    const btn = document.getElementById('btn-external');
+    btn.dataset.app = app;
+    btn.style.display = app === 'home' ? 'none' : 'flex';
+
+    /* Lazy load do iframe (só carrega na 1ª vez) */
+    if (app !== 'home' && !loaded[app]) {
+      loaded[app] = true;
+      const frame  = document.getElementById('frame-' + app);
+      const loader = document.getElementById('loader-' + app);
+
+      frame.onload = () => {
+        loader.classList.add('hidden');
+        /* Remove após transição */
+        setTimeout(() => loader.remove(), 500);
+      };
+
+      frame.src = APPS[app];
+    }
+  }
+
+  /* ── Abrir em nova aba ───────────────────────────────────── */
+  function openExternal() {
+    if (current !== 'home') window.open(APPS[current], '_blank');
+  }
+
+  /* ── Tema claro/escuro ───────────────────────────────────── */
+  (function initTheme() {
+    const saved = localStorage.getItem('senai-portal-theme');
+    if (saved === 'light') document.documentElement.dataset.theme = 'light';
+    updateThemeBtn();
+  })();
+
+  function toggleTheme() {
+    const isLight = document.documentElement.dataset.theme === 'light';
+    document.documentElement.dataset.theme = isLight ? 'dark' : 'light';
+    localStorage.setItem('senai-portal-theme', isLight ? 'dark' : 'light');
+    updateThemeBtn();
+  }
+
+  function updateThemeBtn() {
+    const btn = document.getElementById('theme-btn');
+    const isLight = document.documentElement.dataset.theme === 'light';
+    btn.textContent = isLight ? '☾' : '☀';
+    btn.title = isLight ? 'Mudar para tema escuro' : 'Mudar para tema claro';
+  }
+</script>
+
+</body>
+</html>
