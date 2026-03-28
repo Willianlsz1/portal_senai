@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SENAI · EASA v2.1</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ══ DECORAÇÃO PCB (fundo) ══════════════════════════════ -->
+<div class="pcb-symbols" aria-hidden="true">
+  <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+    <g fill="none" stroke="#00e5ff" stroke-width="2">
+      <!-- Resistor -->
+      <g transform="translate(80,80)">
+        <line x1="0" y1="0" x2="20" y2="0"/>
+        <rect x="20" y="-8" width="40" height="16" rx="2"/>
+        <line x1="60" y1="0" x2="80" y2="0"/>
+        <text x="40" y="30" text-anchor="middle" font-size="10" fill="#00e5ff">R</text>
+      </g>
+      <!-- Capacitor -->
+      <g transform="translate(300,200)">
+        <circle cx="0" cy="0" r="20"/>
+        <line x1="-20" y1="0" x2="-35" y2="0"/>
+        <line x1="20"  y1="0" x2="35"  y2="0"/>
+        <text x="0" y="40" text-anchor="middle" font-size="10" fill="#00e5ff">C</text>
+      </g>
+      <!-- Indutor -->
+      <g transform="translate(600,100)">
+        <line x1="0"  y1="0" x2="20" y2="0"/>
+        <path d="M20,-15 L20,15 M28,-12 L28,12 M36,-8 L36,8 M44,-12 L44,12 M52,-15 L52,15"/>
+        <line x1="52" y1="0" x2="72" y2="0"/>
+        <text x="36" y="35" text-anchor="middle" font-size="10" fill="#00e5ff">L</text>
+      </g>
+      <!-- Transistor NPN -->
+      <g transform="translate(900,300)">
+        <line x1="0"  y1="0"   x2="30"  y2="0"/>
+        <line x1="30" y1="-30" x2="30"  y2="30"/>
+        <line x1="30" y1="-15" x2="60"  y2="-35"/>
+        <line x1="30" y1="15"  x2="60"  y2="35"/>
+        <polygon points="50,25 60,35 45,38" fill="#00e5ff"/>
+        <text x="30" y="55" text-anchor="middle" font-size="10" fill="#00e5ff">NPN</text>
+      </g>
+      <!-- GND -->
+      <g transform="translate(500,450)">
+        <line x1="0" y1="0"  x2="0"  y2="20"/>
+        <line x1="-20" y1="20" x2="20" y2="20"/>
+        <line x1="-13" y1="28" x2="13" y2="28"/>
+        <line x1="-6"  y1="36" x2="6"  y2="36"/>
+        <text x="0" y="52" text-anchor="middle" font-size="10" fill="#00e5ff">GND</text>
+      </g>
+      <!-- Diodo -->
+      <g transform="translate(150,400)">
+        <line x1="0"  y1="0" x2="20" y2="0"/>
+        <polygon points="20,0 50,15 50,-15" fill="#00e5ff"/>
+        <line x1="50" y1="-16" x2="50" y2="16"/>
+        <line x1="50" y1="0"   x2="70" y2="0"/>
+        <text x="35" y="35" text-anchor="middle" font-size="10" fill="#00e5ff">D</text>
+      </g>
+      <!-- Op-Amp -->
+      <g transform="translate(750,500)">
+        <polygon points="0,-30 0,30 50,0" fill="none" stroke="#00e5ff" stroke-width="2"/>
+        <line x1="-20" y1="-15" x2="0"  y2="-15"/>
+        <line x1="-20" y1="15"  x2="0"  y2="15"/>
+        <line x1="50"  y1="0"   x2="70" y2="0"/>
+        <text x="-8" y="-10" font-size="8" fill="#00e5ff">+</text>
+        <text x="-8" y="20"  font-size="8" fill="#00e5ff">−</text>
+        <text x="25" y="55"  text-anchor="middle" font-size="10" fill="#00e5ff">AO</text>
+      </g>
+      <!-- VCC -->
+      <g transform="translate(1100,150)">
+        <line x1="0" y1="0"   x2="0"  y2="-30"/>
+        <line x1="-15" y1="0" x2="15" y2="0"/>
+        <line x1="-10" y1="10" x2="10" y2="10"/>
+        <line x1="-5"  y1="20" x2="5"  y2="20"/>
+        <text x="25" y="0" font-size="10" fill="#00e5ff">VCC</text>
+      </g>
+    </g>
+  </svg>
+</div>
+
+<!-- ══ APP ════════════════════════════════════════════════ -->
+<!-- Overlay para fechar sidebar no mobile -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<div class="app">
+
+  <!-- ── SIDEBAR ──────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-badge">⬡ SENAI · EASA</div>
+      <div class="logo-title">Eletrônica<br><span>Aplicada</span></div>
+      <div class="logo-sub">AUTOMAÇÃO INDUSTRIAL · v2.1</div>
+    </div>
+
+    <nav>
+      <div class="nav-section">
+        <div class="nav-label">Início</div>
+        <div class="nav-item active" onclick="goTo('dashboard',this)">
+          <div class="nav-icon">⚡</div> Dashboard
+        </div>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-label">Fundamentos</div>
+        <div class="nav-item" onclick="goTo('fund-eletrica',this)">
+          <div class="nav-icon">🔌</div> Eletricidade Básica
+        </div>
+        <div class="nav-item" onclick="goTo('cc',this)">
+          <div class="nav-icon">➡️</div> Circuitos CC
+        </div>
+        <div class="nav-item" onclick="goTo('kirchhoff',this)">
+          <div class="nav-icon">⚖️</div> Kirchhoff & Thévenin
+          <span class="nav-badge">NEW</span>
+        </div>
+        <div class="nav-item" onclick="goTo('ca',this)">
+          <div class="nav-icon">〰️</div> Circuitos CA
+        </div>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-label">Componentes</div>
+        <div class="nav-item" onclick="goTo('semicond',this)">
+          <div class="nav-icon">🔵</div> Semicondutores
+        </div>
+        <div class="nav-item" onclick="goTo('transistor',this)">
+          <div class="nav-icon">📐</div> Transistores
+        </div>
+        <div class="nav-item" onclick="goTo('tiristor',this)">
+          <div class="nav-icon">🔁</div> Tiristores
+          <span class="nav-badge">NEW</span>
+        </div>
+        <div class="nav-item" onclick="goTo('opto',this)">
+          <div class="nav-icon">💡</div> Optoeletrônica
+          <span class="nav-badge">NEW</span>
+        </div>
+        <div class="nav-item" onclick="goTo('retificador',this)">
+          <div class="nav-icon">🔋</div> Retificadores
+        </div>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-label">Analógico Avançado</div>
+        <div class="nav-item" onclick="goTo('amp',this)">
+          <div class="nav-icon">🔺</div> Amplificadores Op-Amp
+          <span class="nav-badge">NEW</span>
+        </div>
+        <div class="nav-item" onclick="goTo('filtros',this)">
+          <div class="nav-icon">〜</div> Filtros RC
+          <span class="nav-badge">NEW</span>
+        </div>
+        <div class="nav-item" onclick="goTo('rcrl',this)">
+          <div class="nav-icon">⏱</div> Transientes RC/RL
+          <span class="nav-badge">v1.2</span>
+        </div>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-label">Digital</div>
+        <div class="nav-item" onclick="goTo('numeracao',this)">
+          <div class="nav-icon">01</div> Sistemas Numéricos
+        </div>
+        <div class="nav-item" onclick="goTo('logica',this)">
+          <div class="nav-icon">⊕</div> Lógica Digital
+        </div>
+        <div class="nav-item" onclick="goTo('conv',this)">
+          <div class="nav-icon">⇌</div> Conversores A/D · D/A
+          <span class="nav-badge">v1.3</span>
+        </div>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-label">Prática</div>
+        <div class="nav-item" onclick="goTo('formulas',this)">
+          <div class="nav-icon">★</div> Fórmulas Visuais
+        </div>
+        <div class="nav-item" onclick="goTo('calc',this)">
+          <div class="nav-icon">🧮</div> Calculadora
+        </div>
+        <div class="nav-item" onclick="goTo('flashcards',this)">
+          <div class="nav-icon">🃏</div> Flashcards
+        </div>
+        <div class="nav-item" onclick="goTo('quiz',this)">
+          <div class="nav-icon">📝</div> Quiz
+        </div>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-label">Meta</div>
+        <div class="nav-item" onclick="goTo('updates',this)">
+          <div class="nav-icon">📋</div> Atualizações
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ── MAIN ─────────────────────────────────────────── -->
+  <main class="main">
+
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="menu-btn" onclick="toggleSidebar()" title="Menu" id="menu-btn">☰</div>
+      <div class="topbar-left">
+        <h1 id="page-title">Dashboard <span>·</span> EASA</h1>
+        <p><span class="live-dot"></span>Eletrônica Aplicada a Sistemas de Automação</p>
+      </div>
+      <div class="topbar-right">
+        <span class="theme-label" id="theme-lbl">DARK</span>
+        <div class="theme-toggle" onclick="toggleTheme()" title="Alternar tema"></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         DASHBOARD
+    ════════════════════════════════════════════════════ -->
+    <div class="page active" id="pg-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">📚</div>
+          <div class="stat-val">13</div>
+          <div class="stat-label">Módulos</div>
+          <div class="stat-sub">Teoria + Digital + Novos</div>
+          <div class="pcb-deco">⊕</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📐</div>
+          <div class="stat-val">06</div>
+          <div class="stat-label">Fórmulas</div>
+          <div class="stat-sub">Ohm · Kirchhoff · RC</div>
+          <div class="pcb-deco">∿</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🃏</div>
+          <div class="stat-val">17</div>
+          <div class="stat-label">Flashcards</div>
+          <div class="stat-sub">6 categorias</div>
+          <div class="pcb-deco">◈</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📝</div>
+          <div class="stat-val">10</div>
+          <div class="stat-label">Questões Quiz</div>
+          <div class="stat-sub">Componentes · Cálculo</div>
+          <div class="pcb-deco">≋</div>
+        </div>
+      </div>
+
+      <div class="section-title">Módulos de Teoria</div>
+      <div class="modules-grid">
+        <div class="module-card" onclick="goTo('fund-eletrica',document.querySelector('[onclick*=fund]'))">
+          <div class="mod-circuit">🔌</div>
+          <div class="mod-num">MÓDULO 01</div>
+          <div class="mod-title">Eletricidade Básica</div>
+          <div class="mod-tags">
+            <span class="tag tag-cyan">V · I · R</span>
+            <span class="tag tag-orange">P = V·I</span>
+          </div>
+          <div class="mod-bar"><div class="mod-bar-fill" style="width:100%"></div></div>
+        </div>
+        <div class="module-card" onclick="goTo('cc',document.querySelector('[onclick*=\"\\'cc\\'\"'))">
+          <div class="mod-circuit">➡️</div>
+          <div class="mod-num">MÓDULO 02</div>
+          <div class="mod-title">Circuitos CC</div>
+          <div class="mod-tags">
+            <span class="tag tag-green">Kirchhoff</span>
+            <span class="tag tag-cyan">Série · Paralelo</span>
+          </div>
+          <div class="mod-bar"><div class="mod-bar-fill" style="width:100%"></div></div>
+        </div>
+        <div class="module-card" onclick="goTo('ca',document.querySelector('[onclick*=\"\\'ca\\'\"'))">
+          <div class="mod-circuit">〰️</div>
+          <div class="mod-num">MÓDULO 03</div>
+          <div class="mod-title">Circuitos CA</div>
+          <div class="mod-tags">
+            <span class="tag tag-yellow">Impedância</span>
+            <span class="tag tag-orange">FP</span>
+          </div>
+          <div class="mod-bar"><div class="mod-bar-fill" style="width:100%"></div></div>
+        </div>
+        <div class="module-card" onclick="goTo('semicond',document.querySelector('[onclick*=semicond]'))">
+          <div class="mod-circuit">🔵</div>
+          <div class="mod-num">MÓDULO 04</div>
+          <div class="mod-title">Semicondutores & Diodo</div>
+          <div class="mod-tags">
+            <span class="tag tag-cyan">Junção PN</span>
+            <span class="tag tag-green">Zener</span>
+          </div>
+          <div class="mod-bar"><div class="mod-bar-fill" style="width:100%"></div></div>
+        </div>
+        <div class="module-card" onclick="goTo('transistor',document.querySelector('[onclick*=transistor]'))">
+          <div class="mod-circuit">📐</div>
+          <div class="mod-num">MÓDULO 05</div>
+          <div class="mod-title">Transistores BJT / FET</div>
+          <div class="mod-tags">
+            <span class="tag tag-orange">NPN · PNP</span>
+            <span class="tag tag-cyan">Chave · Amp</span>
+          </div>
+          <div class="mod-bar"><div class="mod-bar-fill" style="width:100%"></div></div>
+        </div>
+        <div class="module-card" onclick="goTo('logica',document.querySelector('[onclick*=logica]'))">
+          <div class="mod-circuit">⊕</div>
+          <div class="mod-num">MÓDULO 06</div>
+          <div class="mod-title">Lógica Digital</div>
+          <div class="mod-tags">
+            <span class="tag tag-green">AND · OR · NOT</span>
+            <span class="tag tag-yellow">Flip-Flop</span>
+          </div>
+          <div class="mod-bar"><div class="mod-bar-fill" style="width:100%"></div></div>
+        </div>
+      </div>
+
+      <div class="section-title">Acesso Rápido</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+        <div class="module-card" onclick="goTo('formulas',document.querySelector('[onclick*=formulas]'))" style="text-align:center;padding:16px">
+          <div style="font-size:28px;margin-bottom:8px">★</div>
+          <div class="mod-title" style="font-size:13px">Fórmulas Visuais</div>
+        </div>
+        <div class="module-card" onclick="goTo('calc',document.querySelector('[onclick*=calc]'))" style="text-align:center;padding:16px">
+          <div style="font-size:28px;margin-bottom:8px">🧮</div>
+          <div class="mod-title" style="font-size:13px">Calculadora</div>
+        </div>
+        <div class="module-card" onclick="goTo('flashcards',document.querySelector('[onclick*=flashcards]'))" style="text-align:center;padding:16px">
+          <div style="font-size:28px;margin-bottom:8px">🃏</div>
+          <div class="mod-title" style="font-size:13px">Flashcards</div>
+        </div>
+        <div class="module-card" onclick="goTo('quiz',document.querySelector('[onclick*=quiz]'))" style="text-align:center;padding:16px">
+          <div style="font-size:28px;margin-bottom:8px">📝</div>
+          <div class="mod-title" style="font-size:13px">Quiz</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         MÓDULO 01 — ELETRICIDADE BÁSICA
+    ════════════════════════════════════════════════════ -->
+    <div class="page" id="pg-fund-eletrica">
+      <div class="content-wrap">
+        <div class="theory-card">
+          <h2>Módulo 01 — <span>Eletricidade Básica</span></h2>
+          <div class="tc-sub">ELETROSTÁTICA · ELETRODINÂMICA · GRANDEZAS</div>
+          <div class="info-grid">
+            <div class="info-box">
+              <div class="ib-icon">⚡</div>
+              <div class="ib-title">Tensão (V)</div>
+              <div class="ib-text">Diferença de potencial elétrico entre dois pontos. Unidade: Volt (V). Força que "empurra" os elétrons.</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-icon">➡️</div>
+              <div class="ib-title">Corrente (I)</div>
+              <div class="ib-text">Fluxo ordenado de cargas elétricas por um condutor. Unidade: Ampere (A). 1A = 1 Coulomb/segundo.</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-icon">🔸</div>
+              <div class="ib-title">Resistência (R)</div>
+              <div class="ib-text">Oposição à passagem de corrente. Unidade: Ohm (Ω). Depende do material, comprimento e seção.</div>
+            </div>
+          </div>
+          <div class="diagram-wrap">
+            <svg width="500" height="120" viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+                  <path d="M0,0 L6,3 L0,6 Z" fill="#00e5ff"/>
+                </marker>
+              </defs>
+              <line x1="60" y1="30" x2="60" y2="90" stroke="#94a3b8" stroke-width="2"/>
+              <line x1="48" y1="40" x2="72" y2="40" stroke="#00e5ff" stroke-width="3"/>
+              <line x1="54" y1="55" x2="66" y2="55" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="48" y1="70" x2="72" y2="70" stroke="#00e5ff" stroke-width="3"/>
+              <text x="60" y="108" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="Share Tech Mono">Bateria (V)</text>
+              <line x1="60" y1="40" x2="200" y2="40" stroke="#00e5ff" stroke-width="2" marker-end="url(#arr)"/>
+              <rect x="200" y="28" width="80" height="24" rx="4" fill="none" stroke="#ff6d00" stroke-width="2"/>
+              <text x="240" y="44" text-anchor="middle" font-size="12" fill="#ff6d00" font-weight="bold" font-family="Share Tech Mono">R (Ω)</text>
+              <line x1="280" y1="40" x2="430" y2="40" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="430" y1="40" x2="430" y2="70" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="430" y1="70" x2="60" y2="70" stroke="#00e5ff" stroke-width="2"/>
+              <text x="240" y="20" text-anchor="middle" font-size="11" fill="#76ff03" font-family="Share Tech Mono">I →</text>
+              <text x="155" y="35" font-size="10" fill="#94a3b8" font-family="Share Tech Mono">+ polo</text>
+              <text x="345" y="35" font-size="10" fill="#94a3b8" font-family="Share Tech Mono">− polo</text>
+            </svg>
+          </div>
+          <table class="comp-table">
+            <tr><th>Grandeza</th><th>Símbolo</th><th>Unidade</th><th>Instrumento</th><th>Analogia</th></tr>
+            <tr><td>Tensão</td>    <td style="font-family:'Share Tech Mono';color:var(--accent)">V ou U</td><td>Volt (V)</td>   <td>Voltímetro</td>   <td>Pressão da água</td></tr>
+            <tr><td>Corrente</td>  <td style="font-family:'Share Tech Mono';color:var(--accent)">I</td>     <td>Ampere (A)</td> <td>Amperímetro</td>  <td>Fluxo de água</td></tr>
+            <tr><td>Resistência</td><td style="font-family:'Share Tech Mono';color:var(--accent)">R</td>    <td>Ohm (Ω)</td>   <td>Ohmímetro</td>    <td>Diâmetro do cano</td></tr>
+            <tr><td>Potência</td>  <td style="font-family:'Share Tech Mono';color:var(--accent)">P</td>     <td>Watt (W)</td>  <td>Wattímetro</td>   <td>Vazão × pressão</td></tr>
+          </table>
+          <div class="alert-box">
+            <div class="ab-icon">⚠️</div>
+            <div class="ab-text"><strong>Erro comum:</strong> o amperímetro é ligado em <strong>série</strong> e o voltímetro em <strong>paralelo</strong>. Inverter danifica os instrumentos.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         MÓDULO 02 — CIRCUITOS CC
+    ════════════════════════════════════════════════════ -->
+    <div class="page" id="pg-cc">
+      <div class="content-wrap">
+        <div class="theory-card">
+          <h2>Módulo 02 — <span>Circuitos CC</span></h2>
+          <div class="tc-sub">OHM · KIRCHHOFF · SÉRIE · PARALELO · MISTO · DIVISORES</div>
+
+          <!-- Info grid principal -->
+          <div class="info-grid">
+            <div class="info-box">
+              <div class="ib-icon">➡️</div>
+              <div class="ib-title">Circuito Série</div>
+              <div class="ib-text">A mesma corrente percorre todos os componentes. A tensão se divide proporcionalmente. R_total = R1 + R2 + R3 + ...</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-icon">⊔</div>
+              <div class="ib-title">Circuito Paralelo</div>
+              <div class="ib-text">A mesma tensão em todos os ramos. A corrente se divide. 1/R_eq = 1/R1 + 1/R2 + ... Para dois resistores: R_eq = (R1×R2)/(R1+R2)</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-icon">⊞</div>
+              <div class="ib-title">Circuito Misto</div>
+              <div class="ib-text">Combinação de série e paralelo. Resolva de dentro para fora — simplifique os paralelos primeiro, depois some as resistências em série.</div>
+            </div>
+          </div>
+
+          <!-- Diagrama SVG série e paralelo -->
+          <div class="diagram-wrap">
+            <svg width="560" height="150" viewBox="0 0 560 150" xmlns="http://www.w3.org/2000/svg">
+              <!-- SÉRIE -->
+              <text x="120" y="14" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="Share Tech Mono" letter-spacing="1">SÉRIE</text>
+              <text x="120" y="140" text-anchor="middle" font-size="10" fill="#76ff03" font-family="Share Tech Mono">I igual em todos · V se divide</text>
+              <line x1="10" y1="50" x2="45" y2="50" stroke="#00e5ff" stroke-width="2"/>
+              <rect x="45" y="38" width="48" height="24" rx="4" fill="none" stroke="#ff6d00" stroke-width="2"/>
+              <text x="69" y="53" text-anchor="middle" font-size="11" fill="#ff6d00" font-family="Share Tech Mono">R1</text>
+              <line x1="93" y1="50" x2="118" y2="50" stroke="#00e5ff" stroke-width="2"/>
+              <rect x="118" y="38" width="48" height="24" rx="4" fill="none" stroke="#ff6d00" stroke-width="2"/>
+              <text x="142" y="53" text-anchor="middle" font-size="11" fill="#ff6d00" font-family="Share Tech Mono">R2</text>
+              <line x1="166" y1="50" x2="191" y2="50" stroke="#00e5ff" stroke-width="2"/>
+              <rect x="191" y="38" width="48" height="24" rx="4" fill="none" stroke="#ff6d00" stroke-width="2"/>
+              <text x="215" y="53" text-anchor="middle" font-size="11" fill="#ff6d00" font-family="Share Tech Mono">R3</text>
+              <line x1="239" y1="50" x2="260" y2="50" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="260" y1="50" x2="260" y2="100" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="260" y1="100" x2="10" y2="100" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="10" y1="100" x2="10" y2="50" stroke="#00e5ff" stroke-width="2"/>
+              <!-- fonte -->
+              <circle cx="10" cy="75" r="0" fill="none"/>
+              <text x="135" y="120" text-anchor="middle" font-size="10" fill="#c084ff" font-family="Share Tech Mono">RT = R1+R2+R3</text>
+
+              <!-- PARALELO -->
+              <text x="420" y="14" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="Share Tech Mono" letter-spacing="1">PARALELO</text>
+              <text x="420" y="140" text-anchor="middle" font-size="10" fill="#76ff03" font-family="Share Tech Mono">V igual em todos · I se divide</text>
+              <line x1="290" y1="70" x2="320" y2="70" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="320" y1="35" x2="320" y2="105" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="520" y1="35" x2="520" y2="105" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="520" y1="70" x2="550" y2="70" stroke="#00e5ff" stroke-width="2"/>
+              <!-- R1 paralelo -->
+              <line x1="320" y1="35" x2="345" y2="35" stroke="#00e5ff" stroke-width="2"/>
+              <rect x="345" y="24" width="50" height="22" rx="4" fill="none" stroke="#ff6d00" stroke-width="2"/>
+              <text x="370" y="38" text-anchor="middle" font-size="10" fill="#ff6d00" font-family="Share Tech Mono">R1</text>
+              <line x1="395" y1="35" x2="520" y2="35" stroke="#00e5ff" stroke-width="2"/>
+              <!-- R2 paralelo -->
+              <line x1="320" y1="70" x2="345" y2="70" stroke="#00e5ff" stroke-width="2"/>
+              <rect x="345" y="59" width="50" height="22" rx="4" fill="none" stroke="#ff6d00" stroke-width="2"/>
+              <text x="370" y="73" text-anchor="middle" font-size="10" fill="#ff6d00" font-family="Share Tech Mono">R2</text>
+              <line x1="395" y1="70" x2="520" y2="70" stroke="#00e5ff" stroke-width="2"/>
+              <!-- R3 paralelo -->
+              <line x1="320" y1="105" x2="345" y2="105" stroke="#00e5ff" stroke-width="2"/>
+              <rect x="345" y="94" width="50" height="22" rx="4" fill="none" stroke="#ff6d00" stroke-width="2"/>
+              <text x="370" y="108" text-anchor="middle" font-size="10" fill="#ff6d00" font-family="Share Tech Mono">R3</text>
+              <line x1="395" y1="105" x2="520" y2="105" stroke="#00e5ff" stroke-width="2"/>
+              <text x="420" y="125" text-anchor="middle" font-size="10" fill="#c084ff" font-family="Share Tech Mono">1/Req = 1/R1+1/R2+1/R3</text>
+            </svg>
+          </div>
+
+          <!-- Divisores de tensão e corrente -->
+          <div class="info-grid" style="margin-top:8px">
+            <div class="info-box">
+              <div class="ib-title">Divisor de Tensão</div>
+              <div class="ib-text" style="font-size:13px">Vx = Vs × Rx / (R1+R2+...+Rn)<br><br>A tensão em cada resistor é proporcional ao seu valor. Resistor maior → maior queda de tensão.</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-title">Divisor de Corrente</div>
+              <div class="ib-text" style="font-size:13px">Ix = I_total × R_outro / (R1+R2)<br><br>Para dois resistores em paralelo. A corrente prefere o caminho de menor resistência.</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-title">Exemplo Prático</div>
+              <div class="ib-text" style="font-size:13px">V=12V, R1=4Ω, R2=8Ω em série.<br>I = 12/(4+8) = 1A<br>VR1 = 1×4 = 4V<br>VR2 = 1×8 = 8V ✓ (4+8=12V)</div>
+            </div>
+          </div>
+
+          <!-- Análise de malhas com Kirchhoff -->
+          <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:20px;margin-top:14px">
+            <h3 style="font-size:15px;font-family:var(--font-mono);color:var(--accent);margin-bottom:14px;letter-spacing:0.06em">⚖️ KIRCHHOFF — ANÁLISE DE MALHAS</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div>
+                <div style="font-size:12px;font-weight:700;color:var(--accent2);letter-spacing:0.1em;margin-bottom:8px">1ª LEI — LCK (Nós)</div>
+                <div style="font-size:13px;color:var(--text-2);line-height:1.65">Num nó, a soma das correntes que <strong>entram</strong> é igual à soma das que <strong>saem</strong>.<br><br>ΣI_entrada = ΣI_saída<br><br>Exemplo: I₁=3A + I₂=2A entram → I₃=5A sai.</div>
+              </div>
+              <div>
+                <div style="font-size:12px;font-weight:700;color:#ff6d00;letter-spacing:0.1em;margin-bottom:8px">2ª LEI — LTK (Malhas)</div>
+                <div style="font-size:13px;color:var(--text-2);line-height:1.65">A soma algébrica das tensões em qualquer malha fechada é zero.<br><br>ΣV = 0 (sentido horário)<br><br>Exemplo: 12V − 4Ω×1A − 8Ω×1A = 0 ✓</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tabela de fórmulas -->
+          <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;margin-top:14px">
+            <h3 style="font-size:14px;font-family:var(--font-mono);color:var(--accent);margin-bottom:12px;letter-spacing:0.06em">📐 FÓRMULAS ESSENCIAIS — CC</h3>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+              <div style="background:var(--bg4);border-radius:8px;padding:12px;text-align:center">
+                <div style="font-family:var(--font-mono);font-size:15px;color:var(--accent);margin-bottom:4px">V = I × R</div>
+                <div style="font-size:11px;color:var(--text-3)">Lei de Ohm</div>
+              </div>
+              <div style="background:var(--bg4);border-radius:8px;padding:12px;text-align:center">
+                <div style="font-family:var(--font-mono);font-size:15px;color:#76ff03;margin-bottom:4px">P = V × I</div>
+                <div style="font-size:11px;color:var(--text-3)">Potência elétrica</div>
+              </div>
+              <div style="background:var(--bg4);border-radius:8px;padding:12px;text-align:center">
+                <div style="font-family:var(--font-mono);font-size:15px;color:#ff6d00;margin-bottom:4px">RT = R1+R2+…</div>
+                <div style="font-size:11px;color:var(--text-3)">Série</div>
+              </div>
+              <div style="background:var(--bg4);border-radius:8px;padding:12px;text-align:center">
+                <div style="font-family:var(--font-mono);font-size:13px;color:#ff6d00;margin-bottom:4px">1/Req=1/R1+1/R2</div>
+                <div style="font-size:11px;color:var(--text-3)">Paralelo</div>
+              </div>
+              <div style="background:var(--bg4);border-radius:8px;padding:12px;text-align:center">
+                <div style="font-family:var(--font-mono);font-size:13px;color:#c084ff;margin-bottom:4px">Vx=Vs×Rx/RT</div>
+                <div style="font-size:11px;color:var(--text-3)">Divisor de tensão</div>
+              </div>
+              <div style="background:var(--bg4);border-radius:8px;padding:12px;text-align:center">
+                <div style="font-family:var(--font-mono);font-size:13px;color:#c084ff;margin-bottom:4px">Ix=It×Routra/RT</div>
+                <div style="font-size:11px;color:var(--text-3)">Divisor de corrente</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert-box" style="margin-top:14px">
+            <div class="ab-icon">💡</div>
+            <div class="ab-text"><strong>Na automação:</strong> LCK calcula corrente de saída de CLPs e distribuição em barramentos. LTK verifica quedas de tensão em cabos longos e alimentações 4–20 mA industriais.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         MÓDULO 03 — CIRCUITOS CA
+    ════════════════════════════════════════════════════ -->
+    <div class="page" id="pg-ca">
+      <div class="content-wrap">
+        <div class="theory-card">
+          <h2>Módulo 03 — <span>Circuitos CA</span></h2>
+          <div class="tc-sub">FREQUÊNCIA · IMPEDÂNCIA · POTÊNCIA · FATOR DE POTÊNCIA</div>
+          <div class="info-grid">
+            <div class="info-box">
+              <div class="ib-icon">〰️</div>
+              <div class="ib-title">Onda Senoidal</div>
+              <div class="ib-text">v(t) = Vpico × sen(2πft). No Brasil: 60 Hz, 127V ou 220V (valores eficazes = Vpico/√2).</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-icon">∠</div>
+              <div class="ib-title">Impedância (Z)</div>
+              <div class="ib-text">Oposição total em CA. Z = √(R² + X²). Inclui resistência R e reatância X (XL ou XC).</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-icon">🔷</div>
+              <div class="ib-title">Fator de Potência</div>
+              <div class="ib-text">FP = cos(φ) = P/S. FP = 1 ideal (carga resistiva). FP &lt; 1 indica reatância — penalidade industrial.</div>
+            </div>
+          </div>
+          <table class="comp-table">
+            <tr><th>Tipo</th><th>Reatância</th><th>Comportamento</th><th>Defasagem I×V</th></tr>
+            <tr><td>Resistivo</td>  <td style="color:var(--text3)">—</td>                                                          <td>V e I em fase</td>  <td class="good">0°</td></tr>
+            <tr><td>Indutivo (L)</td><td style="font-family:'Share Tech Mono';color:var(--accent)">XL = 2πfL</td>                 <td>I atrasa V</td>    <td class="warn">+90°</td></tr>
+            <tr><td>Capacitivo (C)</td><td style="font-family:'Share Tech Mono';color:var(--accent)">XC = 1/(2πfC)</td>           <td>I adianta V</td>   <td class="warn">−90°</td></tr>
+            <tr><td>Misto (RLC)</td><td style="font-family:'Share Tech Mono';color:var(--accent)">Z = √(R²+(XL-XC)²)</td>        <td>Depende do circuito</td><td>0° a 90°</td></tr>
+          </table>
+          <div class="info-grid" style="margin-top:16px">
+            <div class="info-box"><div class="ib-icon">🔵</div><div class="ib-title">P — Ativa (W)</div>   <div class="ib-text">Realiza trabalho real. P = V×I×cos(φ). Cobrada na conta de energia.</div></div>
+            <div class="info-box"><div class="ib-icon">🟡</div><div class="ib-title">Q — Reativa (VAr)</div><div class="ib-text">Gerada por reatâncias. Não realiza trabalho. Sobrecarrega a rede.</div></div>
+            <div class="info-box"><div class="ib-icon">⬜</div><div class="ib-title">S — Aparente (VA)</div><div class="ib-text">S = V×I. Potência total fornecida. S² = P² + Q². Dimensiona transformadores.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         MÓDULO 04 — SEMICONDUTORES
+    ════════════════════════════════════════════════════ -->
+    <div class="page" id="pg-semicond">
+      <div class="content-wrap">
+        <div class="theory-card">
+          <h2>Módulo 04 — <span>Semicondutores & Diodo</span></h2>
+          <div class="tc-sub">JUNÇÃO PN · POLARIZAÇÃO · TIPOS DE DIODO</div>
+          <div class="info-grid">
+            <div class="info-box"><div class="ib-icon">🔵</div><div class="ib-title">Tipo N</div><div class="ib-text">Dopagem com fósforo/arsênio. Elétrons livres como portadores majoritários.</div></div>
+            <div class="info-box"><div class="ib-icon">🔴</div><div class="ib-title">Tipo P</div><div class="ib-text">Dopagem com boro/alumínio. Lacunas (holes) como portadores majoritários.</div></div>
+            <div class="info-box"><div class="ib-icon">⚡</div><div class="ib-title">Junção PN</div><div class="ib-text">União P+N cria região de depleção. Barreira ≈ 0,7V (Si) ou 0,3V (Ge).</div></div>
+          </div>
+          <div class="diagram-wrap">
+            <svg width="500" height="110" viewBox="0 0 500 110" xmlns="http://www.w3.org/2000/svg">
+              <text x="250" y="15" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="Share Tech Mono" letter-spacing="1">SÍMBOLO DO DIODO</text>
+              <line x1="60"  y1="60" x2="160" y2="60" stroke="#00e5ff" stroke-width="2"/>
+              <polygon points="160,40 160,80 210,60" fill="none" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="210" y1="40" x2="210" y2="80" stroke="#ff6d00" stroke-width="3"/>
+              <line x1="210" y1="60" x2="300" y2="60" stroke="#00e5ff" stroke-width="2"/>
+              <text x="150" y="95" text-anchor="middle" font-size="11" fill="#76ff03" font-family="Share Tech Mono">Ânodo (+)</text>
+              <text x="220" y="95" text-anchor="middle" font-size="11" fill="#ff6d00" font-family="Share Tech Mono">Cátodo (−)</text>
+              <!-- Zener -->
+              <text x="420" y="15" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="Share Tech Mono" letter-spacing="1">ZENER</text>
+              <line x1="350" y1="60" x2="380" y2="60" stroke="#00e5ff" stroke-width="2"/>
+              <polygon points="380,42 380,78 420,60" fill="none" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="420" y1="38" x2="420" y2="82" stroke="#76ff03" stroke-width="3"/>
+              <line x1="420" y1="38" x2="412" y2="30" stroke="#76ff03" stroke-width="2"/>
+              <line x1="420" y1="82" x2="428" y2="90" stroke="#76ff03" stroke-width="2"/>
+              <line x1="420" y1="60" x2="460" y2="60" stroke="#00e5ff" stroke-width="2"/>
+              <text x="420" y="105" text-anchor="middle" font-size="10" fill="#76ff03" font-family="Share Tech Mono">Regulação V</text>
+            </svg>
+          </div>
+          <table class="comp-table">
+            <tr><th>Tipo</th><th>Símbolo</th><th>Aplicação em Automação</th><th>Detalhe</th></tr>
+            <tr><td>Retificador</td><td>D</td>  <td>Fontes de alimentação CC</td>          <td>1N4007 — 1A / 1000V</td></tr>
+            <tr><td>Zener</td>      <td>DZ</td> <td>Regulação de tensão</td>               <td>Conduz no breakdown reverso</td></tr>
+            <tr><td>LED</td>        <td>LED</td><td>Indicação, displays, sensores</td>      <td>Emite luz ao conduzir</td></tr>
+            <tr><td>Fotodiodo</td>  <td>PD</td> <td>Sensores de presença, encoders</td>    <td>Corrente proporcional à luz</td></tr>
+            <tr><td>Schottky</td>   <td>DS</td> <td>Alta frequência, proteção CLPs</td>    <td>Queda de tensão ≈ 0,3V</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         MÓDULO 05 — TRANSISTORES
+    ════════════════════════════════════════════════════ -->
+    <div class="page" id="pg-transistor">
+      <div class="content-wrap">
+        <div class="theory-card">
+          <h2>Módulo 05 — <span>Transistores</span></h2>
+          <div class="tc-sub">BJT NPN/PNP · FET · CHAVE · AMPLIFICADOR</div>
+          <div class="info-grid">
+            <div class="info-box"><div class="ib-icon">📐</div><div class="ib-title">BJT — Bipolar</div>    <div class="ib-text">3 terminais: Base (B), Coletor (C), Emissor (E). Controlado por corrente de base IB. Ganho β = IC/IB.</div></div>
+            <div class="info-box"><div class="ib-icon">⚡</div><div class="ib-title">FET — Efeito de Campo</div><div class="ib-text">Terminais: Gate (G), Drain (D), Source (S). Controlado por tensão VGS. Alta impedância de entrada.</div></div>
+            <div class="info-box"><div class="ib-icon">🔧</div><div class="ib-title">MOSFET na Automação</div><div class="ib-text">Drivers de saída de CLP, inversores de frequência, controle PWM de motores e atuadores.</div></div>
+          </div>
+          <div class="diagram-wrap">
+            <svg width="520" height="130" viewBox="0 0 520 130" xmlns="http://www.w3.org/2000/svg">
+              <text x="120" y="15" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="Share Tech Mono" letter-spacing="1">BJT NPN</text>
+              <line x1="20" y1="65" x2="80" y2="65" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="80" y1="30" x2="80" y2="100" stroke="#00e5ff" stroke-width="3"/>
+              <line x1="80" y1="50" x2="140" y2="25" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="80" y1="80" x2="140" y2="105" stroke="#00e5ff" stroke-width="2"/>
+              <polygon points="128,98 140,105 133,93" fill="#00e5ff"/>
+              <line x1="140" y1="25" x2="140" y2="10" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="140" y1="105" x2="140" y2="120" stroke="#00e5ff" stroke-width="2"/>
+              <text x="20" y="62" font-size="11" fill="#76ff03" font-family="Share Tech Mono">B</text>
+              <text x="148" y="20" font-size="11" fill="#ff6d00" font-family="Share Tech Mono">C</text>
+              <text x="148" y="115" font-size="11" fill="#94a3b8" font-family="Share Tech Mono">E</text>
+              <circle cx="110" cy="65" r="35" fill="none" stroke="#64748b" stroke-width="1" stroke-dasharray="4,3"/>
+              <text x="120" y="125" text-anchor="middle" font-size="10" fill="#ff6d00" font-family="Share Tech Mono">β = IC / IB</text>
+              <!-- Como chave -->
+              <text x="320" y="15" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="Share Tech Mono" letter-spacing="1">COMO CHAVE</text>
+              <line x1="280" y1="65" x2="310" y2="65" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="310" y1="40" x2="310" y2="90" stroke="#00e5ff" stroke-width="3"/>
+              <line x1="310" y1="52" x2="350" y2="35" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="310" y1="78" x2="350" y2="95" stroke="#00e5ff" stroke-width="2"/>
+              <polygon points="340,88 350,95 343,82" fill="#00e5ff"/>
+              <rect x="335" y="5" width="30" height="20" rx="3" fill="none" stroke="#ff6d00" stroke-width="2"/>
+              <text x="350" y="19" text-anchor="middle" font-size="9" fill="#ff6d00" font-family="Share Tech Mono">Carga</text>
+              <line x1="350" y1="5" x2="350" y2="-3" stroke="#00e5ff" stroke-width="2"/>
+              <text x="356" y="-1" font-size="9" fill="#76ff03" font-family="Share Tech Mono">VCC</text>
+              <line x1="350" y1="25" x2="350" y2="35" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="350" y1="95" x2="350" y2="115" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="338" y1="115" x2="362" y2="115" stroke="#94a3b8" stroke-width="2"/>
+              <line x1="342" y1="120" x2="358" y2="120" stroke="#94a3b8" stroke-width="1.5"/>
+              <line x1="346" y1="125" x2="354" y2="125" stroke="#94a3b8" stroke-width="1"/>
+              <rect x="240" y="57" width="30" height="16" rx="3" fill="none" stroke="#ff6d00" stroke-width="1.5"/>
+              <text x="255" y="68" text-anchor="middle" font-size="9" fill="#ff6d00" font-family="Share Tech Mono">RB</text>
+              <text x="270" y="56" font-size="9" fill="#76ff03" font-family="Share Tech Mono">CLP</text>
+              <text x="370" y="68" font-size="10" fill="#ff6d00" font-family="Share Tech Mono">ON/OFF</text>
+            </svg>
+          </div>
+          <div class="alert-box">
+            <div class="ab-icon">🏭</div>
+            <div class="ab-text"><strong>Na automação:</strong> saída NPN do CLP conecta a carga ao GND quando acionado. Saída PNP conecta ao VCC. Fundamental para ligar sensores corretamente ao CLP.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         MÓDULO 06 — OPTOELETRÔNICA
+    ════════════════════════════════════════════════════ -->
+    <div class="page" id="pg-opto">
+      <div class="content-wrap">
+        <div class="theory-card">
+          <h2>Módulo 06 — <span>Optoeletrônica</span></h2>
+          <div class="tc-sub">LED · FOTODIODO · FOTOTRANSISTOR · ACOPLADOR ÓPTICO · DISPLAY</div>
+          <div class="info-grid">
+            <div class="info-box"><div class="ib-icon">💡</div><div class="ib-title">LED</div>             <div class="ib-text">Emite luz ao ser polarizado diretamente. Corrente típica 10–20 mA com resistor limitador.</div></div>
+            <div class="info-box"><div class="ib-icon">📷</div><div class="ib-title">Fotodiodo</div>       <div class="ib-text">Gera corrente proporcional à intensidade de luz. Base de encoders e sensores de posição.</div></div>
+            <div class="info-box"><div class="ib-icon">🔗</div><div class="ib-title">Acoplador Óptico</div><div class="ib-text">Isolamento galvânico entre circuito de entrada e saída. Protege CLPs de ruídos e transientes.</div></div>
+          </div>
+          <table class="comp-table">
+            <tr><th>Componente</th><th>Princípio</th><th>Aplicação em Automação</th></tr>
+            <tr><td>LED</td>            <td>Emissão de luz por corrente</td>       <td>Indicação de status, barreiras de segurança, encoders</td></tr>
+            <tr><td>Display 7-seg</td>  <td>8 LEDs em segmentos A–G+DP</td>       <td>IHM, painéis de controle, contadores</td></tr>
+            <tr><td>Fototransistor</td> <td>Luz controla corrente C–E</td>         <td>Sensores de presença reflexivos, contagem de objetos</td></tr>
+            <tr><td>Acoplador Óptico</td><td>LED + fototransistor isolados</td>    <td>Interface CLP × campo, isolamento 4–20 mA</td></tr>
+            <tr><td>Fibra Óptica</td>   <td>Reflexão total interna</td>            <td>Comunicação PROFIBUS, detecção em ambiente ruidoso</td></tr>
+          </table>
+          <div class="alert-box">
+            <div class="ab-icon">⚠️</div>
+            <div class="ab-text"><strong>Cálculo do resistor do LED:</strong> R = (VCC − VLED) / ILED. Exemplo: VCC=5V, VLED=2V, ILED=15mA → R = (5−2)/0,015 = <strong>200Ω</strong>.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         MÓDULO 07 — RETIFICADORES
+    ════════════════════════════════════════════════════ -->
+    <div class="page" id="pg-retificador">
+      <div class="content-wrap">
+        <div class="theory-card">
+          <h2>Módulo 07 — <span>Retificadores & Fontes</span></h2>
+          <div class="tc-sub">MEIA ONDA · ONDA COMPLETA · PONTE · FILTRO · ZENER</div>
+          <div class="info-grid">
+            <div class="info-box"><div class="ib-icon">↗️</div>  <div class="ib-title">Meia Onda</div>      <div class="ib-text">1 diodo. Aproveita apenas o semiciclo positivo. Fator ripple = 1,21. Simples mas ineficiente.</div></div>
+            <div class="info-box"><div class="ib-icon">↗️↗️</div><div class="ib-title">Onda Completa</div>  <div class="ib-text">2 ou 4 diodos. Aproveita os dois semiciclos. Fator ripple = 0,48. Mais eficiente.</div></div>
+            <div class="info-box"><div class="ib-icon">🔋</div>   <div class="ib-title">Filtro Capacitivo</div><div class="ib-text">Capacitor "armazena" carga entre os picos. Quanto maior C, menor o ripple. τ = R×C define descarga.</div></div>
+          </div>
+          <table class="comp-table">
+            <tr><th>Tipo</th><th>Diodos</th><th>Vdc médio</th><th>Fator Ripple</th><th>Uso</th></tr>
+            <tr><td>Meia onda</td>                 <td>1</td><td>0,318 × Vpico</td><td class="warn">1,21</td><td>Cargas pequenas</td></tr>
+            <tr><td>Onda completa (ponto neutro)</td><td>2</td><td>0,636 × Vpico</td><td>0,48</td>           <td>Trafo com tap central</td></tr>
+            <tr><td>Ponte (Bridge)</td>             <td>4</td><td>0,636 × Vpico</td><td class="good">0,48</td><td>Padrão industrial</td></tr>
+          </table>
+          <div class="alert-box">
+            <div class="ab-icon">💡</div>
+            <div class="ab-text"><strong>Na automação:</strong> fontes chaveadas (SMPS) em CLPs e transmissores 4–20 mA usam retificação em ponte + regulação eletrônica, garantindo tensão estável com variação de rede de ±20%.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         MÓDULO 08 — SISTEMAS NUMÉRICOS
+    ════════════════════════════════════════════════════ -->
+    <div class="page" id="pg-numeracao">
+      <div class="content-wrap">
+        <div class="theory-card">
+          <h2>Módulo 08 — <span>Sistemas Numéricos</span></h2>
+          <div class="tc-sub">BINÁRIO · HEXADECIMAL · BCD · COMPLEMENTO</div>
+          <div class="info-grid">
+            <div class="info-box"><div class="ib-icon">01</div>  <div class="ib-title">Binário (Base 2)</div>      <div class="ib-text">Apenas 0 e 1. Linguagem nativa dos CLPs. Bit, nibble (4 bits), byte (8 bits), word (16 bits).</div></div>
+            <div class="info-box"><div class="ib-icon">0xF</div> <div class="ib-title">Hexadecimal (Base 16)</div> <div class="ib-text">0–9 e A–F. Representação compacta: 1 hex = 4 bits. Endereços de memória e registradores de CLP.</div></div>
+            <div class="info-box"><div class="ib-icon">📟</div>  <div class="ib-title">BCD</div>                   <div class="ib-text">Binary Coded Decimal. Cada dígito decimal = 4 bits. Usado em displays de 7 segmentos industriais.</div></div>
+          </div>
+          <table class="comp-table">
+            <tr><th>Decimal</th><th>Binário</th><th>Hexadecimal</th><th>BCD</th></tr>
+            <tr><td>0</td>  <td style="font-family:'JetBrains Mono'">0000</td>      <td style="font-family:'JetBrains Mono';color:var(--accent)">0x0</td><td style="font-family:'JetBrains Mono'">0000</td></tr>
+            <tr><td>5</td>  <td style="font-family:'JetBrains Mono'">0101</td>      <td style="font-family:'JetBrains Mono';color:var(--accent)">0x5</td><td style="font-family:'JetBrains Mono'">0101</td></tr>
+            <tr><td>10</td> <td style="font-family:'JetBrains Mono'">1010</td>      <td style="font-family:'JetBrains Mono';color:var(--accent)">0xA</td><td style="font-family:'JetBrains Mono'">0001 0000</td></tr>
+            <tr><td>15</td> <td style="font-family:'JetBrains Mono'">1111</td>      <td style="font-family:'JetBrains Mono';color:var(--accent)">0xF</td><td style="font-family:'JetBrains Mono'">0001 0101</td></tr>
+            <tr><td>255</td><td style="font-family:'JetBrains Mono'">1111 1111</td> <td style="font-family:'JetBrains Mono';color:var(--accent)">0xFF</td><td style="font-family:'JetBrains Mono'">0010 0101 0101</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         MÓDULO 09 — LÓGICA DIGITAL
+    ════════════════════════════════════════════════════ -->
+    <div class="page" id="pg-logica">
+      <div class="content-wrap">
+        <div class="theory-card">
+          <h2>Módulo 09 — <span>Lógica Digital</span></h2>
+          <div class="tc-sub">PORTAS LÓGICAS · TABELA DA VERDADE · EXPRESSÕES BOOLEANAS</div>
+          <div class="info-grid">
+            <div class="info-box"><div class="ib-icon">AND</div><div class="ib-title">Porta AND</div><div class="ib-text">Saída 1 somente se TODAS as entradas forem 1. Y = A · B.</div></div>
+            <div class="info-box"><div class="ib-icon">OR</div> <div class="ib-title">Porta OR</div> <div class="ib-text">Saída 1 se PELO MENOS UMA entrada for 1. Y = A + B.</div></div>
+            <div class="info-box"><div class="ib-icon">NOT</div><div class="ib-title">Porta NOT</div> <div class="ib-text">Inverte a entrada. Y = Ā. Saída 1 quando entrada 0 e vice-versa.</div></div>
+          </div>
+          <table class="comp-table">
+            <tr><th>A</th><th>B</th><th>AND</th><th>OR</th><th>NAND</th><th>NOR</th><th>XOR</th></tr>
+            <tr>
+              <td style="font-family:'JetBrains Mono'">0</td><td style="font-family:'JetBrains Mono'">0</td>
+              <td style="font-family:'JetBrains Mono';color:var(--danger)">0</td>
+              <td style="font-family:'JetBrains Mono';color:var(--danger)">0</td>
+              <td style="font-family:'JetBrains Mono';color:var(--accent2)">1</td>
+              <td style="font-family:'JetBrains Mono';color:var(--accent2)">1</td>
+              <td style="font-family:'JetBrains Mono';color:var(--danger)">0</td>
+            </tr>
+            <tr>
+              <td style="font-family:'JetBrains Mono'">0</td><td style="font-family:'JetBrains Mono'">1</td>
+              <td style="font-family:'JetBrains Mono';color:var(--danger)">0</td>
+              <td style="font-family:'JetBrains Mono';color:var(--accent2)">1</td>
+              <td style="font-family:'JetBrains Mono';color:var(--accent2)">1</td>
+              <td style="font-family:'JetBrains Mono';color:var(--danger)">0</td>
+              <td style="font-family:'JetBrains Mono';color:var(--accent2)">1</td>
+            </tr>
+            <tr>
+              <td style="font-family:'JetBrains Mono'">1</td><td style="font-family:'JetBrains Mono'">0</td>
+              <td style="font-family:'JetBrains Mono';color:var(--danger)">0</td>
+              <td style="font-family:'JetBrains Mono';color:var(--accent2)">1</td>
+              <td style="font-family:'JetBrains Mono';color:var(--accent2)">1</td>
+              <td style="font-family:'JetBrains Mono';color:var(--danger)">0</td>
+              <td style="font-family:'JetBrains Mono';color:var(--accent2)">1</td>
+            </tr>
+            <tr>
+              <td style="font-family:'JetBrains Mono'">1</td><td style="font-family:'JetBrains Mono'">1</td>
+              <td style="font-family:'JetBrains Mono';color:var(--accent2)">1</td>
+              <td style="font-family:'JetBrains Mono';color:var(--accent2)">1</td>
+              <td style="font-family:'JetBrains Mono';color:var(--danger)">0</td>
+              <td style="font-family:'JetBrains Mono';color:var(--danger)">0</td>
+              <td style="font-family:'JetBrains Mono';color:var(--danger)">0</td>
+            </tr>
+          </table>
+          <div class="alert-box">
+            <div class="ab-icon">🏭</div>
+            <div class="ab-text"><strong>Na automação:</strong> contato normalmente aberto (NA) = AND. Contato normalmente fechado (NF) = NOT. Bobinas em paralelo = OR. Lógica booleana é a base do ladder do CLP.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         FÓRMULAS VISUAIS
+    ════════════════════════════════════════════════════ -->
+
+    <!-- ═══════════════════════════════════════════════════
+         MÓDULO — KIRCHHOFF & THÉVENIN/NORTON
+    ════════════════════════════════════════════════════ -->
+    <div class="page" id="pg-kirchhoff">
+      <div class="content-wrap">
+        <div class="theory-card">
+          <h2>Kirchhoff & <span>Thévenin · Norton</span></h2>
+          <div class="tc-sub">LCK · LTK · THÉVENIN · NORTON · ANÁLISE DE MALHAS</div>
+          <div class="info-grid">
+            <div class="info-box">
+              <div class="ib-icon">🔀</div>
+              <div class="ib-title">1ª Lei — LCK (nós)</div>
+              <div class="ib-text">A soma das correntes que <b>entram</b> em um nó é igual à soma das que <b>saem</b>. ΣI_entrada = ΣI_saída. Conservação de carga elétrica.</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-icon">🔁</div>
+              <div class="ib-title">2ª Lei — LTK (malhas)</div>
+              <div class="ib-text">A soma algébrica das tensões em uma malha fechada é zero. ΣV = 0. Percorra a malha em qualquer sentido — o resultado é sempre zero.</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-icon">⚡</div>
+              <div class="ib-title">Thévenin</div>
+              <div class="ib-text">Qualquer circuito linear visto por dois terminais pode ser substituído por Vth (tensão em circuito aberto) em série com Rth (resistência equivalente).</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-icon">💧</div>
+              <div class="ib-title">Norton</div>
+              <div class="ib-text">Equivalente dual de Thévenin: fonte de corrente In em paralelo com Rn. Relação: In = Vth / Rth. Rn = Rth sempre.</div>
+            </div>
+          </div>
+          <div class="diagram-wrap">
+            <svg width="560" height="160" viewBox="0 0 560 160" xmlns="http://www.w3.org/2000/svg">
+              <text x="110" y="14" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="Share Tech Mono" letter-spacing="1">LCK — NÓ</text>
+              <circle cx="110" cy="80" r="9" fill="#00e5ff" opacity="0.85"/>
+              <text x="110" y="84" text-anchor="middle" font-size="9" fill="#0a0d11" font-family="Share Tech Mono" font-weight="bold">N</text>
+              <line x1="30" y1="40" x2="101" y2="73" stroke="#76ff03" stroke-width="2"/>
+              <polygon points="101,73 87,59 95,71" fill="#76ff03"/>
+              <text x="28" y="36" font-size="10" fill="#76ff03" font-family="Share Tech Mono">I₁=3A</text>
+              <line x1="30" y1="120" x2="101" y2="87" stroke="#76ff03" stroke-width="2"/>
+              <polygon points="101,87 87,99 95,87" fill="#76ff03"/>
+              <text x="12" y="138" font-size="10" fill="#76ff03" font-family="Share Tech Mono">I₂=2A</text>
+              <line x1="119" y1="80" x2="200" y2="80" stroke="#ff6d00" stroke-width="2"/>
+              <polygon points="200,80 186,74 186,86" fill="#ff6d00"/>
+              <text x="190" y="73" font-size="10" fill="#ff6d00" font-family="Share Tech Mono">I₃=5A</text>
+              <text x="110" y="155" text-anchor="middle" font-size="10" fill="#00e5ff" font-family="Share Tech Mono">I₁ + I₂ = I₃  →  3 + 2 = 5A ✓</text>
+              <text x="400" y="14" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="Share Tech Mono" letter-spacing="1">LTK — MALHA</text>
+              <circle cx="320" cy="80" r="18" fill="none" stroke="#76ff03" stroke-width="2"/>
+              <text x="320" y="76" text-anchor="middle" font-size="9" fill="#76ff03" font-family="Share Tech Mono">12V</text>
+              <text x="320" y="89" text-anchor="middle" font-size="8" fill="#76ff03" font-family="Share Tech Mono">fonte</text>
+              <rect x="355" y="22" width="50" height="22" rx="4" fill="none" stroke="#ff6d00" stroke-width="2"/>
+              <text x="380" y="37" text-anchor="middle" font-size="10" fill="#ff6d00" font-family="Share Tech Mono">R1 4Ω</text>
+              <rect x="438" y="58" width="22" height="50" rx="4" fill="none" stroke="#ff6d00" stroke-width="2"/>
+              <text x="449" y="87" text-anchor="middle" font-size="8" fill="#ff6d00" font-family="Share Tech Mono" transform="rotate(-90,449,87)">R2 8Ω</text>
+              <line x1="320" y1="33" x2="320" y2="25" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="320" y1="25" x2="355" y2="25" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="405" y1="25" x2="449" y2="25" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="449" y1="25" x2="449" y2="58" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="449" y1="108" x2="449" y2="130" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="449" y1="130" x2="320" y2="130" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="320" y1="130" x2="320" y2="98" stroke="#00e5ff" stroke-width="2"/>
+              <text x="385" y="18" text-anchor="middle" font-size="9" fill="#c084ff" font-family="Share Tech Mono">I = 1A →</text>
+              <text x="400" y="155" text-anchor="middle" font-size="10" fill="#00e5ff" font-family="Share Tech Mono">12 − 4×1 − 8×1 = 0  ✓</text>
+            </svg>
+          </div>
+          <div class="theory-sub-card" style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:18px;margin-top:16px">
+            <h3 style="font-size:14px;margin-bottom:14px;color:var(--accent)">Como calcular o Equivalente de Thévenin (passo a passo)</h3>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;gap:12px;align-items:flex-start"><div style="min-width:24px;height:24px;border-radius:6px;background:var(--accent);color:#0a0d11;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;font-family:var(--font-mono)">1</div><div style="font-size:13px;color:var(--text-2)"><b>Retire a carga (RL)</b> — deixe os terminais A–B em aberto.</div></div>
+              <div style="display:flex;gap:12px;align-items:flex-start"><div style="min-width:24px;height:24px;border-radius:6px;background:var(--accent);color:#0a0d11;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;font-family:var(--font-mono)">2</div><div style="font-size:13px;color:var(--text-2)"><b>Calcule Vth</b> — tensão nos terminais A–B em circuito aberto.</div></div>
+              <div style="display:flex;gap:12px;align-items:flex-start"><div style="min-width:24px;height:24px;border-radius:6px;background:var(--accent);color:#0a0d11;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;font-family:var(--font-mono)">3</div><div style="font-size:13px;color:var(--text-2)"><b>Zere as fontes</b> — tensão vira curto; corrente vira aberto.</div></div>
+              <div style="display:flex;gap:12px;align-items:flex-start"><div style="min-width:24px;height:24px;border-radius:6px;background:var(--accent);color:#0a0d11;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;font-family:var(--font-mono)">4</div><div style="font-size:13px;color:var(--text-2)"><b>Calcule Rth</b> — resistência vista dos terminais A–B com fontes zeradas.</div></div>
+              <div style="display:flex;gap:12px;align-items:flex-start"><div style="min-width:24px;height:24px;border-radius:6px;background:var(--accent);color:#0a0d11;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;font-family:var(--font-mono)">5</div><div style="font-size:13px;color:var(--text-2)"><b>Norton:</b> In = Vth / Rth em paralelo com Rn = Rth.</div></div>
+            </div>
+          </div>
+          <div class="alert-box" style="border-left:3px solid var(--accent);background:rgba(0,229,255,0.06);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:13px;color:var(--text-2)">
+            <b>Dica de prova:</b> Thévenin e Norton são o <em>mesmo circuito</em> visto de formas diferentes. Rth = Rn sempre. Escolha Thévenin quando a carga está em série, Norton quando está em paralelo.
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════
+         MÓDULO — TIRISTORES
+    ════════════════════════════════════════════════════ -->
+    <div class="page" id="pg-tiristor">
+      <div class="content-wrap">
+        <div class="theory-card">
+          <h2>Módulo — <span>Tiristores</span></h2>
+          <div class="tc-sub">SCR · DIAC · TRIAC · CONTROLE DE POTÊNCIA CA/CC</div>
+          <div class="info-grid">
+            <div class="info-box">
+              <div class="ib-icon">🔦</div>
+              <div class="ib-title">SCR — Silicon Controlled Rectifier</div>
+              <div class="ib-text">Diodo controlado por gate (G). Conduz quando recebe pulso positivo no gate e VAK &gt; 0. Continua conduzindo mesmo sem gate. Bloqueia só quando a corrente cai abaixo de IH (corrente de holding).</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-icon">⚡</div>
+              <div class="ib-title">DIAC</div>
+              <div class="ib-text">Dispositivo bidirecional sem gate. Conduz em ambos os sentidos quando a tensão supera VBO (breakover ≈ 30V). Muito usado para disparar o gate do TRIAC.</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-icon">🔁</div>
+              <div class="ib-title">TRIAC</div>
+              <div class="ib-text">Equivalente a 2 SCRs em antiparalelo. Controla CA nos dois sentidos. Gate pode disparar com pulso + ou −. Usado em dimmers, controle de motores CA e aquecedores.</div>
+            </div>
+          </div>
+          <div class="diagram-wrap">
+            <svg width="560" height="155" viewBox="0 0 560 155" xmlns="http://www.w3.org/2000/svg">
+              <text x="90" y="14" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="Share Tech Mono" letter-spacing="1">SCR</text>
+              <line x1="10" y1="70" x2="55" y2="70" stroke="#00e5ff" stroke-width="2"/>
+              <polygon points="55,52 55,88 95,70" fill="none" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="95" y1="52" x2="95" y2="88" stroke="#ff6d00" stroke-width="3"/>
+              <line x1="95" y1="70" x2="140" y2="70" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="95" y1="52" x2="130" y2="28" stroke="#76ff03" stroke-width="2"/>
+              <circle cx="130" cy="28" r="3" fill="#76ff03"/>
+              <text x="138" y="25" font-size="10" fill="#76ff03" font-family="Share Tech Mono">Gate</text>
+              <text x="12" y="90" font-size="9" fill="#94a3b8" font-family="Share Tech Mono">Anodo (A)</text>
+              <text x="100" y="90" font-size="9" fill="#94a3b8" font-family="Share Tech Mono">Catodo (K)</text>
+              <text x="90" y="125" text-anchor="middle" font-size="10" fill="#00e5ff" font-family="Share Tech Mono">1 sentido · Gate dispara</text>
+              <text x="90" y="140" text-anchor="middle" font-size="9" fill="#94a3b8" font-family="Share Tech Mono">Retificador controlado (CC)</text>
+
+              <text x="280" y="14" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="Share Tech Mono" letter-spacing="1">DIAC</text>
+              <line x1="215" y1="70" x2="248" y2="70" stroke="#00e5ff" stroke-width="2"/>
+              <polygon points="248,52 248,88 278,70" fill="none" stroke="#ff6d00" stroke-width="2"/>
+              <polygon points="308,52 308,88 278,70" fill="none" stroke="#ff6d00" stroke-width="2"/>
+              <line x1="248" y1="52" x2="248" y2="88" stroke="#ff6d00" stroke-width="2"/>
+              <line x1="308" y1="52" x2="308" y2="88" stroke="#ff6d00" stroke-width="2"/>
+              <line x1="308" y1="70" x2="345" y2="70" stroke="#00e5ff" stroke-width="2"/>
+              <text x="280" y="125" text-anchor="middle" font-size="10" fill="#00e5ff" font-family="Share Tech Mono">2 sentidos · Sem gate</text>
+              <text x="280" y="140" text-anchor="middle" font-size="9" fill="#94a3b8" font-family="Share Tech Mono">Dispara TRIAC</text>
+
+              <text x="460" y="14" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="Share Tech Mono" letter-spacing="1">TRIAC</text>
+              <line x1="390" y1="70" x2="418" y2="70" stroke="#00e5ff" stroke-width="2"/>
+              <polygon points="418,52 418,88 455,70" fill="none" stroke="#00e5ff" stroke-width="2"/>
+              <polygon points="492,52 492,88 455,70" fill="none" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="418" y1="52" x2="418" y2="88" stroke="#ff6d00" stroke-width="2"/>
+              <line x1="492" y1="52" x2="492" y2="88" stroke="#ff6d00" stroke-width="2"/>
+              <line x1="492" y1="70" x2="525" y2="70" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="455" y1="88" x2="455" y2="118" stroke="#76ff03" stroke-width="2"/>
+              <circle cx="455" cy="118" r="3" fill="#76ff03"/>
+              <text x="462" y="121" font-size="10" fill="#76ff03" font-family="Share Tech Mono">Gate</text>
+              <text x="460" y="140" text-anchor="middle" font-size="10" fill="#00e5ff" font-family="Share Tech Mono">2 sentidos · Gate ativa CA</text>
+              <text x="460" y="155" text-anchor="middle" font-size="9" fill="#94a3b8" font-family="Share Tech Mono">Dimmers · Motores CA</text>
+            </svg>
+          </div>
+          <div class="info-grid" style="margin-top:14px">
+            <div class="info-box">
+              <div class="ib-title">Aplicações SCR</div>
+              <div class="ib-text">Retificadores controlados, carregadores de bateria, UPS, soft-starters, controle de temperatura industrial.</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-title">Aplicações TRIAC</div>
+              <div class="ib-text">Dimmers de luz, controle de velocidade de motores CA, fornos elétricos, aquecedores e reguladores de tensão.</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-title">DIAC + TRIAC</div>
+              <div class="ib-text">O DIAC é quase sempre usado em conjunto com o TRIAC para gerar o pulso de disparo no gate no ângulo de fase correto.</div>
+            </div>
+          </div>
+          <div class="alert-box" style="border-left:3px solid #ff6d00;background:rgba(255,109,0,0.07);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:13px;color:var(--text-2)">
+            <b>SCR vs TRIAC:</b> SCR é unidirecional (DC) — TRIAC é bidirecional (AC). Ambos são tiristores. A corrente de holding (IH) é a corrente mínima para manter a condução do dispositivo ligado.
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════
+         MÓDULO — AMPLIFICADORES OPERACIONAIS
+    ════════════════════════════════════════════════════ -->
+    <div class="page" id="pg-amp">
+      <div class="content-wrap">
+        <div class="theory-card">
+          <h2>Amplificadores <span>Operacionais</span></h2>
+          <div class="tc-sub">OP-AMP · 741 · INVERSOR · NÃO-INVERSOR · COMPARADOR · SOMADOR</div>
+          <div class="info-grid">
+            <div class="info-box">
+              <div class="ib-icon">🔺</div>
+              <div class="ib-title">O que é um Op-Amp?</div>
+              <div class="ib-text">Amplificador diferencial com ganho muito alto (A ≈ 10⁵ a 10⁶). Duas entradas: inversora (−) e não-inversora (+). Saída = A × (V+ − V−).</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-icon">📏</div>
+              <div class="ib-title">Op-Amp Ideal</div>
+              <div class="ib-text">Ganho infinito, Rin = ∞, Rout = 0, BW = ∞. Regra de ouro com realimentação negativa: V+ = V− (curto virtual). Corrente de entrada = 0.</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-icon">⚙️</div>
+              <div class="ib-title">CI 741</div>
+              <div class="ib-text">Op-amp mais clássico e estudado. 8 pinos: +Vcc, −Vcc, entrada+, entrada−, saída e pinos de offset. Alimentação simétrica típica: ±12V ou ±15V.</div>
+            </div>
+          </div>
+          <div class="info-grid" style="margin-top:12px">
+            <div class="info-box">
+              <div class="ib-title">Inversor — Av = −Rf/Ri</div>
+              <div class="ib-text">Sinal entra na entrada inversora (−). Saída é invertida em fase. Se Rf=10kΩ e Ri=1kΩ → Av = −10 (ganho de 10, invertido).</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-title">Não-Inversor — Av = 1 + Rf/R1</div>
+              <div class="ib-text">Sinal entra na entrada não-inversora (+). Saída em fase com a entrada. Se Rf=9kΩ e R1=1kΩ → Av = 10 (ganho de 10, em fase).</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-title">Comparador</div>
+              <div class="ib-text">Sem realimentação (malha aberta). Se V+ &gt; V−: Vout = +Vsat. Se V+ &lt; V−: Vout = −Vsat. Detecta limiar — saída é digital (alto ou baixo).</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-title">Buffer (Seguidor)</div>
+              <div class="ib-text">Saída ligada diretamente à entrada inversora. Av = 1. Vout = Vin. Não amplifica, mas isola impedâncias — protege a fonte do sinal.</div>
+            </div>
+          </div>
+          <div class="diagram-wrap" style="margin-top:12px">
+            <svg width="480" height="100" viewBox="0 0 480 100" xmlns="http://www.w3.org/2000/svg">
+              <text x="80" y="14" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="Share Tech Mono">INVERSOR</text>
+              <polygon points="20,30 20,90 70,60" fill="none" stroke="#00e5ff" stroke-width="2"/>
+              <text x="25" y="48" font-size="10" fill="#ff6d00" font-family="Share Tech Mono">−</text>
+              <text x="25" y="80" font-size="10" fill="#76ff03" font-family="Share Tech Mono">+</text>
+              <line x1="0" y1="45" x2="20" y2="45" stroke="#00e5ff" stroke-width="1.5"/>
+              <rect x="0" y="38" width="20" height="14" rx="3" fill="none" stroke="#ff6d00" stroke-width="1.5"/>
+              <text x="10" y="48" text-anchor="middle" font-size="8" fill="#ff6d00" font-family="Share Tech Mono">Ri</text>
+              <line x1="20" y1="45" x2="20" y2="18" stroke="#c084ff" stroke-width="1.5"/>
+              <line x1="20" y1="18" x2="70" y2="18" stroke="#c084ff" stroke-width="1.5"/>
+              <line x1="70" y1="18" x2="70" y2="60" stroke="#c084ff" stroke-width="1.5"/>
+              <rect x="36" y="11" width="22" height="14" rx="3" fill="none" stroke="#c084ff" stroke-width="1.5"/>
+              <text x="47" y="21" text-anchor="middle" font-size="8" fill="#c084ff" font-family="Share Tech Mono">Rf</text>
+              <line x1="20" y1="75" x2="0" y2="75" stroke="#94a3b8" stroke-width="1.5"/>
+              <line x1="0" y1="75" x2="0" y2="85" stroke="#94a3b8" stroke-width="1"/>
+              <line x1="-5" y1="85" x2="5" y2="85" stroke="#94a3b8" stroke-width="1"/>
+              <line x1="70" y1="60" x2="100" y2="60" stroke="#00e5ff" stroke-width="1.5"/>
+              <text x="104" y="64" font-size="9" fill="#76ff03" font-family="Share Tech Mono">Vout</text>
+              <text x="55" y="100" text-anchor="middle" font-size="10" fill="#c084ff" font-family="Share Tech Mono">Av = −Rf/Ri</text>
+
+              <text x="280" y="14" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="Share Tech Mono">NÃO-INVERSOR</text>
+              <polygon points="215,30 215,90 265,60" fill="none" stroke="#00e5ff" stroke-width="2"/>
+              <text x="220" y="48" font-size="10" fill="#ff6d00" font-family="Share Tech Mono">−</text>
+              <text x="220" y="80" font-size="10" fill="#76ff03" font-family="Share Tech Mono">+</text>
+              <line x1="190" y1="75" x2="215" y2="75" stroke="#00e5ff" stroke-width="1.5"/>
+              <text x="172" y="79" font-size="9" fill="#76ff03" font-family="Share Tech Mono">Vin</text>
+              <line x1="215" y1="45" x2="215" y2="18" stroke="#c084ff" stroke-width="1.5"/>
+              <line x1="215" y1="18" x2="265" y2="18" stroke="#c084ff" stroke-width="1.5"/>
+              <line x1="265" y1="18" x2="265" y2="60" stroke="#c084ff" stroke-width="1.5"/>
+              <rect x="228" y="11" width="22" height="14" rx="3" fill="none" stroke="#c084ff" stroke-width="1.5"/>
+              <text x="239" y="21" text-anchor="middle" font-size="8" fill="#c084ff" font-family="Share Tech Mono">Rf</text>
+              <rect x="196" y="38" width="19" height="14" rx="3" fill="none" stroke="#ff6d00" stroke-width="1.5"/>
+              <text x="205" y="48" text-anchor="middle" font-size="8" fill="#ff6d00" font-family="Share Tech Mono">R1</text>
+              <line x1="215" y1="45" x2="215" y2="45" stroke="#00e5ff" stroke-width="0"/>
+              <line x1="196" y1="45" x2="188" y2="45" stroke="#94a3b8" stroke-width="1.5"/>
+              <line x1="188" y1="45" x2="188" y2="55" stroke="#94a3b8" stroke-width="1"/>
+              <line x1="183" y1="55" x2="193" y2="55" stroke="#94a3b8" stroke-width="1"/>
+              <line x1="265" y1="60" x2="300" y2="60" stroke="#00e5ff" stroke-width="1.5"/>
+              <text x="304" y="64" font-size="9" fill="#76ff03" font-family="Share Tech Mono">Vout</text>
+              <text x="250" y="100" text-anchor="middle" font-size="10" fill="#c084ff" font-family="Share Tech Mono">Av = 1 + Rf/R1</text>
+            </svg>
+          </div>
+          <div class="alert-box" style="border-left:3px solid var(--accent);background:rgba(0,229,255,0.06);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:13px;color:var(--text-2)">
+            <b>Regra de ouro:</b> Com realimentação negativa, o op-amp faz V+ = V− (curto virtual). A corrente nas entradas é zero (Rin = ∞). Use isso para simplificar qualquer cálculo de circuito com op-amp.
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════
+         MÓDULO — FILTROS RC PASSIVOS
+    ════════════════════════════════════════════════════ -->
+    <div class="page" id="pg-filtros">
+      <div class="content-wrap">
+        <div class="theory-card">
+          <h2>Filtros <span>RC Passivos</span></h2>
+          <div class="tc-sub">PASSA-BAIXA · PASSA-ALTA · PASSA-BANDA · fc = 1/(2π·R·C)</div>
+          <div class="info-grid">
+            <div class="info-box">
+              <div class="ib-icon">⬇️</div>
+              <div class="ib-title">Passa-Baixa (LPF)</div>
+              <div class="ib-text">Deixa passar frequências <b>abaixo</b> de fc. Bloqueia altas frequências. R em série + C em paralelo com a saída. Vout = Vc. Atenua ruído de alta frequência.</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-icon">⬆️</div>
+              <div class="ib-title">Passa-Alta (HPF)</div>
+              <div class="ib-text">Deixa passar frequências <b>acima</b> de fc. Bloqueia DC e baixas frequências. C em série + R em paralelo com a saída. Vout = VR. Remove offset DC.</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-icon">↕️</div>
+              <div class="ib-title">Passa-Banda (BPF)</div>
+              <div class="ib-text">Combinação LPF + HPF. Deixa uma faixa entre fc_baixa e fc_alta. Atenua acima e abaixo. Usado em rádio, equalização de áudio e anti-aliasing de ADC.</div>
+            </div>
+          </div>
+          <div class="diagram-wrap">
+            <svg width="560" height="175" viewBox="0 0 560 175" xmlns="http://www.w3.org/2000/svg">
+              <text x="90" y="14" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="Share Tech Mono">PASSA-BAIXA</text>
+              <line x1="10" y1="60" x2="38" y2="60" stroke="#00e5ff" stroke-width="2"/>
+              <rect x="38" y="50" width="38" height="20" rx="4" fill="none" stroke="#ff6d00" stroke-width="2"/>
+              <text x="57" y="63" text-anchor="middle" font-size="10" fill="#ff6d00" font-family="Share Tech Mono">R</text>
+              <line x1="76" y1="60" x2="105" y2="60" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="105" y1="45" x2="105" y2="53" stroke="#76ff03" stroke-width="2"/>
+              <line x1="95" y1="53" x2="115" y2="53" stroke="#76ff03" stroke-width="3"/>
+              <line x1="95" y1="60" x2="115" y2="60" stroke="#76ff03" stroke-width="3"/>
+              <line x1="105" y1="60" x2="105" y2="72" stroke="#76ff03" stroke-width="2"/>
+              <text x="120" y="59" font-size="10" fill="#76ff03" font-family="Share Tech Mono">C</text>
+              <line x1="105" y1="72" x2="105" y2="82" stroke="#94a3b8" stroke-width="1.5"/>
+              <line x1="98" y1="82" x2="112" y2="82" stroke="#94a3b8" stroke-width="1.5"/>
+              <line x1="101" y1="86" x2="109" y2="86" stroke="#94a3b8" stroke-width="1.5"/>
+              <line x1="105" y1="60" x2="160" y2="60" stroke="#00e5ff" stroke-width="2"/>
+              <text x="165" y="64" font-size="10" fill="#76ff03" font-family="Share Tech Mono">Vout</text>
+              <text x="90" y="112" text-anchor="middle" font-size="11" fill="#c084ff" font-family="Share Tech Mono">fc = 1/(2π·R·C)</text>
+              <text x="90" y="127" text-anchor="middle" font-size="9" fill="#94a3b8" font-family="Share Tech Mono">−3 dB em fc</text>
+
+              <text x="310" y="14" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="Share Tech Mono">PASSA-ALTA</text>
+              <line x1="230" y1="60" x2="248" y2="60" stroke="#00e5ff" stroke-width="2"/>
+              <line x1="248" y1="48" x2="248" y2="54" stroke="#76ff03" stroke-width="2"/>
+              <line x1="240" y1="54" x2="256" y2="54" stroke="#76ff03" stroke-width="3"/>
+              <line x1="240" y1="60" x2="256" y2="60" stroke="#76ff03" stroke-width="3"/>
+              <line x1="256" y1="60" x2="276" y2="60" stroke="#00e5ff" stroke-width="2"/>
+              <text x="258" y="46" font-size="10" fill="#76ff03" font-family="Share Tech Mono">C</text>
+              <rect x="276" y="45" width="20" height="38" rx="4" fill="none" stroke="#ff6d00" stroke-width="2"/>
+              <text x="286" y="68" text-anchor="middle" font-size="10" fill="#ff6d00" font-family="Share Tech Mono" transform="rotate(-90,286,68)">R</text>
+              <line x1="286" y1="83" x2="286" y2="94" stroke="#94a3b8" stroke-width="1.5"/>
+              <line x1="280" y1="94" x2="292" y2="94" stroke="#94a3b8" stroke-width="1.5"/>
+              <line x1="283" y1="98" x2="289" y2="98" stroke="#94a3b8" stroke-width="1.5"/>
+              <line x1="276" y1="60" x2="380" y2="60" stroke="#00e5ff" stroke-width="2"/>
+              <text x="384" y="64" font-size="10" fill="#76ff03" font-family="Share Tech Mono">Vout</text>
+              <text x="310" y="112" text-anchor="middle" font-size="11" fill="#c084ff" font-family="Share Tech Mono">fc = 1/(2π·R·C)</text>
+              <text x="310" y="127" text-anchor="middle" font-size="9" fill="#94a3b8" font-family="Share Tech Mono">mesma fórmula!</text>
+
+              <text x="490" y="14" text-anchor="middle" font-size="11" fill="#94a3b8" font-family="Share Tech Mono">RESPOSTA</text>
+              <line x1="440" y1="140" x2="545" y2="140" stroke="#475569" stroke-width="1"/>
+              <line x1="440" y1="50" x2="440" y2="145" stroke="#475569" stroke-width="1"/>
+              <text x="550" y="143" font-size="8" fill="#475569" font-family="Share Tech Mono">f</text>
+              <text x="435" y="53" text-anchor="end" font-size="8" fill="#475569" font-family="Share Tech Mono">|H|</text>
+              <path d="M440,58 L474,58 Q488,58 498,90 L540,132" fill="none" stroke="#00e5ff" stroke-width="2"/>
+              <path d="M440,132 Q453,132 467,102 L487,62 L540,58" fill="none" stroke="#76ff03" stroke-width="2"/>
+              <line x1="486" y1="50" x2="486" y2="140" stroke="#c084ff" stroke-width="1" stroke-dasharray="3,2"/>
+              <text x="486" y="148" text-anchor="middle" font-size="8" fill="#c084ff" font-family="Share Tech Mono">fc</text>
+              <text x="458" y="55" font-size="8" fill="#00e5ff" font-family="Share Tech Mono">LPF</text>
+              <text x="516" y="55" font-size="8" fill="#76ff03" font-family="Share Tech Mono">HPF</text>
+            </svg>
+          </div>
+          <div class="info-grid" style="margin-top:8px">
+            <div class="info-box">
+              <div class="ib-title">Frequência de corte (fc)</div>
+              <div class="ib-text">fc = 1 / (2π × R × C). Em fc, Vout cai para 70,7% de Vin (−3 dB). A potência entregue é metade da máxima.</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-title">Constante de tempo τ</div>
+              <div class="ib-text">τ = R × C (em segundos). fc = 1/(2π×τ). Em 1τ, capacitor carrega a 63,2% de Vfinal. Em 5τ, considera-se carregado.</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-title">Aplicação industrial</div>
+              <div class="ib-text">Anti-aliasing antes do ADC, eliminação de ruído em sinais 4–20mA, suavização de sinais de sensores industriais, separação de DC e AC.</div>
+            </div>
+          </div>
+          <div class="alert-box" style="border-left:3px solid #76ff03;background:rgba(118,255,3,0.06);padding:12px 16px;border-radius:8px;margin-top:14px;font-size:13px;color:var(--text-2)">
+            <b>Exemplo:</b> R = 10 kΩ, C = 100 nF → fc = 1 / (2π × 10×10³ × 100×10⁻⁹) = <b>159 Hz</b>. No passa-baixa, sinais acima de 159 Hz são atenuados.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ pg-rcrl: Transientes RC/RL ══════════════════════════ -->
+    <div class="page" id="pg-rcrl">
+      <div class="content-wrap">
+        <div class="topbar">
+          <div class="topbar-left">
+            <h1>Transientes <span>RC &amp; RL</span></h1>
+            <p>v1.2 · CONSTANTE DE TEMPO τ · CARGA E DESCARGA</p>
+          </div>
+          <div class="topbar-right">
+            <span class="tag tag-cyan">Capacitor</span>
+            <span class="tag tag-green">Indutor</span>
+          </div>
+        </div>
+
+        <div class="theory-card">
+          <h2>Circuitos Transientes — <span>A Constante de Tempo τ</span></h2>
+          <div class="tc-sub">CARGA · DESCARGA · RC · RL · 5τ = REGIME PERMANENTE</div>
+          <p>Quando um capacitor ou indutor é conectado a uma fonte, a corrente e tensão <strong>não mudam instantaneamente</strong> — existe um período de transição chamado de <em>regime transiente</em>. A velocidade desse processo é descrita pela <strong>constante de tempo τ (tau)</strong>.</p>
+
+          <div class="info-grid">
+            <div class="info-box">
+              <div class="ib-icon">⏱</div>
+              <div class="ib-title">Constante de Tempo τ</div>
+              <div class="ib-text">É o tempo que o circuito leva para atingir ~63,2% da variação total. Após 5τ o circuito atingiu 99,3% — considera-se regime permanente estabelecido.</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-icon">🔲</div>
+              <div class="ib-title">Circuito RC — τ = R × C</div>
+              <div class="ib-text">Com R em ohms e C em farads, τ é dado em segundos. O capacitor carrega/descarrega exponencialmente através do resistor.</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-icon">🌀</div>
+              <div class="ib-title">Circuito RL — τ = L / R</div>
+              <div class="ib-text">Com L em henries e R em ohms. O indutor se opõe à variação de corrente — "armazena" energia no campo magnético.</div>
+            </div>
+          </div>
+
+          <h3>Equações de <span>Carga e Descarga</span></h3>
+          <div class="two-col">
+            <div class="info-box" style="border-left:3px solid var(--accent);">
+              <div class="ib-title" style="font-size:15px;margin-bottom:12px;">🔋 Circuito RC — Carga</div>
+              <div class="ib-text">
+                Tensão no capacitor:<br>
+                <code style="font-family:monospace;color:var(--accent)">v_C(t) = Vs × (1 − e^(−t/τ))</code><br><br>
+                Corrente no circuito:<br>
+                <code style="font-family:monospace;color:var(--accent)">i(t) = (Vs/R) × e^(−t/τ)</code><br><br>
+                Onde <strong>τ = R × C</strong>
+              </div>
+            </div>
+            <div class="info-box" style="border-left:3px solid var(--accent3);">
+              <div class="ib-title" style="font-size:15px;margin-bottom:12px;">💨 Circuito RC — Descarga</div>
+              <div class="ib-text">
+                Tensão no capacitor:<br>
+                <code style="font-family:monospace;color:var(--accent3)">v_C(t) = V0 × e^(−t/τ)</code><br><br>
+                Corrente (sentido inverso):<br>
+                <code style="font-family:monospace;color:var(--accent3)">i(t) = −(V0/R) × e^(−t/τ)</code><br><br>
+                V0 = tensão inicial no capacitor
+              </div>
+            </div>
+          </div>
+          <div class="two-col">
+            <div class="info-box" style="border-left:3px solid var(--accent2);">
+              <div class="ib-title" style="font-size:15px;margin-bottom:12px;">🌀 Circuito RL — Energizando</div>
+              <div class="ib-text">
+                Corrente no indutor:<br>
+                <code style="font-family:monospace;color:var(--accent2)">i_L(t) = (Vs/R) × (1 − e^(−t/τ))</code><br><br>
+                Tensão no indutor:<br>
+                <code style="font-family:monospace;color:var(--accent2)">v_L(t) = Vs × e^(−t/τ)</code><br><br>
+                Onde <strong>τ = L / R</strong>
+              </div>
+            </div>
+            <div class="info-box" style="border-left:3px solid var(--warn);">
+              <div class="ib-title" style="font-size:15px;margin-bottom:12px;">⚠️ Circuito RL — Kickback</div>
+              <div class="ib-text">
+                Ao desligar um indutor abruptamente, a tensão pode ser muito alta — fenômeno do <strong>"inductive kickback"</strong>.<br><br>
+                Use <strong>diodo de roda-livre</strong> em paralelo com relés e solenoides para proteger o circuito de controle.
+              </div>
+            </div>
+          </div>
+
+          <h3>Tabela de <span>Progresso Temporal</span></h3>
+          <table class="comp-table">
+            <tr><th>Tempo</th><th>% da variação total</th><th>Interpretação</th></tr>
+            <tr><td>1τ</td><td class="good">63,2%</td><td>Ponto definidor da constante de tempo</td></tr>
+            <tr><td>2τ</td><td>86,5%</td><td>Maioria da transição concluída</td></tr>
+            <tr><td>3τ</td><td>95,0%</td><td>Considerado próximo do final em aplicações simples</td></tr>
+            <tr><td>4τ</td><td>98,2%</td><td>Muito próximo do valor final</td></tr>
+            <tr><td>5τ</td><td class="good">99,3%</td><td>Regime permanente estabelecido (padrão de engenharia)</td></tr>
+          </table>
+
+          <h3>Exemplo <span>Prático</span></h3>
+          <div class="info-box">
+            <div class="ib-text">
+              <strong>Dado:</strong> Circuito RC com R = 10 kΩ e C = 100 μF alimentado por Vs = 12 V.<br><br>
+              <strong>Calcular τ:</strong> τ = R × C = 10.000 × 100×10⁻⁶ = <strong>1 segundo</strong><br>
+              <strong>Em t = 1τ (1s):</strong> v_C = 12 × (1 − e⁻¹) = 12 × 0,632 = <strong>7,58 V</strong><br>
+              <strong>Em t = 5τ (5s):</strong> v_C = 12 × (1 − e⁻⁵) ≈ 12 × 0,993 = <strong>11,92 V ≈ 12 V</strong>
+            </div>
+          </div>
+
+          <div class="alert-box">
+            <div class="ab-icon">🏭</div>
+            <div class="ab-text">
+              <strong>Aplicação Industrial:</strong> Circuitos RC são usados em filtros anti-aliasing na entrada de ADCs de CLPs, em temporizadores de relés de estado sólido, em circuitos de debounce de sensores digitais e na filtragem de ripple em fontes chaveadas.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ pg-conv: Conversores A/D e D/A ══════════════════════ -->
+    <div class="page" id="pg-conv">
+      <div class="content-wrap">
+        <div class="topbar">
+          <div class="topbar-left">
+            <h1>Conversores <span>A/D &amp; D/A</span></h1>
+            <p>v1.3 · INTERFACE ANALÓGICO-DIGITAL · RESOLUÇÃO · QUANTIZAÇÃO</p>
+          </div>
+          <div class="topbar-right">
+            <span class="tag tag-cyan">ADC</span>
+            <span class="tag tag-green">DAC</span>
+          </div>
+        </div>
+
+        <div class="theory-card">
+          <h2>A Ponte entre o <span>Mundo Analógico e Digital</span></h2>
+          <div class="tc-sub">ADC · DAC · RESOLUÇÃO · FAIXA · QUANTIZAÇÃO · APLICAÇÕES</div>
+          <p>Sinais do mundo real são <strong>analógicos</strong> (temperatura, pressão, velocidade) — variam de forma contínua. Microcontroladores e CLPs operam no mundo <strong>digital</strong>. Os conversores A/D e D/A são a interface essencial entre esses dois universos.</p>
+
+          <div class="info-grid">
+            <div class="info-box">
+              <div class="ib-icon">📥</div>
+              <div class="ib-title">ADC — Analógico → Digital</div>
+              <div class="ib-text">Converte uma tensão analógica contínua em um número binário. Essencial para leitura de sensores de temperatura, pressão e corrente em microcontroladores e CLPs.</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-icon">📤</div>
+              <div class="ib-title">DAC — Digital → Analógico</div>
+              <div class="ib-text">Converte um número digital em tensão analógica proporcional. Usado no controle de velocidade de motores (VFD), geração de referências e áudio digital.</div>
+            </div>
+            <div class="info-box">
+              <div class="ib-icon">🎯</div>
+              <div class="ib-title">Resolução (bits)</div>
+              <div class="ib-text">N bits → 2ᴺ níveis discretos. ADC de 10 bits: 1024 níveis. Com Vref = 5V, cada bit representa 5/1024 ≈ <strong>4,88 mV</strong>.</div>
+            </div>
+          </div>
+
+          <h3>Fórmulas <span>Essenciais</span></h3>
+          <div class="formula-table-grid">
+            <div class="ftg-cell">
+              <div class="ftg-label">Resolução (LSB)</div>
+              <div class="ftg-formula">LSB = Vref / 2ᴺ</div>
+            </div>
+            <div class="ftg-cell">
+              <div class="ftg-label">Valor digital (ADC)</div>
+              <div class="ftg-formula">D = Vin × 2ᴺ / Vref</div>
+            </div>
+            <div class="ftg-cell">
+              <div class="ftg-label">Tensão de saída (DAC)</div>
+              <div class="ftg-formula">Vout = D × Vref / 2ᴺ</div>
+            </div>
+            <div class="ftg-cell">
+              <div class="ftg-label">Teorema de Nyquist</div>
+              <div class="ftg-formula">fs ≥ 2 × fmax</div>
+            </div>
+            <div class="ftg-cell">
+              <div class="ftg-label">Erro de quantização</div>
+              <div class="ftg-formula">e = ± ½ LSB</div>
+            </div>
+            <div class="ftg-cell">
+              <div class="ftg-label">Número de níveis</div>
+              <div class="ftg-formula">Níveis = 2ᴺ</div>
+            </div>
+          </div>
+
+          <h3>Tipos de <span>ADC</span> — Comparação</h3>
+          <table class="comp-table">
+            <tr><th>Tipo</th><th>Velocidade</th><th>Resolução</th><th>Aplicação Típica</th></tr>
+            <tr><td>Flash (paralelo)</td><td class="good">Muito rápida</td><td>4–8 bits</td><td>Osciloscópios digitais, radar</td></tr>
+            <tr><td>SAR (Aprox. Sucessiva)</td><td>Rápida</td><td class="good">8–16 bits</td><td>Microcontroladores (Arduino, PIC, STM32)</td></tr>
+            <tr><td>Sigma-Delta (ΔΣ)</td><td>Lenta</td><td class="good">16–24 bits</td><td>Áudio, instrumentação de precisão, pesagem</td></tr>
+            <tr><td>Dupla Rampa</td><td>Lenta</td><td>12–14 bits</td><td>Multímetros digitais</td></tr>
+            <tr><td>Pipeline</td><td class="good">Alta</td><td>12–16 bits</td><td>Câmeras digitais, comunicações</td></tr>
+          </table>
+
+          <h3>Parâmetros de <span>Qualidade</span></h3>
+          <table class="comp-table">
+            <tr><th>Parâmetro</th><th>Descrição</th><th>Impacto</th></tr>
+            <tr><td>DNL (Linearidade Diferencial)</td><td>Erro entre degraus adjacentes</td><td>Códigos ausentes ou duplos</td></tr>
+            <tr><td>INL (Linearidade Integral)</td><td>Desvio da linha ideal</td><td>Erro de precisão geral</td></tr>
+            <tr><td>ENOB (Bits Efetivos)</td><td>Resolução real levando ruído em conta</td><td>Performance real vs nominal</td></tr>
+            <tr><td>SNR (Relação Sinal/Ruído)</td><td>6,02 × N + 1,76 dB (ideal)</td><td>Qualidade do sinal convertido</td></tr>
+          </table>
+
+          <h3>Exemplo <span>Prático</span></h3>
+          <div class="info-box">
+            <div class="ib-text">
+              <strong>Arduino com ADC de 10 bits, Vref = 5V:</strong><br>
+              LSB = 5V / 2¹⁰ = 5 / 1024 ≈ <strong>4,88 mV por bit</strong><br>
+              Sensor lê Vin = 2,5V → D = 2,5 × 1024 / 5 = <strong>512</strong> (0b10_0000_0000)<br><br>
+              <strong>DAC de 8 bits para gerar 2,5V (Vref = 5V):</strong><br>
+              D = 2,5 × 256 / 5 = <strong>128</strong> → escrever 128 no registrador do DAC<br><br>
+              <strong>Frequência mínima de amostragem (Nyquist):</strong><br>
+              Sinal de áudio até 20 kHz → fs ≥ 2 × 20.000 = <strong>40 kHz</strong> (CD usa 44,1 kHz)
+            </div>
+          </div>
+
+          <div class="alert-box">
+            <div class="ab-icon">🏭</div>
+            <div class="ab-text">
+              <strong>Automação Industrial:</strong> CLPs modernos possuem módulos de I/O analógico com ADC de 12–16 bits para leitura de sensores industriais (4–20 mA, 0–10 V). O DAC é usado em variadores de frequência (VFD) para controle de velocidade de motores através de referência analógica de tensão ou corrente.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+        <div class="page" id="pg-formulas">
+      <div class="content-wrap">
+        <div class="section-title">Fórmulas Visuais — Clique nas variáveis para detalhes</div>
+        <div class="formula-grid">
+
+          <div class="formula-card">
+            <div class="fc-label">Lei de Ohm</div>
+            <div class="fc-name">Tensão, Corrente e Resistência</div>
+            <div class="formula-display">
+              <span class="f-part" onclick="showTip('ohm-v')">V</span>
+              <span class="f-op"> = </span>
+              <span class="f-part" onclick="showTip('ohm-i')">I</span>
+              <span class="f-op"> × </span>
+              <span class="f-part" onclick="showTip('ohm-r')">R</span>
+              <div class="tooltip-box" id="tip-ohm-v">V = Tensão [Volt]. Isolar: V = I × R</div>
+              <div class="tooltip-box" id="tip-ohm-i">I = Corrente [Ampere]. Isolar: I = V / R</div>
+              <div class="tooltip-box" id="tip-ohm-r">R = Resistência [Ohm Ω]. Isolar: R = V / I</div>
+            </div>
+            <table class="var-table">
+              <tr><td>V</td><td>Tensão</td>     <td>Volt (V)</td></tr>
+              <tr><td>I</td><td>Corrente</td>    <td>Ampere (A)</td></tr>
+              <tr><td>R</td><td>Resistência</td> <td>Ohm (Ω)</td></tr>
+            </table>
+          </div>
+
+          <div class="formula-card">
+            <div class="fc-label">Potência Elétrica</div>
+            <div class="fc-name">Energia por Unidade de Tempo</div>
+            <div class="formula-display">
+              <span class="f-part" onclick="showTip('p-p')">P</span>
+              <span class="f-op"> = </span>
+              <span class="f-part" onclick="showTip('p-v')">V</span>
+              <span class="f-op"> × </span>
+              <span class="f-part" onclick="showTip('p-i')">I</span>
+              <div class="tooltip-box" id="tip-p-p">P = Potência [Watt W]. Também: P = I²R = V²/R</div>
+              <div class="tooltip-box" id="tip-p-v">V = Tensão [Volt]. Isolar: V = P / I</div>
+              <div class="tooltip-box" id="tip-p-i">I = Corrente [Ampere]. Isolar: I = P / V</div>
+            </div>
+            <table class="var-table">
+              <tr><td>P</td><td>Potência</td> <td>Watt (W)</td></tr>
+              <tr><td>V</td><td>Tensão</td>   <td>Volt (V)</td></tr>
+              <tr><td>I</td><td>Corrente</td> <td>Ampere (A)</td></tr>
+            </table>
+          </div>
+
+          <div class="formula-card">
+            <div class="fc-label">Resistores em Série</div>
+            <div class="fc-name">Resistência Total</div>
+            <div class="formula-display">
+              <span class="f-part" onclick="showTip('rs-rt')">R<sub>T</sub></span>
+              <span class="f-op"> = </span>
+              <span class="f-part" onclick="showTip('rs-r1')">R<sub>1</sub></span>
+              <span class="f-op"> + </span>
+              <span class="f-part" onclick="showTip('rs-r2')">R<sub>2</sub></span>
+              <span class="f-op"> + ...</span>
+              <div class="tooltip-box" id="tip-rs-rt">RT = Resistência total equivalente [Ω]. Sempre maior que qualquer resistor individual.</div>
+              <div class="tooltip-box" id="tip-rs-r1">R1 = Primeira resistência [Ω]. A mesma corrente I passa por todos.</div>
+              <div class="tooltip-box" id="tip-rs-r2">R2 = Segunda resistência [Ω]. A tensão se divide proporcionalmente à resistência.</div>
+            </div>
+            <table class="var-table">
+              <tr><td>R<sub>T</sub></td><td>Total equivalente</td><td>Ohm (Ω)</td></tr>
+              <tr><td>I</td>            <td>Mesma em todos</td>   <td>Ampere (A)</td></tr>
+              <tr><td>V</td>            <td>Se divide</td>        <td>Volt (V)</td></tr>
+            </table>
+          </div>
+
+          <div class="formula-card">
+            <div class="fc-label">Resistores em Paralelo</div>
+            <div class="fc-name">Resistência Equivalente</div>
+            <div class="formula-display" style="font-size:16px">
+              <span class="f-part" onclick="showTip('rp-rt')">1/R<sub>eq</sub></span>
+              <span class="f-op"> = </span>
+              <span class="f-part" onclick="showTip('rp-r1')">1/R<sub>1</sub></span>
+              <span class="f-op"> + </span>
+              <span class="f-part" onclick="showTip('rp-r2')">1/R<sub>2</sub></span>
+              <div class="tooltip-box" id="tip-rp-rt">Req sempre MENOR que o menor resistor. Para 2 iguais: Req = R/2.</div>
+              <div class="tooltip-box" id="tip-rp-r1">R1 = Primeira resistência. Para 2 resistores: Req = R1×R2/(R1+R2).</div>
+              <div class="tooltip-box" id="tip-rp-r2">R2 = Segunda resistência. A mesma tensão V aparece em todos.</div>
+            </div>
+            <table class="var-table">
+              <tr><td>R<sub>eq</sub></td><td>Total equivalente</td><td>Ohm (Ω)</td></tr>
+              <tr><td>V</td>             <td>Mesma em todos</td>   <td>Volt (V)</td></tr>
+              <tr><td>I</td>             <td>Se divide</td>        <td>Ampere (A)</td></tr>
+            </table>
+          </div>
+
+          <div class="formula-card">
+            <div class="fc-label">Impedância em CA</div>
+            <div class="fc-name">Oposição Total ao Circuito CA</div>
+            <div class="formula-display" style="font-size:17px">
+              <span class="f-part" onclick="showTip('imp-z')">Z</span>
+              <span class="f-op"> = √(</span>
+              <span class="f-part" onclick="showTip('imp-r')">R²</span>
+              <span class="f-op"> + </span>
+              <span class="f-part" onclick="showTip('imp-x')">X²</span>
+              <span class="f-op">)</span>
+              <div class="tooltip-box" id="tip-imp-z">Z = Impedância total [Ω]. Z = V/I em CA.</div>
+              <div class="tooltip-box" id="tip-imp-r">R = Resistência [Ω]. Não muda com frequência.</div>
+              <div class="tooltip-box" id="tip-imp-x">X = Reatância [Ω]. XL=2πfL (indutor) ou XC=1/(2πfC) (capacitor).</div>
+            </div>
+            <table class="var-table">
+              <tr><td>Z</td><td>Impedância</td> <td>Ohm (Ω)</td></tr>
+              <tr><td>R</td><td>Resistência</td><td>Ohm (Ω)</td></tr>
+              <tr><td>X</td><td>Reatância</td>  <td>Ohm (Ω)</td></tr>
+            </table>
+          </div>
+
+          <div class="formula-card">
+            <div class="fc-label">Transistor BJT</div>
+            <div class="fc-name">Ganho de Corrente β (hFE)</div>
+            <div class="formula-display">
+              <span class="f-part" onclick="showTip('bjt-b')">β</span>
+              <span class="f-op"> = </span>
+              <span class="f-part" onclick="showTip('bjt-ic')">I<sub>C</sub></span>
+              <span class="f-op"> / </span>
+              <span class="f-part" onclick="showTip('bjt-ib')">I<sub>B</sub></span>
+              <div class="tooltip-box" id="tip-bjt-b">β (ou hFE) = ganho. Típico 50–500. Controla saturação como chave.</div>
+              <div class="tooltip-box" id="tip-bjt-ic">IC = Corrente do Coletor [A]. Corrente da carga.</div>
+              <div class="tooltip-box" id="tip-bjt-ib">IB = Corrente de Base [A]. Sinal de controle do CLP ou microcontrolador.</div>
+            </div>
+            <table class="var-table">
+              <tr><td>β</td>              <td>Ganho de corrente</td>  <td>adimensional</td></tr>
+              <tr><td>I<sub>C</sub></td>  <td>Corrente do coletor</td><td>Ampere (A)</td></tr>
+              <tr><td>I<sub>B</sub></td>  <td>Corrente de base</td>   <td>Ampere (A)</td></tr>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         CALCULADORA
+    ════════════════════════════════════════════════════ -->
+    <div class="page" id="pg-calc">
+      <div class="section-title">Calculadora — 6 Fórmulas</div>
+      <div class="calc-grid">
+
+        <div class="calc-card">
+          <h3>Lei de Ohm</h3>
+          <div class="cc-formula">V = I × R</div>
+          <div class="input-row"><label>Tensão V</label>    <input type="number" id="ohm-v" placeholder="Volt"/>   <span class="unit">V</span></div>
+          <div class="input-row"><label>Corrente I</label>  <input type="number" id="ohm-i" placeholder="Ampere"/> <span class="unit">A</span></div>
+          <div class="input-row"><label>Resistência R</label><input type="number" id="ohm-r" placeholder="Ohm"/>   <span class="unit">Ω</span></div>
+          <button class="calc-btn" onclick="calcOhm()">CALCULAR INCÓGNITA</button>
+          <div class="calc-result" id="res-ohm">—</div>
+        </div>
+
+        <div class="calc-card">
+          <h3>Potência Elétrica</h3>
+          <div class="cc-formula">P = V × I</div>
+          <div class="input-row"><label>Tensão V</label>   <input type="number" id="pot-v" placeholder="Volt"/>  <span class="unit">V</span></div>
+          <div class="input-row"><label>Corrente I</label> <input type="number" id="pot-i" placeholder="Ampere"/><span class="unit">A</span></div>
+          <button class="calc-btn" onclick="calcPot()">CALCULAR P</button>
+          <div class="calc-result" id="res-pot">—</div>
+        </div>
+
+        <div class="calc-card">
+          <h3>Resistores em Série</h3>
+          <div class="cc-formula">RT = R1 + R2 + R3</div>
+          <div class="input-row"><label>R1</label>       <input type="number" id="s-r1" placeholder="Ohm"/>  <span class="unit">Ω</span></div>
+          <div class="input-row"><label>R2</label>       <input type="number" id="s-r2" placeholder="Ohm"/>  <span class="unit">Ω</span></div>
+          <div class="input-row"><label>R3 (opt.)</label><input type="number" id="s-r3" placeholder="Ohm"/>  <span class="unit">Ω</span></div>
+          <button class="calc-btn" onclick="calcSerie()">CALCULAR RT</button>
+          <div class="calc-result" id="res-serie">—</div>
+        </div>
+
+        <div class="calc-card">
+          <h3>Resistores em Paralelo</h3>
+          <div class="cc-formula">1/Req = 1/R1 + 1/R2</div>
+          <div class="input-row"><label>R1</label><input type="number" id="p-r1" placeholder="Ohm"/><span class="unit">Ω</span></div>
+          <div class="input-row"><label>R2</label><input type="number" id="p-r2" placeholder="Ohm"/><span class="unit">Ω</span></div>
+          <button class="calc-btn" onclick="calcPar()">CALCULAR Req</button>
+          <div class="calc-result" id="res-par">—</div>
+        </div>
+
+        <div class="calc-card">
+          <h3>Resistor para LED</h3>
+          <div class="cc-formula">R = (VCC - VLED) / ILED</div>
+          <div class="input-row"><label>VCC</label>  <input type="number" id="led-vcc"  value="5"  placeholder="5"/>  <span class="unit">V</span></div>
+          <div class="input-row"><label>V LED</label><input type="number" id="led-vled" value="2"  placeholder="2"/>  <span class="unit">V</span></div>
+          <div class="input-row"><label>I LED</label><input type="number" id="led-i"    value="15" placeholder="15"/> <span class="unit">mA</span></div>
+          <button class="calc-btn" onclick="calcLED()">CALCULAR R</button>
+          <div class="calc-result" id="res-led">—</div>
+        </div>
+
+        <div class="calc-card">
+          <h3>Divisor de Tensão</h3>
+          <div class="cc-formula">Vout = Vin × R2 / (R1+R2)</div>
+          <div class="input-row"><label>Vin</label><input type="number" id="div-vin" placeholder="Volt"/><span class="unit">V</span></div>
+          <div class="input-row"><label>R1</label> <input type="number" id="div-r1" placeholder="Ohm"/> <span class="unit">Ω</span></div>
+          <div class="input-row"><label>R2</label> <input type="number" id="div-r2" placeholder="Ohm"/> <span class="unit">Ω</span></div>
+          <button class="calc-btn" onclick="calcDiv()">CALCULAR Vout</button>
+          <div class="calc-result" id="res-div">—</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         FLASHCARDS
+    ════════════════════════════════════════════════════ -->
+    <div class="page" id="pg-flashcards">
+      <div class="section-title">Flashcards — Clique para revelar</div>
+      <div class="flashcard-wrap" onclick="flipCard()">
+        <div class="flashcard" id="fc-card">
+          <div class="flashcard-front">
+            <div class="fc-hint">CLIQUE PARA REVELAR</div>
+            <div class="fc-question" id="fc-q">Carregando...</div>
+          </div>
+          <div class="flashcard-back">
+            <div class="fc-hint">RESPOSTA</div>
+            <div class="fc-answer" id="fc-a">—</div>
+            <div class="fc-answer-sub" id="fc-s"></div>
+          </div>
+        </div>
+      </div>
+      <div class="fc-nav">
+        <button class="fc-btn" onclick="prevCard()">← Anterior</button>
+        <span class="fc-count" id="fc-counter">1 / 1</span>
+        <button class="fc-btn" onclick="nextCard()">Próximo →</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         QUIZ
+    ════════════════════════════════════════════════════ -->
+    <div class="page" id="pg-quiz">
+      <div class="section-title">Quiz — Eletrônica Aplicada</div>
+      <div class="quiz-card">
+        <div class="quiz-progress">
+          <div class="quiz-bar"><div class="quiz-bar-fill" id="qbar"></div></div>
+          <span class="quiz-counter" id="qcount">1/10</span>
+          <span class="quiz-score-live" id="qscore">✓ 0</span>
+        </div>
+        <div class="quiz-q" id="quiz-q">Carregando...</div>
+        <div class="quiz-options" id="quiz-opts"></div>
+        <div class="quiz-feedback" id="quiz-fb"></div>
+        <button class="quiz-next" id="quiz-next" onclick="nextQuestion()">Próxima →</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         ATUALIZAÇÕES
+    ════════════════════════════════════════════════════ -->
+    <div class="page" id="pg-updates">
+      <div class="section-title">Atualizações — Histórico e Roadmap</div>
+      <div class="updates-list" id="updates-list">
+        <!-- Renderizado dinamicamente por app.js via UPDATES em data.js -->
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Bundle gerado (não versionar — apenas os fontes)
+senai-eletro.html
