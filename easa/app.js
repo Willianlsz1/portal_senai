@@ -113,6 +113,11 @@ function closeSidebar() {
   document.body.style.overflow = '';
 }
 
+/* Fecha sidebar ao pressionar Escape */
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeSidebar();
+});
+
 /* ── 2. TEMA ─────────────────────────────────────────────── */
 function toggleTheme() {
   const html   = document.documentElement;

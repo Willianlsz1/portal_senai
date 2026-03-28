@@ -447,6 +447,21 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* ══ ACESSIBILIDADE ══ */
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    .tab:focus-visible { outline-color: var(--accent); border-radius: 4px; }
+    button:focus-visible { outline-color: var(--accent); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
+    }
+
     /* ══ RESPONSIVO ══ */
     @media (max-width: 620px) {
       .cards { grid-template-columns: 1fr; }
@@ -470,24 +485,24 @@
     SENAI
   </div>
 
-  <div class="tabs">
+  <div class="tabs" role="tablist" aria-label="Aplicações SENAI">
     <!-- Aba Portal -->
-    <div class="tab active" data-app="home" onclick="switchTo('home')">
+    <button class="tab active" role="tab" aria-selected="true" data-app="home" onclick="switchTo('home')">
       <div class="tab-pip"></div>
       <span>Portal</span>
-    </div>
+    </button>
 
     <!-- Aba MVF -->
-    <div class="tab" data-app="mvf" onclick="switchTo('mvf')">
+    <button class="tab" role="tab" aria-selected="false" data-app="mvf" onclick="switchTo('mvf')">
       <div class="tab-pip"></div>
       <span>MVF</span>
-    </div>
+    </button>
 
     <!-- Aba EASA -->
-    <div class="tab" data-app="easa" onclick="switchTo('easa')">
+    <button class="tab" role="tab" aria-selected="false" data-app="easa" onclick="switchTo('easa')">
       <div class="tab-pip"></div>
       <span>EASA</span>
-    </div>
+    </button>
   </div>
 
   <div class="nav-actions">
@@ -648,7 +663,9 @@
 
     /* Atualiza abas */
     document.querySelectorAll('.tab').forEach(t => {
-      t.classList.toggle('active', t.dataset.app === app);
+      const isActive = t.dataset.app === app;
+      t.classList.toggle('active', isActive);
+      t.setAttribute('aria-selected', isActive ? 'true' : 'false');
     });
 
     /* Atualiza painel visível */
@@ -667,7 +684,12 @@
       const frame  = document.getElementById('frame-' + app);
       const loader = document.getElementById('loader-' + app);
 
+      const loaderTimeout = setTimeout(() => {
+        loader.innerHTML = '<div class="loader-lbl">⚠ Não foi possível carregar.<br><a href="' + APPS[app] + '" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">Abrir diretamente ↗</a></div>';
+      }, 10000);
+
       frame.onload = () => {
+        clearTimeout(loaderTimeout);
         loader.classList.add('hidden');
         /* Remove após transição */
         setTimeout(() => loader.remove(), 500);

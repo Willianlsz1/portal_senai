@@ -1544,9 +1544,9 @@
         <div class="calc-card">
           <h3>Lei de Ohm</h3>
           <div class="cc-formula">V = I × R</div>
-          <div class="input-row"><label>Tensão V</label>    <input type="number" id="ohm-v" placeholder="Volt"/>   <span class="unit">V</span></div>
-          <div class="input-row"><label>Corrente I</label>  <input type="number" id="ohm-i" placeholder="Ampere"/> <span class="unit">A</span></div>
-          <div class="input-row"><label>Resistência R</label><input type="number" id="ohm-r" placeholder="Ohm"/>   <span class="unit">Ω</span></div>
+          <div class="input-row"><label for="ohm-v">Tensão V</label>    <input type="number" id="ohm-v" placeholder="Volt"/>   <span class="unit">V</span></div>
+          <div class="input-row"><label for="ohm-i">Corrente I</label>  <input type="number" id="ohm-i" placeholder="Ampere"/> <span class="unit">A</span></div>
+          <div class="input-row"><label for="ohm-r">Resistência R</label><input type="number" id="ohm-r" placeholder="Ohm"/>   <span class="unit">Ω</span></div>
           <button class="calc-btn" onclick="calcOhm()">CALCULAR INCÓGNITA</button>
           <div class="calc-result" id="res-ohm">—</div>
         </div>
@@ -1554,8 +1554,8 @@
         <div class="calc-card">
           <h3>Potência Elétrica</h3>
           <div class="cc-formula">P = V × I</div>
-          <div class="input-row"><label>Tensão V</label>   <input type="number" id="pot-v" placeholder="Volt"/>  <span class="unit">V</span></div>
-          <div class="input-row"><label>Corrente I</label> <input type="number" id="pot-i" placeholder="Ampere"/><span class="unit">A</span></div>
+          <div class="input-row"><label for="pot-v">Tensão V</label>   <input type="number" id="pot-v" placeholder="Volt"/>  <span class="unit">V</span></div>
+          <div class="input-row"><label for="pot-i">Corrente I</label> <input type="number" id="pot-i" placeholder="Ampere"/><span class="unit">A</span></div>
           <button class="calc-btn" onclick="calcPot()">CALCULAR P</button>
           <div class="calc-result" id="res-pot">—</div>
         </div>
@@ -1563,9 +1563,9 @@
         <div class="calc-card">
           <h3>Resistores em Série</h3>
           <div class="cc-formula">RT = R1 + R2 + R3</div>
-          <div class="input-row"><label>R1</label>       <input type="number" id="s-r1" placeholder="Ohm"/>  <span class="unit">Ω</span></div>
-          <div class="input-row"><label>R2</label>       <input type="number" id="s-r2" placeholder="Ohm"/>  <span class="unit">Ω</span></div>
-          <div class="input-row"><label>R3 (opt.)</label><input type="number" id="s-r3" placeholder="Ohm"/>  <span class="unit">Ω</span></div>
+          <div class="input-row"><label for="s-r1">R1</label>       <input type="number" id="s-r1" placeholder="Ohm"/>  <span class="unit">Ω</span></div>
+          <div class="input-row"><label for="s-r2">R2</label>       <input type="number" id="s-r2" placeholder="Ohm"/>  <span class="unit">Ω</span></div>
+          <div class="input-row"><label for="s-r3">R3 (opt.)</label><input type="number" id="s-r3" placeholder="Ohm"/>  <span class="unit">Ω</span></div>
           <button class="calc-btn" onclick="calcSerie()">CALCULAR RT</button>
           <div class="calc-result" id="res-serie">—</div>
         </div>
@@ -1573,8 +1573,8 @@
         <div class="calc-card">
           <h3>Resistores em Paralelo</h3>
           <div class="cc-formula">1/Req = 1/R1 + 1/R2</div>
-          <div class="input-row"><label>R1</label><input type="number" id="p-r1" placeholder="Ohm"/><span class="unit">Ω</span></div>
-          <div class="input-row"><label>R2</label><input type="number" id="p-r2" placeholder="Ohm"/><span class="unit">Ω</span></div>
+          <div class="input-row"><label for="p-r1">R1</label><input type="number" id="p-r1" placeholder="Ohm"/><span class="unit">Ω</span></div>
+          <div class="input-row"><label for="p-r2">R2</label><input type="number" id="p-r2" placeholder="Ohm"/><span class="unit">Ω</span></div>
           <button class="calc-btn" onclick="calcPar()">CALCULAR Req</button>
           <div class="calc-result" id="res-par">—</div>
         </div>
@@ -1582,9 +1582,9 @@
         <div class="calc-card">
           <h3>Resistor para LED</h3>
           <div class="cc-formula">R = (VCC - VLED) / ILED</div>
-          <div class="input-row"><label>VCC</label>  <input type="number" id="led-vcc"  value="5"  placeholder="5"/>  <span class="unit">V</span></div>
-          <div class="input-row"><label>V LED</label><input type="number" id="led-vled" value="2"  placeholder="2"/>  <span class="unit">V</span></div>
-          <div class="input-row"><label>I LED</label><input type="number" id="led-i"    value="15" placeholder="15"/> <span class="unit">mA</span></div>
+          <div class="input-row"><label for="led-vcc">VCC</label>  <input type="number" id="led-vcc"  value="5"  placeholder="5"/>  <span class="unit">V</span></div>
+          <div class="input-row"><label for="led-vled">V LED</label><input type="number" id="led-vled" value="2"  placeholder="2"/>  <span class="unit">V</span></div>
+          <div class="input-row"><label for="led-i">I LED</label><input type="number" id="led-i"    value="15" placeholder="15"/> <span class="unit">mA</span></div>
           <button class="calc-btn" onclick="calcLED()">CALCULAR R</button>
           <div class="calc-result" id="res-led">—</div>
         </div>
@@ -1592,9 +1592,9 @@
         <div class="calc-card">
           <h3>Divisor de Tensão</h3>
           <div class="cc-formula">Vout = Vin × R2 / (R1+R2)</div>
-          <div class="input-row"><label>Vin</label><input type="number" id="div-vin" placeholder="Volt"/><span class="unit">V</span></div>
-          <div class="input-row"><label>R1</label> <input type="number" id="div-r1" placeholder="Ohm"/> <span class="unit">Ω</span></div>
-          <div class="input-row"><label>R2</label> <input type="number" id="div-r2" placeholder="Ohm"/> <span class="unit">Ω</span></div>
+          <div class="input-row"><label for="div-vin">Vin</label><input type="number" id="div-vin" placeholder="Volt"/><span class="unit">V</span></div>
+          <div class="input-row"><label for="div-r1">R1</label> <input type="number" id="div-r1" placeholder="Ohm"/> <span class="unit">Ω</span></div>
+          <div class="input-row"><label for="div-r2">R2</label> <input type="number" id="div-r2" placeholder="Ohm"/> <span class="unit">Ω</span></div>
           <button class="calc-btn" onclick="calcDiv()">CALCULAR Vout</button>
           <div class="calc-result" id="res-div">—</div>
         </div>

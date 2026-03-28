@@ -614,9 +614,21 @@ function toggleSolve(id){
 })();
 
 /* ─ Init simuladores em tempo real no load ─ */
+/** Mostra/esconde setas do nav conforme overflow real */
+function updateNavArrows(){
+  const nb=document.getElementById('navBar');
+  if(!nb)return;
+  const hasOverflow=nb.scrollWidth>nb.clientWidth+2;
+  document.querySelectorAll('.nav-arrow').forEach(a=>{
+    a.style.display=hasOverflow?'flex':'none';
+  });
+}
+
 window.addEventListener('DOMContentLoaded',()=>{
   contCalcRT();
   setBernTarget('p2');
+  updateNavArrows();
+  window.addEventListener('resize',updateNavArrows);
   // Contadores dinâmicos do dashboard
   const nc=document.getElementById('dash-cards');
   const nq=document.getElementById('dash-qs');
