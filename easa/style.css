@@ -152,7 +152,7 @@ body::before {
 .logo-title span { color: var(--accent); }
 
 .logo-sub {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text3);
   font-family: 'JetBrains Mono', monospace;
   letter-spacing: 1px;
@@ -225,7 +225,7 @@ body::before {
 
 .nav-badge {
   margin-left: auto;
-  font-size: 9px;
+  font-size: 10px;
   font-family: 'JetBrains Mono', monospace;
   background: var(--accent);
   color: #000;
@@ -459,7 +459,7 @@ body::before {
 
 /* Tags */
 .tag {
-  font-size: 10px;
+  font-size: 11px;
   padding: 3px 8px;
   border-radius: var(--radius-sm);
   font-weight: 700;
@@ -693,7 +693,7 @@ body::before {
 }
 .formula-card:hover { border-color: var(--accent); box-shadow: var(--glow); }
 .fc-label {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 2.5px;
   color: var(--accent);
@@ -898,7 +898,7 @@ body::before {
 .flashcard-front { border-top: 3px solid var(--accent); }
 .flashcard-back  { border-top: 3px solid var(--accent2); transform: rotateY(180deg); }
 .fc-hint {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--text3);
   font-family: 'JetBrains Mono', monospace;
   letter-spacing: 1.5px;
