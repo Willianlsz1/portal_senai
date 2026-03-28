@@ -12,6 +12,26 @@
      8. Init
 ═══════════════════════════════════════════════════════════ */
 
+/* ── 0. SEGURANÇA — helpers ──────────────────────────────── */
+
+/** Escapa caracteres HTML especiais para uso seguro em innerHTML */
+function esc(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+/** Páginas válidas — whitelist contra injeção via location.hash */
+const VALID_PAGES = [
+  'dashboard','fund-eletrica','cc','kirchhoff','ca',
+  'semicond','transistor','tiristor','opto','retificador',
+  'amp','filtros','rcrl','numeracao','logica','conv',
+  'formulas','calc','flashcards','quiz','updates'
+];
+
 /* ── 1. NAVEGAÇÃO ────────────────────────────────────────── */
 
 /**
@@ -32,9 +52,14 @@ function goTo(pg, el, pushHistory = true) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   if (el) el.classList.add('active');
 
-  // Atualiza título no topbar
-  const raw = PAGE_TITLES[pg] || pg;
-  document.getElementById('page-title').innerHTML = raw.replace('·', '<span>·</span>');
+  // Atualiza título no topbar (pg já foi validado via VALID_PAGES antes de goTo ser chamado)
+  const raw = PAGE_TITLES[pg] || esc(pg);
+  const titleEl = document.getElementById('page-title');
+  titleEl.innerHTML = '';
+  raw.split('·').forEach((part, i) => {
+    if (i > 0) { const sp = document.createElement('span'); sp.textContent = '·'; titleEl.appendChild(sp); }
+    titleEl.appendChild(document.createTextNode(part));
+  });
 
   // Scroll para o topo (funciona dentro de iframe no mobile)
   const main = document.querySelector('.main');
@@ -54,14 +79,11 @@ function goTo(pg, el, pushHistory = true) {
 /* ── 1b. BOTÃO VOLTAR DO MOBILE (popstate) ──────────────── */
 window.addEventListener('popstate', function (e) {
   // Recupera a página do estado salvo (ou vai para dashboard)
-  const pg = (e.state && e.state.page) ? e.state.page : 'dashboard';
+  const rawPg = (e.state && e.state.page) ? e.state.page : 'dashboard';
+  const pg = VALID_PAGES.includes(rawPg) ? rawPg : 'dashboard';
 
-  // Encontra o nav-item correspondente para marcar como active
-  const navEl = document.querySelector(
-    '.nav-item[onclick*="\'' + pg + '\'"]'
-  ) || document.querySelector(
-    '.nav-item[onclick*="\"' + pg + '\""]'
-  );
+  // Encontra o nav-item correspondente via data-page (seguro)
+  const navEl = document.querySelector('.nav-item[data-page="' + pg + '"]');
 
   // Navega sem empurrar novo estado (evita loop)
   goTo(pg, navEl, false);
@@ -221,7 +243,7 @@ function renderQuestion() {
   const d    = QUIZ_DATA[quizIndex];
   const pct  = (quizIndex / QUIZ_DATA.length) * 100;
 
-  document.getElementById('quiz-q').innerHTML          = d.q;
+  document.getElementById('quiz-q').innerHTML          = esc(d.q);
   document.getElementById('qbar').style.width          = pct + '%';
   document.getElementById('qcount').textContent        = (quizIndex + 1) + '/' + QUIZ_DATA.length;
   document.getElementById('quiz-fb').className         = 'quiz-feedback';
@@ -259,11 +281,11 @@ function answerQuestion(idx) {
   if (idx === d.ans) {
     quizScore++;
     fb.className = 'quiz-feedback ok show';
-    fb.innerHTML = '✓ Correto! ' + d.exp;
+    fb.innerHTML = '✓ Correto! ' + esc(d.exp);
     document.getElementById('qscore').textContent = '✓ ' + quizScore;
   } else {
     fb.className = 'quiz-feedback fail show';
-    fb.innerHTML = '✗ Incorreto. ' + d.exp;
+    fb.innerHTML = '✗ Incorreto. ' + esc(d.exp);
   }
 
   document.getElementById('quiz-next').className = 'quiz-next show';
@@ -301,21 +323,21 @@ function renderUpdates() {
   if (!container) return;
 
   container.innerHTML = UPDATES.map(u => `
-    <div class="update-card ${u.type}">
+    <div class="update-card ${esc(u.type)}">
       <div class="update-header">
         <div>
-          <div class="update-version">${u.version}</div>
-          <div class="update-title">${u.title}</div>
+          <div class="update-version">${esc(u.version)}</div>
+          <div class="update-title">${esc(u.title)}</div>
         </div>
         <div class="update-meta">
-          <span class="update-date">${u.date}</span>
-          <span class="update-status status-${u.type}">
+          <span class="update-date">${esc(u.date)}</span>
+          <span class="update-status status-${esc(u.type)}">
             ${u.type === 'live' ? '● ATUAL' : u.type === 'upcoming' ? '◎ EM BREVE' : '○ PLANEJADO'}
           </span>
         </div>
       </div>
       <ul class="update-items">
-        ${u.items.map(item => `<li>${item}</li>`).join('')}
+        ${u.items.map(item => `<li>${esc(item)}</li>`).join('')}
       </ul>
     </div>
   `).join('');
@@ -329,10 +351,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Suporte ao botão voltar: define o estado inicial no histórico
   // Se vier com hash na URL (ex: #cc), abre direto naquela página
-  const hash = location.hash.replace('#', '');
+  const rawHash = location.hash.replace('#', '');
+  const hash = VALID_PAGES.includes(rawHash) ? rawHash : null;
   if (hash && document.getElementById('pg-' + hash)) {
-    const navEl = document.querySelector('.nav-item[onclick*="\'' + hash + '\'"]');
-    goTo(hash, navEl, false);                          // abre a página
+    const navEl = document.querySelector('.nav-item[data-page="' + hash + '"]');
+    goTo(hash, navEl, false);                           // abre a página
     history.replaceState({ page: hash }, '', '#' + hash); // registra sem duplicar
   } else {
     // Página inicial = dashboard; grava no histórico para poder voltar a ele

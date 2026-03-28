@@ -1,5 +1,11 @@
 /* ════════════════════════════════════════════════════════════════
    SENAI · MVF v5 — script.js
+   Segurança: função esc() para sanitização de HTML dinâmico. */
+
+/** Escapa caracteres HTML especiais para uso seguro em innerHTML */
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+
+/*
    Módulos:
      § 1. Navegação          — troca de telas, scroll nav, drawer
      § 2. Tema claro/escuro  — toggle, persistência localStorage
@@ -53,7 +59,9 @@ function closeDrawer(){
 
 (function initTheme(){
   const saved = localStorage.getItem('mvf-theme');
-  if(saved === 'light') document.documentElement.classList.add('light');
+  if(saved === 'light' || saved === 'dark') {
+    if(saved === 'light') document.documentElement.classList.add('light');
+  }
   updateThemeBtn();
 })();
 
@@ -148,8 +156,8 @@ function renderQz(){
   document.getElementById('qzstat').textContent='Q'+(qzState.idx+1)+' de '+qzState.total+' · Pontuação: '+qzState.score;
   qa.innerHTML=`<div class="qz-box">
     <div class="qz-meta"><span style="background:rgba(0,212,255,0.1);color:var(--p);padding:2px 8px;border-radius:4px;font-family:var(--fm);font-size:10px">Q${qzState.idx+1}</span> de ${qzState.total}</div>
-    <div class="qz-q">${q.q}</div>
-    ${q.o.map((o,i)=>`<div class="qz-opt" id="qo${i}" onclick="answerQz(${i})"><span class="qz-ltr">${String.fromCharCode(65+i)}</span>${o}</div>`).join('')}
+    <div class="qz-q">${esc(q.q)}</div>
+    ${q.o.map((o,i)=>`<div class="qz-opt" id="qo${i}" onclick="answerQz(${i})"><span class="qz-ltr">${String.fromCharCode(65+i)}</span>${esc(o)}</div>`).join('')}
     <div id="qzfb" style="display:none"></div>
   </div>
   <div id="qznxt" style="display:none;margin-top:10px">

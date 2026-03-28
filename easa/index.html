@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'none';">
   <title>SENAI · EASA v2.1</title>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -98,60 +99,60 @@
     <nav>
       <div class="nav-section">
         <div class="nav-label">Início</div>
-        <div class="nav-item active" onclick="goTo('dashboard',this)">
+        <div class="nav-item active" data-page="dashboard" onclick="goTo('dashboard',this)">
           <div class="nav-icon">⚡</div> Dashboard
         </div>
       </div>
 
       <div class="nav-section">
         <div class="nav-label">Fundamentos</div>
-        <div class="nav-item" onclick="goTo('fund-eletrica',this)">
+        <div class="nav-item" data-page="fund-eletrica" onclick="goTo('fund-eletrica',this)">
           <div class="nav-icon">🔌</div> Eletricidade Básica
         </div>
-        <div class="nav-item" onclick="goTo('cc',this)">
+        <div class="nav-item" data-page="cc" onclick="goTo('cc',this)">
           <div class="nav-icon">➡️</div> Circuitos CC
         </div>
-        <div class="nav-item" onclick="goTo('kirchhoff',this)">
+        <div class="nav-item" data-page="kirchhoff" onclick="goTo('kirchhoff',this)">
           <div class="nav-icon">⚖️</div> Kirchhoff & Thévenin
           <span class="nav-badge">NEW</span>
         </div>
-        <div class="nav-item" onclick="goTo('ca',this)">
+        <div class="nav-item" data-page="ca" onclick="goTo('ca',this)">
           <div class="nav-icon">〰️</div> Circuitos CA
         </div>
       </div>
 
       <div class="nav-section">
         <div class="nav-label">Componentes</div>
-        <div class="nav-item" onclick="goTo('semicond',this)">
+        <div class="nav-item" data-page="semicond" onclick="goTo('semicond',this)">
           <div class="nav-icon">🔵</div> Semicondutores
         </div>
-        <div class="nav-item" onclick="goTo('transistor',this)">
+        <div class="nav-item" data-page="transistor" onclick="goTo('transistor',this)">
           <div class="nav-icon">📐</div> Transistores
         </div>
-        <div class="nav-item" onclick="goTo('tiristor',this)">
+        <div class="nav-item" data-page="tiristor" onclick="goTo('tiristor',this)">
           <div class="nav-icon">🔁</div> Tiristores
           <span class="nav-badge">NEW</span>
         </div>
-        <div class="nav-item" onclick="goTo('opto',this)">
+        <div class="nav-item" data-page="opto" onclick="goTo('opto',this)">
           <div class="nav-icon">💡</div> Optoeletrônica
           <span class="nav-badge">NEW</span>
         </div>
-        <div class="nav-item" onclick="goTo('retificador',this)">
+        <div class="nav-item" data-page="retificador" onclick="goTo('retificador',this)">
           <div class="nav-icon">🔋</div> Retificadores
         </div>
       </div>
 
       <div class="nav-section">
         <div class="nav-label">Analógico Avançado</div>
-        <div class="nav-item" onclick="goTo('amp',this)">
+        <div class="nav-item" data-page="amp" onclick="goTo('amp',this)">
           <div class="nav-icon">🔺</div> Amplificadores Op-Amp
           <span class="nav-badge">NEW</span>
         </div>
-        <div class="nav-item" onclick="goTo('filtros',this)">
+        <div class="nav-item" data-page="filtros" onclick="goTo('filtros',this)">
           <div class="nav-icon">〜</div> Filtros RC
           <span class="nav-badge">NEW</span>
         </div>
-        <div class="nav-item" onclick="goTo('rcrl',this)">
+        <div class="nav-item" data-page="rcrl" onclick="goTo('rcrl',this)">
           <div class="nav-icon">⏱</div> Transientes RC/RL
           <span class="nav-badge">v1.2</span>
         </div>
@@ -159,13 +160,13 @@
 
       <div class="nav-section">
         <div class="nav-label">Digital</div>
-        <div class="nav-item" onclick="goTo('numeracao',this)">
+        <div class="nav-item" data-page="numeracao" onclick="goTo('numeracao',this)">
           <div class="nav-icon">01</div> Sistemas Numéricos
         </div>
-        <div class="nav-item" onclick="goTo('logica',this)">
+        <div class="nav-item" data-page="logica" onclick="goTo('logica',this)">
           <div class="nav-icon">⊕</div> Lógica Digital
         </div>
-        <div class="nav-item" onclick="goTo('conv',this)">
+        <div class="nav-item" data-page="conv" onclick="goTo('conv',this)">
           <div class="nav-icon">⇌</div> Conversores A/D · D/A
           <span class="nav-badge">v1.3</span>
         </div>
@@ -173,23 +174,23 @@
 
       <div class="nav-section">
         <div class="nav-label">Prática</div>
-        <div class="nav-item" onclick="goTo('formulas',this)">
+        <div class="nav-item" data-page="formulas" onclick="goTo('formulas',this)">
           <div class="nav-icon">★</div> Fórmulas Visuais
         </div>
-        <div class="nav-item" onclick="goTo('calc',this)">
+        <div class="nav-item" data-page="calc" onclick="goTo('calc',this)">
           <div class="nav-icon">🧮</div> Calculadora
         </div>
-        <div class="nav-item" onclick="goTo('flashcards',this)">
+        <div class="nav-item" data-page="flashcards" onclick="goTo('flashcards',this)">
           <div class="nav-icon">🃏</div> Flashcards
         </div>
-        <div class="nav-item" onclick="goTo('quiz',this)">
+        <div class="nav-item" data-page="quiz" onclick="goTo('quiz',this)">
           <div class="nav-icon">📝</div> Quiz
         </div>
       </div>
 
       <div class="nav-section">
         <div class="nav-label">Meta</div>
-        <div class="nav-item" onclick="goTo('updates',this)">
+        <div class="nav-item" data-page="updates" onclick="goTo('updates',this)">
           <div class="nav-icon">📋</div> Atualizações
         </div>
       </div>

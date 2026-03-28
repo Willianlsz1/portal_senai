@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self';">
   <title>SENAI · Portal de Estudos</title>
   <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;900&family=IBM+Plex+Mono:wght@400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
@@ -614,7 +615,7 @@
       <div class="spinner"></div>
       <div class="loader-lbl">Carregando MVF...</div>
     </div>
-    <iframe id="frame-mvf" title="SENAI MVF"></iframe>
+    <iframe id="frame-mvf" title="SENAI MVF" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
   </div>
 
   <!-- Painel: EASA (iframe) -->
@@ -623,7 +624,7 @@
       <div class="spinner"></div>
       <div class="loader-lbl">Carregando EASA...</div>
     </div>
-    <iframe id="frame-easa" title="SENAI EASA"></iframe>
+    <iframe id="frame-easa" title="SENAI EASA" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
   </div>
 
 </div>
@@ -638,10 +639,11 @@
   /* Rastreia o que já foi carregado (lazy load) */
   const loaded = { mvf: false, easa: false };
   let current = 'home';
+  const VALID_APPS = Object.keys(APPS).concat(['home']);
 
   /* ── Troca de painel ─────────────────────────────────────── */
   function switchTo(app) {
-    if (app === current) return;
+    if (!VALID_APPS.includes(app) || app === current) return;
     current = app;
 
     /* Atualiza abas */
@@ -677,7 +679,7 @@
 
   /* ── Abrir em nova aba ───────────────────────────────────── */
   function openExternal() {
-    if (current !== 'home') window.open(APPS[current], '_blank');
+    if (current !== 'home') window.open(APPS[current], '_blank', 'noopener,noreferrer');
   }
 
   /* ── Tema claro/escuro ───────────────────────────────────── */
