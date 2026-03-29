@@ -1166,20 +1166,22 @@ body::before {
 .menu-btn:hover { background: var(--bg3); }
 
 /* Overlay escuro atrás da sidebar quando aberta */
-/* Usa opacity+pointer-events em vez de display:none para evitar bloqueio de cliques */
+/* visibility:hidden + pointer-events:none garante inatividade total em iOS/Android */
 .sidebar-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.55);
   z-index: 98;
   opacity: 0;
-  pointer-events: none;          /* invisível E não bloqueia toques */
-  transition: opacity 0.3s ease;
+  visibility: hidden;            /* bloqueia completamente eventos de toque em iOS */
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
   -webkit-tap-highlight-color: transparent;
 }
 .sidebar-overlay.show {
   opacity: 1;
-  pointer-events: auto;          /* só captura toques quando visível */
+  visibility: visible;
+  pointer-events: auto;
 }
 
 /* ── 9. RESPONSIVO ──────────────────────────────────────── */
