@@ -260,6 +260,13 @@ body {
   font-family: 'JetBrains Mono', monospace;
   margin-top: 4px;
 }
+/* Link de retorno ao Portal */
+.portal-back-link {
+  color: var(--accent);
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+.portal-back-link:hover { opacity: 0.75; }
 
 .topbar-right {
   display: flex;

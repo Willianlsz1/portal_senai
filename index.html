@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; img-src 'self' data:;">
   <title>SENAI · Portal de Estudos</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
@@ -92,7 +92,7 @@
       transition: background-color 0.2s ease, border-color 0.2s ease, color 0.15s ease;
     }
 
-    html, body { height: 100%; overflow: hidden; }
+    html, body { height: 100%; }
 
     body {
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -195,6 +195,7 @@
       white-space: nowrap;
       user-select: none;
       letter-spacing: 0.01em;
+      text-decoration: none; /* reset <a> underline */
     }
 
     .tab:hover {
@@ -287,41 +288,15 @@
       border-color: var(--border-default);
       color: var(--text-primary);
     }
-    #btn-external[data-app="mvf"]  { border-color: rgba(14,165,233,0.25); color: var(--mvf-base); }
-    #btn-external[data-app="easa"] { border-color: rgba(16,185,129,0.25); color: var(--easa-base); }
-    #btn-external[data-app="home"] { display: none; }
 
     /* ── 4. ÁREA DE CONTEÚDO ────────────────────────────────── */
     .content-area {
       flex: 1;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .panel {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .panel.visible {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    .panel iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      display: block;
-    }
-
-    /* ── 5. PAINEL HOME ─────────────────────────────────────── */
-    #panel-home {
       overflow-y: auto;
       background: var(--bg-base);
     }
+
+    /* ── 5. PAINEL HOME ─────────────────────────────────────── */
 
     /* Micro-grid sutil */
     #panel-home::before {
@@ -593,46 +568,7 @@
       letter-spacing: 0.04em;
     }
 
-    /* ── 6. LOADING SPINNER ─────────────────────────────────── */
-    .loader {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      background: var(--bg-base);
-      color: var(--text-tertiary);
-      font-size: 13px;
-      z-index: 10;
-      transition: opacity 0.4s;
-    }
-    .loader.hidden { opacity: 0; pointer-events: none; }
-
-    .loader-ring {
-      width: 32px;
-      height: 32px;
-      border: 2px solid var(--border-subtle);
-      border-radius: 50%;
-      animation: spin 0.9s linear infinite;
-    }
-    .loader[data-app="mvf"]  .loader-ring { border-top-color: var(--mvf-base); }
-    .loader[data-app="easa"] .loader-ring { border-top-color: var(--easa-base); }
-
-    .loader-lbl {
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--text-tertiary);
-      letter-spacing: 0.03em;
-      text-align: center;
-      line-height: 1.6;
-    }
-    .loader-lbl a { color: var(--mvf-base); }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* ── 7. ANIMAÇÕES ───────────────────────────────────────── */
+    /* ── 6. ANIMAÇÕES ───────────────────────────────────────── */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(12px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -680,25 +616,25 @@
   </div>
 
   <div class="tabs" role="tablist" aria-label="Aplicações SENAI">
-    <button class="tab active" role="tab" aria-selected="true" data-app="home" onclick="switchTo('home')">
+    <a class="tab active" role="tab" aria-selected="true" data-app="home" href="index.html">
       <div class="tab-pip"></div>
       <span>Portal</span>
-    </button>
-    <button class="tab" role="tab" aria-selected="false" data-app="mvf" onclick="switchTo('mvf')">
+    </a>
+    <a class="tab" role="tab" aria-selected="false" data-app="mvf" href="senai-mvf/index.html">
       <div class="tab-pip"></div>
       <span>MVF</span>
-    </button>
-    <button class="tab" role="tab" aria-selected="false" data-app="easa" onclick="switchTo('easa')">
+    </a>
+    <a class="tab" role="tab" aria-selected="false" data-app="easa" href="easa/index.html">
       <div class="tab-pip"></div>
       <span>EASA</span>
-    </button>
+    </a>
   </div>
 
   <div class="nav-actions">
-    <button id="btn-external" data-app="home" onclick="openExternal()" title="Abrir em nova aba">
+    <a id="btn-external" href="senai-mvf/index.html" target="_blank" rel="noopener noreferrer" title="Abrir MVF em nova aba" style="display:none">
       <span>NOVA ABA</span>
       ↗
-    </button>
+    </a>
     <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Mudar tema">☀</button>
   </div>
 </nav>
@@ -751,7 +687,7 @@
       <div class="cards-grid">
 
         <!-- MVF -->
-        <div class="app-card" data-card="mvf" onclick="switchTo('mvf')">
+        <div class="app-card" data-card="mvf" onclick="location.href='senai-mvf/index.html'">
           <div class="card-header">
             <div class="card-icon">⚡</div>
             <div class="card-meta">
@@ -776,7 +712,7 @@
         </div>
 
         <!-- EASA -->
-        <div class="app-card" data-card="easa" onclick="switchTo('easa')">
+        <div class="app-card" data-card="easa" onclick="location.href='easa/index.html'">
           <div class="card-header">
             <div class="card-icon">🔌</div>
             <div class="card-meta">
@@ -804,86 +740,9 @@
     </div>
   </div>
 
-  <!-- Painel: MVF (iframe) -->
-  <div class="panel" id="panel-mvf">
-    <div class="loader" id="loader-mvf" data-app="mvf">
-      <div class="loader-ring"></div>
-      <div class="loader-lbl">Carregando MVF...</div>
-    </div>
-    <iframe id="frame-mvf" title="SENAI MVF" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
-  </div>
-
-  <!-- Painel: EASA (iframe) -->
-  <div class="panel" id="panel-easa">
-    <div class="loader" id="loader-easa" data-app="easa">
-      <div class="loader-ring"></div>
-      <div class="loader-lbl">Carregando EASA...</div>
-    </div>
-    <iframe id="frame-easa" title="SENAI EASA" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
-  </div>
-
 </div>
 
 <script>
-  /* ── URLs dos apps ───────────────────────────────────────── */
-  const APPS = {
-    mvf:  'senai-mvf/',
-    easa: 'easa/'
-  };
-
-  /* Rastreia o que já foi carregado (lazy load) */
-  const loaded = { mvf: false, easa: false };
-  let current = 'home';
-  const VALID_APPS = Object.keys(APPS).concat(['home']);
-
-  /* ── Troca de painel ─────────────────────────────────────── */
-  function switchTo(app) {
-    if (!VALID_APPS.includes(app) || app === current) return;
-    current = app;
-
-    /* Atualiza abas */
-    document.querySelectorAll('.tab').forEach(t => {
-      const isActive = t.dataset.app === app;
-      t.classList.toggle('active', isActive);
-      t.setAttribute('aria-selected', isActive ? 'true' : 'false');
-    });
-
-    /* Atualiza painel visível */
-    document.querySelectorAll('.panel').forEach(p => {
-      p.classList.toggle('visible', p.id === 'panel-' + app);
-    });
-
-    /* Botão "nova aba" */
-    const btn = document.getElementById('btn-external');
-    btn.dataset.app = app;
-    btn.style.display = app === 'home' ? 'none' : 'flex';
-
-    /* Lazy load do iframe (só carrega na 1ª vez) */
-    if (app !== 'home' && !loaded[app]) {
-      loaded[app] = true;
-      const frame  = document.getElementById('frame-' + app);
-      const loader = document.getElementById('loader-' + app);
-
-      const loaderTimeout = setTimeout(() => {
-        loader.innerHTML = '<div class="loader-lbl">⚠ Não foi possível carregar.<br><a href="' + APPS[app] + '" target="_blank" rel="noopener noreferrer">Abrir diretamente ↗</a></div>';
-      }, 10000);
-
-      frame.onload = () => {
-        clearTimeout(loaderTimeout);
-        loader.classList.add('hidden');
-        /* Remove após transição */
-        setTimeout(() => loader.remove(), 500);
-      };
-
-      frame.src = APPS[app];
-    }
-  }
-
-  /* ── Abrir em nova aba ───────────────────────────────────── */
-  function openExternal() {
-    if (current !== 'home') window.open(APPS[current], '_blank', 'noopener,noreferrer');
-  }
-
   /* ── Tema claro/escuro ───────────────────────────────────── */
   (function initTheme() {
     const saved = localStorage.getItem('senai-portal-theme');

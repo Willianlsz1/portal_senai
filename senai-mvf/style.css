@@ -76,6 +76,14 @@ html, body {
 
 /* ── 2. LAYOUT ────────────────────────────────────────────────── */
 
+/* Breadcrumb — link de volta ao Portal */
+.crumb-back {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.crumb-back:hover { color: var(--mod-accent, var(--p)); }
+
 /* Área de conteúdo dentro do main-content do design system */
 .content {
   padding: 24px 28px;
