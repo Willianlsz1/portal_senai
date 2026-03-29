@@ -45,7 +45,7 @@ function scrollNav(delta){const nb=document.getElementById('navBar');if(nb)nb.sc
 /** Troca de tela + fecha o drawer mobile */
 function SD(id){S(id);closeDrawer();}
 
-/** Abre/fecha o drawer mobile */
+/** Abre/fecha o drawer mobile (legacy) */
 function toggleDrawer(){
   document.getElementById('drawer').classList.toggle('open');
   document.getElementById('overlay').classList.toggle('open');
@@ -55,18 +55,42 @@ function closeDrawer(){
   document.getElementById('overlay').classList.remove('open');
 }
 
+/** Sidebar mobile — toggle / close
+ *  Definidas aqui (script.js) como fonte única de verdade.
+ *  O inline script no index.html delega para estas via window.*  */
+function toggleMobileSidebar(){
+  var sidebar = document.getElementById('sidebar');
+  var overlay = document.getElementById('mobile-overlay');
+  if(!sidebar) return;
+  var open = sidebar.classList.toggle('open');
+  if(overlay) overlay.classList.toggle('show', open);
+}
+function closeMobileSidebar(){
+  var sidebar = document.getElementById('sidebar');
+  var overlay = document.getElementById('mobile-overlay');
+  if(sidebar) sidebar.classList.remove('open');
+  if(overlay) overlay.classList.remove('show');
+}
+
 /* ── § 2. TEMA CLARO/ESCURO ──────────────────────────────────── */
 
 (function initTheme(){
   const saved = localStorage.getItem('mvf-theme');
-  if(saved === 'light' || saved === 'dark') {
-    if(saved === 'light') document.documentElement.classList.add('light');
+  const root  = document.documentElement;
+  if(saved === 'light'){
+    root.classList.add('light');
+    root.setAttribute('data-theme','light');
+  } else {
+    // Garante data-theme="dark" mesmo sem valor salvo
+    root.setAttribute('data-theme','dark');
   }
   updateThemeBtn();
 })();
 
 function toggleTheme(){
-  const isLight = document.documentElement.classList.toggle('light');
+  const root    = document.documentElement;
+  const isLight = root.classList.toggle('light');
+  root.setAttribute('data-theme', isLight ? 'light' : 'dark');
   localStorage.setItem('mvf-theme', isLight ? 'light' : 'dark');
   updateThemeBtn();
 }
@@ -75,9 +99,13 @@ function updateThemeBtn(){
   const btn = document.getElementById('theme-btn');
   if(!btn) return;
   const isLight = document.documentElement.classList.contains('light');
-  btn.textContent = isLight ? '☾' : '☀';
+  const icon  = btn.querySelector('.ds-theme-icon');
+  const label = btn.querySelector('.ds-theme-label');
+  if(icon)  icon.textContent  = isLight ? '☾' : '☀';
+  if(label) label.textContent = isLight ? 'Claro' : 'Escuro';
   btn.title = isLight ? 'Mudar para tema escuro' : 'Mudar para tema claro';
 }
+
 
 /* ── § 3. UI HELPERS ─────────────────────────────────────────── */
 

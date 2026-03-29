@@ -110,15 +110,15 @@ html, body {
 /* Card genérico */
 .card{background:var(--bg3);border:1px solid var(--bd);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
 .card.click{cursor:pointer}
-.card.click:hover{border-color:var(--p);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,212,255,0.12)}
+.card.click:hover{border-color:var(--mod-accent,var(--p));transform:translateY(-2px);box-shadow:0 6px 20px var(--mod-glow,rgba(14,165,233,0.15))}
 .sc{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--t3);margin-bottom:6px;font-family:var(--fm)}
-.sv{font-size:26px;font-weight:600;color:var(--p);font-family:var(--fm)}
+.sv{font-size:26px;font-weight:600;color:var(--mod-accent,var(--p));font-family:var(--fm)}
 .ss{font-size:12px;color:var(--t3);margin-top:3px}
 .mn{font-size:11px;font-family:var(--fm);color:var(--t3);margin-bottom:4px}
 .mt{font-size:14px;font-weight:600;margin-bottom:8px}
 .pb{height:3px;background:rgba(255,255,255,0.07);border-radius:2px;margin-top:6px;overflow:hidden}
 .light .pb{background:rgba(0,0,0,0.07)}
-.pf{height:100%;background:var(--p);border-radius:2px}
+.pf{height:100%;background:var(--mod-accent,var(--p));border-radius:2px}
 .ps{font-size:12px;color:var(--t3);margin-top:4px;font-family:var(--fm)}
 
 /* Bloco de conteúdo teórico */
@@ -652,6 +652,29 @@ html, body {
 .cl-tag-g{ background:rgba(0,255,157,0.12); color:var(--g); border:1px solid rgba(0,255,157,0.3) }
 .cl-tag-y{ background:rgba(255,192,64,0.12); color:var(--y); border:1px solid rgba(255,192,64,0.3) }
 
+/* ── Tags unificadas (paleta MVF: Ciano / Azul Elétrico) ─── */
+/* Espelham o sistema .tag-* do EASA mas com acento azul/ciano */
+.tag-cyan   { background:rgba(14,165,233,0.12); color:var(--mod-accent,#0ea5e9);   border:1px solid rgba(14,165,233,0.28); }
+.tag-blue   { background:rgba(99,102,241,0.12); color:var(--mod-secondary,#6366f1); border:1px solid rgba(99,102,241,0.28); }
+.tag-indigo { background:rgba(99,102,241,0.10); color:#a5b4fc;                      border:1px solid rgba(99,102,241,0.22); }
+.tag-sky    { background:rgba(56,189,248,0.11); color:#7dd3fc;                      border:1px solid rgba(56,189,248,0.25); }
+.tag-orange { background:rgba(249,115,22,0.10); color:var(--mod-alert,#f97316);     border:1px solid rgba(249,115,22,0.25); }
+.tag-yellow { background:rgba(255,192,64,0.10); color:var(--y);                     border:1px solid rgba(255,192,64,0.22); }
+.tag-green  { background:rgba(0,255,157,0.08);  color:var(--g);                     border:1px solid rgba(0,255,157,0.20); }
+.tag-red    { background:rgba(255,85,102,0.10); color:var(--r);                     border:1px solid rgba(255,85,102,0.22); }
+/* Alias semântico para variáveis de processo */
+.tag-pressao    { background:rgba(0,212,255,0.12);  color:var(--p);  border:1px solid rgba(0,212,255,0.28); }
+.tag-nivel      { background:rgba(0,255,157,0.10);  color:var(--g);  border:1px solid rgba(0,255,157,0.22); }
+.tag-vazao      { background:rgba(255,192,64,0.10); color:var(--y);  border:1px solid rgba(255,192,64,0.22); }
+.tag-temperatura{ background:rgba(192,132,255,0.10);color:var(--pu); border:1px solid rgba(192,132,255,0.22); }
+/* Light mode overrides */
+[data-theme="light"] .tag-cyan,
+html.light .tag-cyan   { background:rgba(2,132,199,0.10); }
+[data-theme="light"] .tag-blue,
+html.light .tag-blue   { background:rgba(79,70,229,0.09); }
+[data-theme="light"] .tag-orange,
+html.light .tag-orange { background:rgba(194,65,12,0.09); }
+
 .cl-title{ font-size:15px; font-weight:600; color:var(--t1); flex:1 }
 .cl-date{ font-size:11px; color:var(--t3); font-family:var(--fm) }
 
@@ -746,7 +769,7 @@ html, body {
 
 /* Dashboard stat cards clickáveis */
 .dash-stat{ cursor:pointer }
-.dash-stat:hover{ border-color:var(--p); transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,212,255,0.12) }
+.dash-stat:hover{ border-color:var(--mod-accent,var(--p)); transform:translateY(-2px); box-shadow:0 6px 20px var(--mod-glow,rgba(14,165,233,0.15)) }
 
 /* Acesso rápido */
 .dash-quick{

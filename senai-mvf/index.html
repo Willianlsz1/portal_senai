@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" data-module="mvf">
+<html lang="pt-BR" data-theme="dark" data-module="mvf">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -165,8 +165,13 @@
 <div class="screen active" id="screen-home">
   <div class="h1">Dashboard de Estudos</div>
   <div class="sub">Medição de Variáveis Físicas Industriais · SENAI · v5.4</div>
-
-  <!-- Contadores dinâmicos -->
+  <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px">
+    <span class="cl-tag cl-tag-p">PRESSÃO</span>
+    <span class="cl-tag cl-tag-g">NÍVEL</span>
+    <span class="cl-tag cl-tag-y">VAZÃO</span>
+    <span class="cl-tag" style="background:rgba(192,132,255,0.12);color:var(--pu);border:1px solid rgba(192,132,255,0.3)">TEMPERATURA</span>
+    <span class="cl-tag" style="background:rgba(14,165,233,0.10);color:var(--mod-accent,var(--p));border:1px solid rgba(14,165,233,0.28)">MVF v5.5</span>
+  </div>
   <div class="grid g4" style="margin-bottom:18px">
     <div class="card dash-stat" onclick="S('m1')">
       <div class="sc">Módulos</div>
@@ -1275,6 +1280,13 @@
 <!-- ════ RELAÇÕES P·N·Q ════ -->
 <div class="screen" id="screen-relacoes">
   <div class="h1">Relações P · N · Q</div><div class="sub">Módulo 09 · Como Pressão, Nível e Vazão se conectam</div>
+  <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px">
+    <span class="cl-tag cl-tag-p">PRESSÃO</span>
+    <span class="cl-tag cl-tag-g">NÍVEL</span>
+    <span class="cl-tag cl-tag-y">VAZÃO</span>
+    <span class="cl-tag" style="background:rgba(192,132,255,0.12);color:var(--pu);border:1px solid rgba(192,132,255,0.3)">TEMPERATURA</span>
+    <span class="cl-tag" style="background:rgba(249,115,22,0.12);color:var(--or);border:1px solid rgba(249,115,22,0.3)">STEVIN · BERNOULLI · TORRICELLI</span>
+  </div>
   <div class="alert ay">As três variáveis não existem isoladamente — entender suas relações é entender o processo.</div>
   <div class="blk"><h3 style="color:var(--p)">1 · Nível → Pressão (Stevin)</h3>
     <div style="background:var(--bg);border:1px solid rgba(0,212,255,0.2);border-radius:8px;padding:10px 14px;font-family:var(--fm);font-size:17px;margin-bottom:10px"><span style="color:var(--p)">P</span> = <span style="color:var(--g)">ρ</span> × <span style="color:var(--or)">g</span> × <span style="color:var(--pu)">h</span></div>
@@ -1801,32 +1813,22 @@
 <script src="data.js"></script>
 <script src="script.js"></script>
 
-<!-- Sidebar collapse + mobile toggle -->
+<!-- Sidebar: restore desktop collapsed state
+     Mobile toggle/close definidos em script.js (fonte única de verdade) -->
 <script>
 (function(){
   var sidebar = document.getElementById('sidebar');
   var toggle  = document.getElementById('sidebar-toggle');
-  var overlay = document.getElementById('mobile-overlay');
   var KEY = 'senai-mvf-sidebar-collapsed';
 
-  // Restore collapsed state
+  // Restaura estado colapsado (desktop)
   if(localStorage.getItem(KEY) === 'true') sidebar.classList.add('collapsed');
 
-  // Desktop collapse
+  // Desktop collapse toggle com persistência
   if(toggle) toggle.addEventListener('click', function(){
     sidebar.classList.toggle('collapsed');
     localStorage.setItem(KEY, sidebar.classList.contains('collapsed'));
   });
-
-  // Mobile open/close
-  window.toggleMobileSidebar = function(){
-    var open = sidebar.classList.toggle('open');
-    if(overlay) overlay.classList.toggle('show', open);
-  };
-  window.closeMobileSidebar = function(){
-    sidebar.classList.remove('open');
-    if(overlay) overlay.classList.remove('show');
-  };
 })();
 </script>
 </body>
