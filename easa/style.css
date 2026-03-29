@@ -193,6 +193,8 @@ body::before {
   letter-spacing: 0.2px;
   border: 1px solid transparent;
   transition: all var(--trans);
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 .nav-item:hover {
   background: var(--bg3);
@@ -405,6 +407,8 @@ body::before {
   position: relative;
   overflow: hidden;
   transition: all var(--trans);
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 .module-card:hover {
   transform: translateY(-3px);
