@@ -83,10 +83,11 @@
 </div>
 
 <!-- ══ APP ════════════════════════════════════════════════ -->
-<!-- Overlay para fechar sidebar no mobile -->
-<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
-
 <div class="app">
+
+  <!-- Overlay dentro do .app para ficar no mesmo stacking context que a sidebar -->
+  <!-- (sidebar z-index:100 > overlay z-index:98, ambos dentro do .app z-index:1) -->
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
 
   <!-- ── SIDEBAR ──────────────────────────────────────── -->
   <aside class="sidebar">
