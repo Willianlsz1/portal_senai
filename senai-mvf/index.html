@@ -1,82 +1,163 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-module="mvf">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'none';">
 <title>SENAI · MVF v5</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_design-system.css">
 <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="ds-bg-grid">
 
-<!-- TOPBAR -->
-<div class="topbar">
-  <div class="brand">⬡ SENAI·MVF v5</div>
-  <button class="nav-arrow" id="nav-left" onclick="scrollNav(-180)" aria-label="scroll esquerda">‹</button>
-  <nav class="nav-desktop" id="navBar">
-    <span class="tgroup">INÍCIO</span>
-    <div class="titem active" onclick="S('home')" id="nav-home">Dashboard</div>
-    <span class="tgroup">TEORIA</span>
-    <div class="titem" onclick="S('m1')" id="nav-m1">Fundamentos</div>
-    <div class="titem" onclick="S('m2')" id="nav-m2">Malha</div>
-    <div class="titem" onclick="S('m3')" id="nav-m3">Instrumentação</div>
-    <div class="titem" onclick="S('m4')" id="nav-m4">Erros</div>
-    <span class="tgroup">VARIÁVEIS</span>
-    <div class="titem" onclick="S('formulas')" id="nav-formulas">Fórmulas Visuais</div>
-    <div class="titem" onclick="S('pressao')" id="nav-pressao">Pressão</div>
-    <div class="titem" onclick="S('nivel')" id="nav-nivel">Nível</div>
-    <div class="titem" onclick="S('vazao')" id="nav-vazao">Vazão</div>
-    <div class="titem" onclick="S('temperatura')" id="nav-temperatura" style="color:var(--pu)">Temperatura ★</div>
-    <span class="tgroup">CONEXÕES</span>
-    <div class="titem" onclick="S('relacoes')" id="nav-relacoes">Relações P·N·Q</div>
-    <div class="titem" onclick="S('cenarios')" id="nav-cenarios">Cenários Reais</div>
-    <span class="tgroup">PRÁTICA</span>
-    <div class="titem" onclick="S('calibracao')" id="nav-calibracao" style="color:var(--y)">Calibração</div>
-    <div class="titem" onclick="S('flash')" id="nav-flash">Flashcards</div>
-    <div class="titem" onclick="S('quiz')" id="nav-quiz">Quiz</div>
-    <div class="titem" onclick="S('calc')" id="nav-calc">Calculadora</div>
-    <div class="titem" onclick="S('bernoulli')" id="nav-bernoulli" style="color:var(--g)">Bernoulli ⚡</div>
-    <span class="tgroup">META</span>
-    <div class="titem" onclick="S('changelog')" id="nav-changelog" style="color:var(--t3)">Atualizações</div>
+<!-- APP SHELL -->
+<div class="app-shell" id="app">
+
+<!-- ── SIDEBAR ──────────────────────────────────────────── -->
+<aside class="ds-sidebar" id="sidebar" aria-label="Navegação principal">
+
+  <div class="ds-sidebar-header">
+    <div class="ds-brand">
+      <div class="ds-brand-icon">⬡</div>
+      <div class="ds-brand-text">
+        <span class="ds-brand-name">SENAI</span>
+        <span class="ds-brand-module">MVF</span>
+      </div>
+    </div>
+    <button class="ds-sidebar-toggle" id="sidebar-toggle" aria-label="Recolher menu">‹</button>
+  </div>
+
+  <nav class="ds-sidebar-nav" aria-label="Módulos MVF">
+
+    <div class="ds-nav-section">
+      <span class="ds-nav-section-label">INÍCIO</span>
+      <ul class="ds-nav-list">
+        <li><button class="ds-nav-item active" id="nav-home" onclick="S('home')">
+          <span class="ds-nav-icon">⊞</span><span class="ds-nav-label">Dashboard</span>
+        </button></li>
+      </ul>
+    </div>
+
+    <div class="ds-nav-section">
+      <span class="ds-nav-section-label">TEORIA</span>
+      <ul class="ds-nav-list">
+        <li><button class="ds-nav-item" id="nav-m1" onclick="S('m1')">
+          <span class="ds-nav-icon">◈</span><span class="ds-nav-label">Fundamentos</span>
+        </button></li>
+        <li><button class="ds-nav-item" id="nav-m2" onclick="S('m2')">
+          <span class="ds-nav-icon">⟳</span><span class="ds-nav-label">Malha de Controle</span>
+        </button></li>
+        <li><button class="ds-nav-item" id="nav-m3" onclick="S('m3')">
+          <span class="ds-nav-icon">⚙</span><span class="ds-nav-label">Instrumentação</span>
+        </button></li>
+        <li><button class="ds-nav-item" id="nav-m4" onclick="S('m4')">
+          <span class="ds-nav-icon">⚠</span><span class="ds-nav-label">Erros de Medição</span>
+        </button></li>
+      </ul>
+    </div>
+
+    <div class="ds-nav-section">
+      <span class="ds-nav-section-label">VARIÁVEIS</span>
+      <ul class="ds-nav-list">
+        <li><button class="ds-nav-item" id="nav-formulas" onclick="S('formulas')">
+          <span class="ds-nav-icon">★</span><span class="ds-nav-label">Fórmulas Visuais</span>
+        </button></li>
+        <li><button class="ds-nav-item" id="nav-pressao" onclick="S('pressao')">
+          <span class="ds-nav-icon">◉</span><span class="ds-nav-label">Pressão</span>
+        </button></li>
+        <li><button class="ds-nav-item" id="nav-nivel" onclick="S('nivel')">
+          <span class="ds-nav-icon">≡</span><span class="ds-nav-label">Nível</span>
+        </button></li>
+        <li><button class="ds-nav-item" id="nav-vazao" onclick="S('vazao')">
+          <span class="ds-nav-icon">≈</span><span class="ds-nav-label">Vazão</span>
+        </button></li>
+        <li><button class="ds-nav-item" id="nav-temperatura" onclick="S('temperatura')">
+          <span class="ds-nav-icon">🌡</span><span class="ds-nav-label">Temperatura</span>
+          <span class="ds-nav-badge">NEW</span>
+        </button></li>
+      </ul>
+    </div>
+
+    <div class="ds-nav-section">
+      <span class="ds-nav-section-label">CONEXÕES</span>
+      <ul class="ds-nav-list">
+        <li><button class="ds-nav-item" id="nav-relacoes" onclick="S('relacoes')">
+          <span class="ds-nav-icon">⊕</span><span class="ds-nav-label">Relações P·N·Q</span>
+        </button></li>
+        <li><button class="ds-nav-item" id="nav-cenarios" onclick="S('cenarios')">
+          <span class="ds-nav-icon">◈</span><span class="ds-nav-label">Cenários Reais</span>
+        </button></li>
+      </ul>
+    </div>
+
+    <div class="ds-nav-section">
+      <span class="ds-nav-section-label">PRÁTICA</span>
+      <ul class="ds-nav-list">
+        <li><button class="ds-nav-item" id="nav-calibracao" onclick="S('calibracao')">
+          <span class="ds-nav-icon">◎</span><span class="ds-nav-label">Calibração</span>
+          <span class="ds-nav-badge">NEW</span>
+        </button></li>
+        <li><button class="ds-nav-item" id="nav-flash" onclick="S('flash')">
+          <span class="ds-nav-icon">🃏</span><span class="ds-nav-label">Flashcards</span>
+        </button></li>
+        <li><button class="ds-nav-item" id="nav-quiz" onclick="S('quiz')">
+          <span class="ds-nav-icon">📝</span><span class="ds-nav-label">Quiz</span>
+        </button></li>
+        <li><button class="ds-nav-item" id="nav-calc" onclick="S('calc')">
+          <span class="ds-nav-icon">🧮</span><span class="ds-nav-label">Calculadora</span>
+        </button></li>
+        <li><button class="ds-nav-item" id="nav-bernoulli" onclick="S('bernoulli')">
+          <span class="ds-nav-icon">⚡</span><span class="ds-nav-label">Bernoulli ⚡</span>
+        </button></li>
+      </ul>
+    </div>
+
+    <div class="ds-nav-section">
+      <span class="ds-nav-section-label">META</span>
+      <ul class="ds-nav-list">
+        <li><button class="ds-nav-item" id="nav-changelog" onclick="S('changelog')">
+          <span class="ds-nav-icon">📋</span><span class="ds-nav-label">Atualizações</span>
+        </button></li>
+      </ul>
+    </div>
+
   </nav>
-  <button class="nav-arrow" id="nav-right" onclick="scrollNav(180)" aria-label="scroll direita">›</button>
-  <!-- Botão de tema claro/escuro -->
-  <button class="theme-btn" id="theme-btn" onclick="toggleTheme()" title="Mudar tema">☀</button>
-  <button class="hamburger" onclick="toggleDrawer()" aria-label="Menu">&#9776;</button>
-</div>
 
-<!-- MOBILE DRAWER -->
-<div class="drawer-overlay" id="overlay" onclick="closeDrawer()"></div>
-<div class="drawer" id="drawer">
-  <div class="drawer-brand">⬡ SENAI·MVF v5 <button class="drawer-close" onclick="closeDrawer()">✕</button></div>
-  <div class="d-group">INÍCIO</div>
-  <div class="d-item active" onclick="SD('home')" id="dnav-home">Dashboard</div>
-  <div class="d-group">TEORIA</div>
-  <div class="d-item" onclick="SD('m1')" id="dnav-m1">Fundamentos</div>
-  <div class="d-item" onclick="SD('m2')" id="dnav-m2">Malha de Controle</div>
-  <div class="d-item" onclick="SD('m3')" id="dnav-m3">Instrumentação</div>
-  <div class="d-item" onclick="SD('m4')" id="dnav-m4">Erros de Medição</div>
-  <div class="d-group">VARIÁVEIS</div>
-  <div class="d-item" onclick="SD('formulas')" id="dnav-formulas">Fórmulas Visuais ★</div>
-  <div class="d-item" onclick="SD('pressao')" id="dnav-pressao">Pressão</div>
-  <div class="d-item" onclick="SD('nivel')" id="dnav-nivel">Nível</div>
-  <div class="d-item" onclick="SD('vazao')" id="dnav-vazao">Vazão</div>
-  <div class="d-item" onclick="SD('temperatura')" id="dnav-temperatura" style="color:var(--pu)">Temperatura ★ Novo</div>
-  <div class="d-group">CONEXÕES</div>
-  <div class="d-item" onclick="SD('relacoes')" id="dnav-relacoes">Relações P·N·Q</div>
-  <div class="d-item" onclick="SD('cenarios')" id="dnav-cenarios">Cenários Reais</div>
-  <div class="d-group">PRÁTICA</div>
-  <div class="d-item" onclick="SD('calibracao')" id="dnav-calibracao" style="color:var(--y)">Calibração ★ Novo</div>
-  <div class="d-item" onclick="SD('flash')" id="dnav-flash">Flashcards</div>
-  <div class="d-item" onclick="SD('quiz')" id="dnav-quiz">Quiz</div>
-  <div class="d-item" onclick="SD('calc')" id="dnav-calc">Calculadora</div>
-  <div class="d-item" onclick="SD('bernoulli')" id="dnav-bernoulli" style="color:var(--g)">Bernoulli ⚡ — Simulador</div>
-  <div class="d-group">META</div>
-  <div class="d-item" onclick="SD('changelog')" id="dnav-changelog" style="color:var(--t3)">Atualizações</div>
-</div>
+  <div class="ds-sidebar-footer">
+    <button class="ds-theme-btn" id="theme-btn" onclick="toggleTheme()">
+      <span class="ds-theme-icon">☀</span>
+      <span class="ds-theme-label">Tema</span>
+    </button>
+    <span class="ds-sidebar-version">v5.4</span>
+  </div>
 
-<div class="content">
+</aside>
+
+<!-- Overlay mobile (fora da sidebar, mas dentro do app-shell) -->
+<div class="ds-mobile-overlay" id="mobile-overlay" onclick="closeMobileSidebar()"></div>
+
+<!-- Elementos ocultos para compatibilidade com script.js (toggleDrawer/closeDrawer) -->
+<div id="overlay" style="display:none"></div>
+<div id="drawer" style="display:none"></div>
+
+<!-- ── MAIN WRAPPER ──────────────────────────────────────── -->
+<div class="main-wrapper">
+
+  <header class="module-topbar">
+    <div class="topbar-breadcrumb">
+      <span>SENAI</span>
+      <span class="crumb-sep">›</span>
+      <span class="crumb-active">MVF v5</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="topbar-hamburger" id="hamburger-btn"
+              onclick="toggleMobileSidebar()" aria-label="Menu">☰</button>
+    </div>
+  </header>
+
+  <main class="main-content">
+  <div class="content">
 
 <!-- ════════════════════════════════════════════════════
      §01 · HOME — Dashboard de Estudos
@@ -1712,9 +1793,41 @@
 </div>
 
 </div><!-- /content -->
+  </main><!-- /main-content -->
+</div><!-- /main-wrapper -->
+</div><!-- /app-shell -->
 
 <!-- Scripts externos -->
 <script src="data.js"></script>
 <script src="script.js"></script>
+
+<!-- Sidebar collapse + mobile toggle -->
+<script>
+(function(){
+  var sidebar = document.getElementById('sidebar');
+  var toggle  = document.getElementById('sidebar-toggle');
+  var overlay = document.getElementById('mobile-overlay');
+  var KEY = 'senai-mvf-sidebar-collapsed';
+
+  // Restore collapsed state
+  if(localStorage.getItem(KEY) === 'true') sidebar.classList.add('collapsed');
+
+  // Desktop collapse
+  if(toggle) toggle.addEventListener('click', function(){
+    sidebar.classList.toggle('collapsed');
+    localStorage.setItem(KEY, sidebar.classList.contains('collapsed'));
+  });
+
+  // Mobile open/close
+  window.toggleMobileSidebar = function(){
+    var open = sidebar.classList.toggle('open');
+    if(overlay) overlay.classList.toggle('show', open);
+  };
+  window.closeMobileSidebar = function(){
+    sidebar.classList.remove('open');
+    if(overlay) overlay.classList.remove('show');
+  };
+})();
+</script>
 </body>
 </html>

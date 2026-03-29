@@ -18,205 +18,78 @@
 ════════════════════════════════════════════════════════════════ */
 
 /* ── 1. VARIÁVEIS E RESET ─────────────────────────────────────── */
-*{box-sizing:border-box;margin:0;padding:0}
 
-:root{
-  /* Backgrounds */
-  --bg:#0a0c10; --bg2:#12151e; --bg3:#181d28; --bg4:#1e2535;
-  /* Cores de ênfase */
-  --p:#00d4ff;  /* ciano  — pressão */
-  --g:#00ff9d;  /* verde  — nível   */
-  --y:#ffc040;  /* amarelo — vazão  */
-  --r:#ff5566;  /* vermelho — erro  */
-  --pu:#c084ff; /* roxo  — temperatura */
-  --or:#ff9040; /* laranja — relações  */
-  /* Texto */
-  --t1:#f0f2f8; --t2:#b0bac8; --t3:#6a7585;
-  /* Borda */
-  --bd:rgba(255,255,255,0.09);
-  /* Fontes */
-  --f:'IBM Plex Sans',sans-serif;
+/* Tokens de layout herdados do _design-system.css via [data-module="mvf"].
+   Aqui mapeamos para as variáveis locais usadas em todo o CSS de componentes. */
+:root {
+  --bg:  var(--ds-bg-base,     #0a0c10);
+  --bg2: var(--ds-bg-surface,  #12151e);
+  --bg3: var(--ds-bg-elevated, #181d28);
+  --bg4: var(--ds-bg-overlay,  #1e2535);
+  --bd:  var(--ds-border-subtle, rgba(255,255,255,0.09));
+  --t1:  var(--ds-text-primary,   #f0f2f8);
+  --t2:  var(--ds-text-secondary, #b0bac8);
+  --t3:  var(--ds-text-tertiary,  #6a7585);
+  /* Cores semânticas de variáveis físicas — inalteradas */
+  --p:#00d4ff; --g:#00ff9d; --y:#ffc040;
+  --r:#ff5566; --pu:#c084ff; --or:#ff9040;
+  --f:'Inter','IBM Plex Sans',system-ui,sans-serif;
   --fm:'IBM Plex Mono',monospace;
   --radius:10px;
-  /* Sombra de card */
-  --shadow:0 2px 12px rgba(0,0,0,0.35);
+  --shadow: var(--ds-shadow-sm, 0 2px 12px rgba(0,0,0,0.35));
 }
 
-/* ── TEMA CLARO ──────────────────────────────────────────────── */
-.light{
-  --bg:#f0f4fb;
-  --bg2:#ffffff;
-  --bg3:#ffffff;
-  --bg4:#eef2f9;
-  --t1:#0d1117;
-  --t2:#374151;
-  --t3:#6b7280;
-  --bd:rgba(0,0,0,0.09);
-  --shadow:0 2px 12px rgba(0,0,0,0.10);
-  /* Ajusta tons de ênfase para contraste no fundo claro */
-  --p:#0099cc;
-  --g:#00a366;
-  --y:#d4880a;
-  --r:#cc2233;
-  --pu:#8b44e0;
-  --or:#c75e00;
-}
-
-/* ── TRANSIÇÃO DE TEMA ───────────────────────────────────────── */
-/* Aplica transição só nas propriedades visuais — NÃO inclui display/visibility */
-html{
-  transition: background-color .25s, color .25s;
-}
-.topbar,.brand,.content,.card,.blk,.alert,.hl,.xb,
-.fcard,.scen-card,.cb-calc,.qz-box,.score-wrap,
-.drawer,.drawer-brand,.d-group,.d-item,
-.tgroup,.hamburger,.theme-btn,
-.fc-f,.fc-b,.qz-opt,.qz-fb,.res,
-.ig input, select, .sim-input, table, th, td,
-.fcard-formula,.step,.var-pill{
-  transition:
-    background-color .2s,
-    border-color .2s,
-    color .15s,
-    box-shadow .2s;
-}
-/* Interativos hover/flip — transição curta */
-.titem,.d-item,.btn,.nav-arrow{
-  transition:
-    background-color .15s,
-    border-color .15s,
-    color .15s;
-}
-.fc-inner{
-  transition: transform .5s;
-  transform-style: preserve-3d;
+.light {
+  --bg: var(--ds-bg-base,    #f0f4fb);
+  --bg2:var(--ds-bg-surface, #ffffff);
+  --bg3:var(--ds-bg-elevated,#f8f8f8);
+  --bg4:var(--ds-bg-overlay, #eef2f9);
+  --t1: var(--ds-text-primary,   #0d1117);
+  --t2: var(--ds-text-secondary, #374151);
+  --t3: var(--ds-text-tertiary,  #6b7280);
+  --bd: var(--ds-border-subtle,  rgba(0,0,0,0.09));
+  --shadow: 0 2px 12px rgba(0,0,0,0.10);
+  --p:#0099cc; --g:#00a366; --y:#d4880a;
+  --r:#cc2233; --pu:#8b44e0; --or:#c75e00;
 }
 
 /* ── BASE ────────────────────────────────────────────────────── */
-html,body{
-  width:100%; min-height:100vh;
-  font-family:var(--f);
-  background:var(--bg); color:var(--t1);
-  /* Tipografia fluida — escala entre 14px (mobile) e 16px (desktop) */
-  font-size:clamp(14px, 1.2vw + 12px, 16px);
-  line-height:1.65;
-  overflow-x:hidden;
+html, body {
+  width: 100%;
+  font-family: var(--f);
+  background: var(--bg);
+  color: var(--t1);
+  font-size: clamp(14px, 1.2vw + 12px, 16px);
+  line-height: 1.65;
+  overflow-x: hidden;
 }
+
+/* Transição de tema para componentes de conteúdo */
+.card,.blk,.alert,.hl,.xb,
+.fcard,.scen-card,.cb-calc,.qz-box,.score-wrap,
+.fc-f,.fc-b,.qz-opt,.qz-fb,.res,
+.ig input, select, .sim-input, table, th, td,
+.fcard-formula,.step,.var-pill {
+  transition: background-color .2s, border-color .2s, color .15s, box-shadow .2s;
+}
+.fc-inner { transition: transform .5s; transform-style: preserve-3d; }
 
 /* ── 2. LAYOUT ────────────────────────────────────────────────── */
 
-/* Topbar */
-.topbar{
-  background:var(--bg2);
-  border-bottom:2px solid rgba(0,212,255,0.15);
-  display:flex; align-items:center;
-  padding:0 10px; position:sticky; top:0; z-index:200;
-  min-height:48px;
-  box-shadow:var(--shadow);
+/* Área de conteúdo dentro do main-content do design system */
+.content {
+  padding: 24px 28px;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
 }
-.light .topbar{
-  border-bottom-color:rgba(0,153,204,0.2);
-}
+.screen { display: none; }
+.screen.active { display: block; }
 
-.brand{
-  font-family:var(--fm); font-size:12px; color:var(--p);
-  white-space:nowrap; padding-right:10px;
-  border-right:1px solid var(--bd);
-  margin-right:2px; font-weight:600; flex-shrink:0; letter-spacing:.5px;
+/* Responsivo mobile */
+@media (max-width: 768px) {
+  .content { padding: 16px; }
 }
-
-/* Nav desktop */
-.nav-desktop{
-  display:flex; align-items:center;
-  overflow-x:auto; scrollbar-width:none; flex:1; scroll-behavior:smooth;
-}
-.nav-desktop::-webkit-scrollbar{display:none}
-.tgroup{
-  font-size:10px; text-transform:uppercase; letter-spacing:1.5px;
-  color:rgba(255,255,255,0.28);
-  padding:0 4px 0 8px; flex-shrink:0; white-space:nowrap;
-}
-.light .tgroup{color:rgba(0,0,0,0.3)}
-
-.titem{
-  padding:0 8px; height:48px; display:flex; align-items:center;
-  cursor:pointer; font-size:13px; color:var(--t2);
-  white-space:nowrap; border-bottom:2px solid transparent;
-  font-weight:500; flex-shrink:0;
-}
-.titem:hover{color:var(--t1);background:rgba(255,255,255,0.04)}
-.titem.active{color:var(--t1);border-bottom-color:var(--p);background:rgba(0,212,255,0.07)}
-.light .titem:hover{background:rgba(0,0,0,0.04)}
-.light .titem.active{background:rgba(0,153,204,0.08)}
-
-/* Setas de scroll do nav */
-.nav-arrow{
-  background:none; border:none; color:var(--t3); cursor:pointer;
-  padding:0 4px; height:48px; font-size:16px;
-  flex-shrink:0; display:none;
-}
-.nav-arrow:hover{color:var(--t1)}
-
-/* Botão hambúrguer mobile */
-.hamburger{
-  display:none; background:none; border:1px solid var(--bd);
-  border-radius:6px; color:var(--t2); cursor:pointer;
-  padding:6px 9px; margin-left:6px; font-size:15px; line-height:1;
-}
-
-/* ── Botão de tema ──────────────────────────────────────────── */
-.theme-btn{
-  background:none;
-  border:1px solid var(--bd);
-  border-radius:6px;
-  color:var(--t2);
-  cursor:pointer;
-  padding:6px 9px;
-  margin-left:6px;
-  font-size:14px;
-  line-height:1;
-  flex-shrink:0;
-}
-.theme-btn:hover{color:var(--t1);border-color:var(--p)}
-
-/* Drawer mobile */
-.drawer{
-  position:fixed; top:0; left:-280px; width:280px; height:100vh;
-  background:var(--bg2); border-right:1px solid var(--bd);
-  z-index:300; transition:left .25s; overflow-y:auto; padding:16px 0;
-  box-shadow:4px 0 20px rgba(0,0,0,0.4);
-}
-.drawer.open{left:0}
-.drawer-overlay{
-  position:fixed; inset:0; background:rgba(0,0,0,0.6);
-  z-index:299;
-  visibility:hidden; pointer-events:none; opacity:0;
-  transition:opacity 0.2s, visibility 0.2s;
-}
-.drawer-overlay.open{visibility:visible; pointer-events:auto; opacity:1;}
-.drawer-brand{
-  font-family:var(--fm); font-size:13px; color:var(--p);
-  padding:0 16px 14px; border-bottom:1px solid var(--bd);
-  margin-bottom:6px; font-weight:600;
-}
-.drawer-close{float:right;background:none;border:none;color:var(--t3);font-size:18px;cursor:pointer;line-height:1}
-.d-group{
-  font-size:11px; text-transform:uppercase; letter-spacing:2px;
-  color:rgba(255,255,255,0.28); padding:10px 16px 4px;
-}
-.light .d-group{color:rgba(0,0,0,0.3)}
-.d-item{
-  padding:11px 16px; cursor:pointer; font-size:14px; color:var(--t2);
-  border-left:3px solid transparent; font-weight:500;
-}
-.d-item:hover{background:rgba(255,255,255,0.04);color:var(--t1)}
-.d-item.active{color:var(--p);border-left-color:var(--p);background:rgba(0,212,255,0.06)}
-.light .d-item:hover{background:rgba(0,0,0,0.04)}
-
-/* Área de conteúdo */
-.content{padding:24px 20px;width:100%;max-width:1100px;margin:0 auto}
-.screen{display:none}
-.screen.active{display:block}
 
 /* ── 3. TIPOGRAFIA ────────────────────────────────────────────── */
 .h1{font-size:clamp(18px, 2.5vw, 26px);font-weight:600;margin-bottom:4px;color:var(--t1)}
