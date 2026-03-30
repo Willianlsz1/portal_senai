@@ -372,4 +372,3 @@ window.addEventListener('message', function(e) {
     document.documentElement.dataset.theme = e.data.theme;
   }
 });
-});
