@@ -3,28 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self'; frame-ancestors 'self';">
-    <title>SENAI · EASA v2.1</title>
-  <script>if(window.self!==window.top)document.documentElement.classList.add('embedded');</script>
-<link rel="preconnect"
-  href="https://fonts.googleapis.com">
-<link rel="preconnect"
-  href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?
-  family=Inter:wght@400;600;700&
-  family=JetBrains+Mono:wght@400;700&
-  display=swap">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+                 font-src https://fonts.gstatic.com;
+                 script-src 'self' 'unsafe-inline';
+                 img-src 'self' data:;
+                 frame-src 'self';
+                 frame-ancestors 'self';">
+  <title>SENAI · EASA v2.2</title>
 
-<!-- 1º shared: tokens base -->
-<link rel="stylesheet"
-  href="../shared/tokens.css">
-<!-- 2º shared: componentes unificados -->
-<link rel="stylesheet"
-  href="../shared/components.css">
-<!-- 3º app: sobrescritas locais -->
-<link rel="stylesheet"
-  href="style.css">
+  <!-- Detecta embed e adiciona classe para ajustes de layout -->
+  <script>if(window.self!==window.top)document.documentElement.classList.add('embedded');</script>
+
+  <!-- 1. Fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600;700&family=Share+Tech+Mono&display=swap">
+
+  <!-- 2. Tokens compartilhados (DEVE vir ANTES de tudo mais) -->
+  <link rel="stylesheet" href="../shared/tokens.css">
+
+  <!-- 3. Componentes compartilhados -->
+  <link rel="stylesheet" href="../shared/components.css">
+
+  <!-- 4. Estilo do EASA (não usa _design-system.css — tem sidebar própria) -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body class="ds-bg-grid">
 
