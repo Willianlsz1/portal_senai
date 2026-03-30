@@ -1,29 +1,34 @@
 <!DOCTYPE html>
 <html lang="pt-BR" data-theme="dark" data-module="mvf">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self';">
-<title>SENAI · MVF v5</title>
-<link rel="preconnect"
-  href="https://fonts.googleapis.com">
-<link rel="preconnect"
-  href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?
-  family=Inter:wght@400;600;700&
-  family=JetBrains+Mono:wght@400;700&
-  display=swap">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+                 font-src https://fonts.gstatic.com;
+                 script-src 'self' 'unsafe-inline';
+                 img-src 'self' data:;
+                 frame-src 'self';">
+  <title>SENAI · MVF v5</title>
 
-<!-- 1º shared: tokens base -->
-<link rel="stylesheet"
-  href="../shared/tokens.css">
-<!-- 2º shared: componentes unificados -->
-<link rel="stylesheet"
-  href="../shared/components.css">
-<!-- 3º app: sobrescritas locais -->
-<link rel="stylesheet"
-  href="style.css">
+  <!-- 1. Fontes — centralizadas aqui, não repetir nos CSSs -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+
+  <!-- 2. Tokens compartilhados (DEVE vir ANTES do design-system e do style.css) -->
+  <link rel="stylesheet" href="../shared/tokens.css">
+
+  <!-- 3. Componentes compartilhados (flashcard, quiz, tags, tabela) -->
+  <link rel="stylesheet" href="../shared/components.css">
+
+  <!-- 4. Design System (shell: sidebar DS, topbar, responsivo) -->
+  <link rel="stylesheet" href="../_design-system.css">
+
+  <!-- 5. Estilo do MVF (específico do app — sobrescreve o que for necessário) -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body class="ds-bg-grid">
 
