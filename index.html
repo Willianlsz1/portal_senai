@@ -3,54 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self';">
   <title>SENAI · Portal de Estudos</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     /* ── 1. TOKENS ──────────────────────────────────────────── */
     :root {
-      /* Superfícies */
       --bg-base:         #141618;
       --bg-surface:      #1c1f23;
       --bg-overlay:      #22262b;
       --bg-glass:        rgba(255,255,255,0.055);
       --bg-glass-hover:  rgba(255,255,255,0.09);
-
-      /* Bordas */
       --border-subtle:   rgba(255,255,255,0.07);
       --border-default:  rgba(255,255,255,0.11);
       --border-strong:   rgba(255,255,255,0.18);
-
-      /* Texto */
       --text-primary:    #f0f2f5;
       --text-secondary:  #8b9099;
       --text-tertiary:   #555b63;
-
-      /* Acento MVF */
       --mvf-base:        #0ea5e9;
       --mvf-soft:        rgba(14,165,233,0.12);
       --mvf-glow:        rgba(14,165,233,0.25);
       --mvf-card-bg:     rgba(14,165,233,0.06);
       --mvf-card-border: rgba(14,165,233,0.18);
-
-      /* Acento EASA */
       --easa-base:       #10b981;
       --easa-soft:       rgba(16,185,129,0.12);
       --easa-glow:       rgba(16,185,129,0.25);
       --easa-card-bg:    rgba(16,185,129,0.06);
       --easa-card-border:rgba(16,185,129,0.18);
-
-      /* Acento Portal */
       --portal-base:     #a78bfa;
       --portal-soft:     rgba(167,139,250,0.12);
       --portal-glow:     rgba(167,139,250,0.22);
-
-      /* Sombras */
       --shadow-sm:  0 1px 3px rgba(0,0,0,0.4);
       --shadow-md:  0 4px 16px rgba(0,0,0,0.35);
       --shadow-lg:  0 12px 40px rgba(0,0,0,0.45);
-
-      /* Layout */
       --bar-h:     56px;
     }
 
@@ -105,7 +90,7 @@
       flex-direction: column;
     }
 
-    button, a, .nav-pill, .chip, .btn-open, .app-card {
+    button, a, .tab, .chip, .btn-open, .app-card {
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
@@ -129,7 +114,6 @@
       background: rgba(244,246,249,0.88);
     }
 
-    /* Logo */
     .nav-logo {
       display: flex;
       flex-direction: column;
@@ -172,7 +156,6 @@
       50%       { opacity: 0.7; box-shadow: 0 0 6px 2px var(--portal-glow); }
     }
 
-    /* Pills de navegação */
     .tabs {
       display: flex;
       gap: 4px;
@@ -195,7 +178,6 @@
       white-space: nowrap;
       user-select: none;
       letter-spacing: 0.01em;
-      text-decoration: none; /* reset <a> underline */
     }
 
     .tab:hover {
@@ -237,7 +219,6 @@
 
     .tab.active .tab-pip { opacity: 1; transform: scale(1.2); }
 
-    /* Ações */
     .nav-actions {
       margin-left: auto;
       display: flex;
@@ -279,26 +260,103 @@
       font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.05em;
-      display: flex;
+      display: none;
       align-items: center;
       gap: 5px;
+      text-decoration: none;
     }
     #btn-external:hover {
       background: var(--bg-glass-hover);
       border-color: var(--border-default);
       color: var(--text-primary);
     }
+    #btn-external.visible {
+      display: flex;
+    }
 
     /* ── 4. ÁREA DE CONTEÚDO ────────────────────────────────── */
     .content-area {
       flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ── 5. PAINÉIS ─────────────────────────────────────────── */
+    .panel {
+      display: none;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .panel.visible {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Home scroll */
+    #panel-home {
       overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    /* Iframe wrapper */
+    .iframe-wrap {
+      flex: 1;
+      position: relative;
+      min-height: 0;
+    }
+
+    .iframe-wrap iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
       background: var(--bg-base);
     }
 
-    /* ── 5. PAINEL HOME ─────────────────────────────────────── */
+    /* Loading overlay */
+    .iframe-loader {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      z-index: 3;
+      background: var(--bg-base);
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
 
-    /* Micro-grid sutil */
+    .iframe-loader.done {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .loader-spinner {
+      width: 28px;
+      height: 28px;
+      border: 2.5px solid var(--border-default);
+      border-top-color: var(--portal-base);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    .loader-text {
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      letter-spacing: 0.03em;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ── 6. PAINEL HOME ─────────────────────────────────────── */
     #panel-home::before {
       content: '';
       position: fixed;
@@ -314,7 +372,6 @@
       opacity: 0.5;
     }
 
-    /* Radial glow central */
     #panel-home::after {
       content: '';
       position: fixed;
@@ -337,10 +394,7 @@
       text-align: center;
     }
 
-    /* Hero */
-    .hero-section {
-      margin-bottom: 40px;
-    }
+    .hero-section { margin-bottom: 40px; }
 
     .hero-title {
       font-size: clamp(28px, 5vw, 46px);
@@ -362,7 +416,6 @@
       margin: 0 auto;
     }
 
-    /* Stats */
     .stats-row {
       display: flex;
       align-items: center;
@@ -404,7 +457,6 @@
       flex-shrink: 0;
     }
 
-    /* Cards */
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -424,13 +476,12 @@
       gap: 20px;
       position: relative;
       overflow: hidden;
+      cursor: pointer;
       animation: fadeUp 0.4s ease both;
     }
     .app-card:nth-child(2) { animation-delay: 0.08s; }
 
-    .app-card:hover {
-      transform: translateY(-2px);
-    }
+    .app-card:hover { transform: translateY(-2px); }
 
     .app-card[data-card="mvf"] {
       background: linear-gradient(135deg, var(--mvf-card-bg) 0%, var(--bg-surface) 60%);
@@ -448,7 +499,6 @@
       box-shadow: 0 12px 40px var(--easa-glow);
     }
 
-    /* Card header */
     .card-header {
       display: flex;
       align-items: flex-start;
@@ -497,7 +547,6 @@
       padding-top: 6px;
     }
 
-    /* Chips */
     .card-chips {
       display: flex;
       flex-wrap: wrap;
@@ -526,7 +575,6 @@
     [data-card="mvf"]  .chip:hover { border-color: var(--mvf-card-border); color: var(--mvf-base); }
     [data-card="easa"] .chip:hover { border-color: var(--easa-card-border); color: var(--easa-base); }
 
-    /* Botão abrir */
     .btn-open {
       display: flex;
       align-items: center;
@@ -542,33 +590,34 @@
       cursor: pointer;
       letter-spacing: 0.005em;
       margin-top: auto;
+      pointer-events: none;
     }
 
     [data-card="mvf"]  .btn-open { background: var(--mvf-base); color: #fff; }
-    [data-card="mvf"]  .btn-open:hover {
+    [data-card="mvf"]:hover .btn-open {
       background: #38bdf8;
       box-shadow: 0 6px 20px var(--mvf-glow);
-      transform: translateY(-1px);
     }
 
     [data-card="easa"] .btn-open { background: var(--easa-base); color: #fff; }
-    [data-card="easa"] .btn-open:hover {
+    [data-card="easa"]:hover .btn-open {
       background: #34d399;
       box-shadow: 0 6px 20px var(--easa-glow);
-      transform: translateY(-1px);
     }
 
-    .btn-arrow { font-size: 16px; transition: transform 0.2s ease; }
-    .btn-open:hover .btn-arrow { transform: translateX(3px); }
+    .btn-arrow {
+      font-size: 16px;
+      transition: transform 0.2s ease;
+    }
+    .app-card:hover .btn-arrow { transform: translateX(3px); }
 
-    /* Footer */
     .home-footer {
       font-size: 11px;
       color: var(--text-tertiary);
       letter-spacing: 0.04em;
     }
 
-    /* ── 6. ANIMAÇÕES ───────────────────────────────────────── */
+    /* ── 7. ANIMAÇÕES ───────────────────────────────────────── */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(12px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -586,10 +635,10 @@
       .cards-grid { grid-template-columns: 1fr; }
       .stats-row  { gap: 16px; }
       .stat-divider { display: none; }
-      .tab span   { display: none; }
-      .tab        { padding: 6px 10px; }
-      #btn-external span { display: none; }
-      #btn-external      { padding: 0 10px; }
+      .tab .tab-label { display: none; }
+      .tab { padding: 6px 10px; }
+      #btn-external .ext-label { display: none; }
+      #btn-external { padding: 0 10px; }
       .home-inner { padding: 40px 16px 56px; }
     }
 
@@ -616,26 +665,26 @@
   </div>
 
   <div class="tabs" role="tablist" aria-label="Aplicações SENAI">
-    <a class="tab active" role="tab" aria-selected="true" data-app="home" href="index.html">
+    <button class="tab active" role="tab" aria-selected="true" data-app="home">
       <div class="tab-pip"></div>
-      <span>Portal</span>
-    </a>
-    <a class="tab" role="tab" aria-selected="false" data-app="mvf" href="senai-mvf/index.html">
+      <span class="tab-label">Portal</span>
+    </button>
+    <button class="tab" role="tab" aria-selected="false" data-app="mvf">
       <div class="tab-pip"></div>
-      <span>MVF</span>
-    </a>
-    <a class="tab" role="tab" aria-selected="false" data-app="easa" href="easa/index.html">
+      <span class="tab-label">MVF</span>
+    </button>
+    <button class="tab" role="tab" aria-selected="false" data-app="easa">
       <div class="tab-pip"></div>
-      <span>EASA</span>
-    </a>
+      <span class="tab-label">EASA</span>
+    </button>
   </div>
 
   <div class="nav-actions">
-    <a id="btn-external" href="senai-mvf/index.html" target="_blank" rel="noopener noreferrer" title="Abrir MVF em nova aba" style="display:none">
-      <span>NOVA ABA</span>
+    <a id="btn-external" href="#" target="_blank" rel="noopener noreferrer" title="Abrir app em nova aba">
+      <span class="ext-label">NOVA ABA</span>
       ↗
     </a>
-    <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Mudar tema">☀</button>
+    <button class="theme-toggle" id="theme-btn" title="Mudar tema">☀</button>
   </div>
 </nav>
 
@@ -644,11 +693,10 @@
 ══════════════════════════════════════════════════════════ -->
 <div class="content-area">
 
-  <!-- Painel: Portal/Home -->
+  <!-- Painel: Portal / Home -->
   <div class="panel visible" id="panel-home">
     <div class="home-inner">
 
-      <!-- Hero -->
       <div class="hero-section">
         <h1 class="hero-title">
           <span class="hero-weight-light">Dois apps,</span>
@@ -656,11 +704,10 @@
         </h1>
         <p class="hero-sub">
           Alterne entre os apps SENAI pelas abas acima —
-          sem precisar abrir novos links. Clique num card para acessar direto.
+          sem recarregar a página. Clique num card para acessar direto.
         </p>
       </div>
 
-      <!-- Stats -->
       <div class="stats-row" aria-label="Estatísticas do portal">
         <div class="stat-item">
           <span class="stat-value">13</span>
@@ -668,7 +715,7 @@
         </div>
         <div class="stat-divider" aria-hidden="true"></div>
         <div class="stat-item">
-          <span class="stat-value">66+</span>
+          <span class="stat-value">86+</span>
           <span class="stat-label">Flashcards</span>
         </div>
         <div class="stat-divider" aria-hidden="true"></div>
@@ -683,11 +730,10 @@
         </div>
       </div>
 
-      <!-- Cards -->
       <div class="cards-grid">
 
         <!-- MVF -->
-        <div class="app-card" data-card="mvf" onclick="location.href='senai-mvf/index.html'">
+        <div class="app-card" data-card="mvf" data-target="mvf" role="button" tabindex="0" aria-label="Abrir app MVF">
           <div class="card-header">
             <div class="card-icon">⚡</div>
             <div class="card-meta">
@@ -706,13 +752,13 @@
             <span class="chip">Bernoulli</span>
             <span class="chip">Quiz</span>
           </div>
-          <button class="btn-open">
+          <span class="btn-open">
             Abrir agora <span class="btn-arrow">→</span>
-          </button>
+          </span>
         </div>
 
         <!-- EASA -->
-        <div class="app-card" data-card="easa" onclick="location.href='easa/index.html'">
+        <div class="app-card" data-card="easa" data-target="easa" role="button" tabindex="0" aria-label="Abrir app EASA">
           <div class="card-header">
             <div class="card-icon">🔌</div>
             <div class="card-meta">
@@ -729,9 +775,9 @@
             <span class="chip">Eletrônica</span>
             <span class="chip">Instrumentação</span>
           </div>
-          <button class="btn-open">
+          <span class="btn-open">
             Abrir agora <span class="btn-arrow">→</span>
-          </button>
+          </span>
         </div>
 
       </div>
@@ -740,29 +786,173 @@
     </div>
   </div>
 
+  <!-- Painel: MVF (iframe) -->
+  <div class="panel" id="panel-mvf">
+    <div class="iframe-wrap">
+      <div class="iframe-loader" id="mvf-loader">
+        <div class="loader-spinner"></div>
+        <span class="loader-text">Carregando MVF…</span>
+      </div>
+      <iframe id="iframe-mvf" title="SENAI MVF"></iframe>
+    </div>
+  </div>
+
+  <!-- Painel: EASA (iframe) -->
+  <div class="panel" id="panel-easa">
+    <div class="iframe-wrap">
+      <div class="iframe-loader" id="easa-loader">
+        <div class="loader-spinner"></div>
+        <span class="loader-text">Carregando EASA…</span>
+      </div>
+      <iframe id="iframe-easa" title="SENAI EASA"></iframe>
+    </div>
+  </div>
+
 </div>
 
 <script>
-  /* ── Tema claro/escuro ───────────────────────────────────── */
-  (function initTheme() {
-    const saved = localStorage.getItem('senai-portal-theme');
-    if (saved === 'light' || saved === 'dark') document.documentElement.dataset.theme = saved;
-    updateThemeBtn();
+  /* ── Registro de apps ────────────────────────────────────── */
+  var APPS = {
+    mvf:  { src: 'senai-mvf/index.html',  iframe: null, loader: null, loaded: false },
+    easa: { src: 'easa/index.html',       iframe: null, loader: null, loaded: false }
+  };
+
+  /* Cacheia referências DOM */
+  (function cacheRefs() {
+    for (var key in APPS) {
+      APPS[key].iframe = document.getElementById('iframe-' + key);
+      APPS[key].loader = document.getElementById(key + '-loader');
+    }
   })();
 
-  function toggleTheme() {
-    const isLight = document.documentElement.dataset.theme === 'light';
-    document.documentElement.dataset.theme = isLight ? 'dark' : 'light';
-    localStorage.setItem('senai-portal-theme', isLight ? 'dark' : 'light');
+  /* ── Troca de abas ───────────────────────────────────────── */
+  function switchApp(appId) {
+    /* Tabs */
+    document.querySelectorAll('.tab').forEach(function(t) {
+      var active = t.dataset.app === appId;
+      t.classList.toggle('active', active);
+      t.setAttribute('aria-selected', String(active));
+    });
+
+    /* Painéis */
+    document.querySelectorAll('.panel').forEach(function(p) {
+      p.classList.remove('visible');
+    });
+    document.getElementById('panel-' + appId).classList.add('visible');
+
+    /* Botão "NOVA ABA" */
+    var btnExt = document.getElementById('btn-external');
+    if (APPS[appId]) {
+      btnExt.href = APPS[appId].src;
+      btnExt.classList.add('visible');
+    } else {
+      btnExt.classList.remove('visible');
+    }
+
+    /* Carrega iframe na primeira vez */
+    var app = APPS[appId];
+    if (app && !app.loaded) {
+      app.iframe.src = app.src;
+      app.iframe.addEventListener('load', function onLoad() {
+        app.loaded = true;
+        app.loader.classList.add('done');
+        pushTheme(app.iframe);
+        app.iframe.removeEventListener('load', onLoad);
+      });
+    }
+
+    /* Hash na URL (sem recarregar) */
+    if (appId === 'home') {
+      history.replaceState(null, '', window.location.pathname);
+    } else {
+      history.replaceState(null, '', '#' + appId);
+    }
+  }
+
+  /* ── Sincroniza tema para iframe via postMessage ─────────── */
+  function pushTheme(iframe) {
+    try {
+      iframe.contentWindow.postMessage(
+        { type: 'senai-theme-sync', theme: document.documentElement.dataset.theme },
+        '*'
+      );
+    } catch (e) { /* cross-origin silencioso */ }
+  }
+
+  function pushThemeToAll() {
+    for (var key in APPS) {
+      if (APPS[key].loaded) pushTheme(APPS[key].iframe);
+    }
+  }
+
+  /* ── Tema claro/escuro ───────────────────────────────────── */
+  function applyTheme(isLight) {
+    document.documentElement.dataset.theme = isLight ? 'light' : 'dark';
+    localStorage.setItem('senai-portal-theme', isLight ? 'light' : 'dark');
     updateThemeBtn();
+    pushThemeToAll();
+  }
+
+  function toggleTheme() {
+    applyTheme(document.documentElement.dataset.theme !== 'light');
   }
 
   function updateThemeBtn() {
-    const btn = document.getElementById('theme-btn');
-    const isLight = document.documentElement.dataset.theme === 'light';
+    var btn = document.getElementById('theme-btn');
+    var isLight = document.documentElement.dataset.theme === 'light';
     btn.textContent = isLight ? '☾' : '☀';
-    btn.title = isLight ? 'Mudar para tema escuro' : 'Mudar para tema claro';
+    btn.title = isLight ? 'Tema escuro' : 'Tema claro';
   }
+
+  (function initTheme() {
+    var saved = localStorage.getItem('senai-portal-theme');
+    if (saved === 'light' || saved === 'dark') {
+      document.documentElement.dataset.theme = saved;
+    }
+    updateThemeBtn();
+  })();
+
+  /* ── Eventos ─────────────────────────────────────────────── */
+  document.getElementById('theme-btn').addEventListener('click', toggleTheme);
+
+  /* Clique nas abas */
+  document.querySelectorAll('.tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      switchApp(tab.dataset.app);
+    });
+  });
+
+  /* Clique nos cards do home */
+  document.querySelectorAll('.app-card[data-target]').forEach(function(card) {
+    function activate() {
+      switchApp(card.dataset.target);
+    }
+    card.addEventListener('click', activate);
+    card.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        activate();
+      }
+    });
+  });
+
+  /* Restaurar aba pelo hash (ex: portal#index.html#mvf) */
+  (function restoreFromHash() {
+    var hash = window.location.hash.replace('#', '');
+    if (APPS[hash]) {
+      switchApp(hash);
+    }
+  })();
+
+  /* Voltar com botão do navegador → volta para home */
+  window.addEventListener('popstate', function() {
+    var hash = window.location.hash.replace('#', '');
+    if (APPS[hash]) {
+      switchApp(hash);
+    } else {
+      switchApp('home');
+    }
+  });
 </script>
 
 </body>
