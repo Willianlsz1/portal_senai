@@ -10,6 +10,7 @@
      6. Quiz
      7. Updates (renderização)
      8. Init
+     9. Integração com Portal (iframe)
 ═══════════════════════════════════════════════════════════ */
 
 /* ── 0. SEGURANÇA — helpers ──────────────────────────────── */
@@ -70,7 +71,6 @@ function goTo(pg, el, pushHistory = true) {
   closeSidebar();
 
   // Registra estado no histórico do navegador
-  // Isso faz o botão "voltar" do mobile navegar entre páginas do app
   if (pushHistory) {
     history.pushState({ page: pg }, '', '#' + pg);
   }
@@ -78,14 +78,9 @@ function goTo(pg, el, pushHistory = true) {
 
 /* ── 1b. BOTÃO VOLTAR DO MOBILE (popstate) ──────────────── */
 window.addEventListener('popstate', function (e) {
-  // Recupera a página do estado salvo (ou vai para dashboard)
   const rawPg = (e.state && e.state.page) ? e.state.page : 'dashboard';
   const pg = VALID_PAGES.includes(rawPg) ? rawPg : 'dashboard';
-
-  // Encontra o nav-item correspondente via data-page (seguro)
   const navEl = document.querySelector('.nav-item[data-page="' + pg + '"]');
-
-  // Navega sem empurrar novo estado (evita loop)
   goTo(pg, navEl, false);
 });
 
@@ -100,7 +95,7 @@ function toggleSidebar() {
   } else {
     sidebar.classList.add('open');
     overlay.classList.add('show');
-    document.body.style.overflow = 'hidden'; // trava scroll do fundo enquanto menu abre
+    document.body.style.overflow = 'hidden';
   }
 }
 
@@ -123,7 +118,8 @@ function toggleTheme() {
   const html   = document.documentElement;
   const isDark = html.getAttribute('data-theme') === 'dark';
   html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-  document.getElementById('theme-lbl').textContent = isDark ? 'LIGHT' : 'DARK';
+  const lbl = document.getElementById('theme-lbl');
+  if (lbl) lbl.textContent = isDark ? 'LIGHT' : 'DARK';
 }
 
 /* ── 3. FÓRMULAS — TOOLTIPS ──────────────────────────────── */
@@ -131,7 +127,6 @@ function showTip(id) {
   const tip = document.getElementById('tip-' + id);
   if (!tip) return;
 
-  // Fecha todos os outros tooltips do mesmo bloco
   const parent = tip.closest('.formula-display');
   parent.querySelectorAll('.tooltip-box').forEach(t => {
     if (t !== tip) t.classList.remove('show');
@@ -196,7 +191,7 @@ function calcPar() {
 function calcLED() {
   const vcc  = parseFloat(document.getElementById('led-vcc').value);
   const vled = parseFloat(document.getElementById('led-vled').value);
-  const iled = parseFloat(document.getElementById('led-i').value) / 1000; // mA → A
+  const iled = parseFloat(document.getElementById('led-i').value) / 1000;
   if ([vcc, vled, iled].some(isNaN)) { setResult('res-led', 'Preencha todos'); return; }
   setResult('res-led', 'R = ' + fmt((vcc - vled) / iled) + ' Ω');
 }
@@ -254,7 +249,6 @@ function renderQuestion() {
   document.getElementById('quiz-fb').className         = 'quiz-feedback';
   document.getElementById('quiz-next').className       = 'quiz-next';
 
-  // Renderiza opções
   const container = document.getElementById('quiz-opts');
   container.innerHTML = '';
   d.opts.forEach((opt, idx) => {
@@ -275,13 +269,11 @@ function answerQuestion(idx) {
   const d    = QUIZ_DATA[quizIndex];
   const opts = document.querySelectorAll('.quiz-opt');
 
-  // Marca certo/errado
   opts.forEach((btn, i) => {
     if (i === d.ans)  btn.classList.add('correct');
     else if (i === idx) btn.classList.add('wrong');
   });
 
-  // Feedback
   const fb = document.getElementById('quiz-fb');
   if (idx === d.ans) {
     quizScore++;
@@ -300,7 +292,6 @@ function nextQuestion() {
   quizIndex++;
 
   if (quizIndex >= QUIZ_DATA.length) {
-    // Tela de resultado final
     document.getElementById('quiz-q').innerHTML =
       '🎉 Quiz finalizado! Você acertou <strong style="color:var(--accent2)">' +
       quizScore + ' de ' + QUIZ_DATA.length + '</strong> questões.';
@@ -354,18 +345,17 @@ document.addEventListener('DOMContentLoaded', () => {
   renderQuestion();
   renderUpdates();
 
-  // Suporte ao botão voltar: define o estado inicial no histórico
-  // Se vier com hash na URL (ex: #cc), abre direto naquela página
+  /* Suporte ao botão voltar */
   const rawHash = location.hash.replace('#', '');
   const hash = VALID_PAGES.includes(rawHash) ? rawHash : null;
   if (hash && document.getElementById('pg-' + hash)) {
     const navEl = document.querySelector('.nav-item[data-page="' + hash + '"]');
-    goTo(hash, navEl, false);                           // abre a página
-    history.replaceState({ page: hash }, '', '#' + hash); // registra sem duplicar
+    goTo(hash, navEl, false);
+    history.replaceState({ page: hash }, '', '#' + hash);
   } else {
-    // Página inicial = dashboard; grava no histórico para poder voltar a ele
     history.replaceState({ page: 'dashboard' }, '', '#dashboard');
   }
+});
 
 /* ── 9. INTEGRAÇÃO COM PORTAL (iframe) ─────────────────── */
 /* Detecta se está dentro do iframe do portal e esconde topbar redundante */
