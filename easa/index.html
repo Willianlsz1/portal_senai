@@ -6,7 +6,25 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self'; frame-ancestors 'self';">
     <title>SENAI · EASA v2.1</title>
   <script>if(window.self!==window.top)document.documentElement.classList.add('embedded');</script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Share+Tech+Mono&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="preconnect"
+  href="https://fonts.googleapis.com">
+<link rel="preconnect"
+  href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?
+  family=Inter:wght@400;600;700&
+  family=JetBrains+Mono:wght@400;700&
+  display=swap">
+
+<!-- 1º shared: tokens base -->
+<link rel="stylesheet"
+  href="../shared/tokens.css">
+<!-- 2º shared: componentes unificados -->
+<link rel="stylesheet"
+  href="../shared/components.css">
+<!-- 3º app: sobrescritas locais -->
+<link rel="stylesheet"
+  href="style.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="ds-bg-grid">
