@@ -366,9 +366,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Página inicial = dashboard; grava no histórico para poder voltar a ele
     history.replaceState({ page: 'dashboard' }, '', '#dashboard');
   }
+
+/* ── 9. INTEGRAÇÃO COM PORTAL (iframe) ─────────────────── */
+/* Detecta se está dentro do iframe do portal e esconde topbar redundante */
+if (window.self !== window.top) {
+  document.documentElement.classList.add('embedded');
+}
+
 /* Escuta sync de tema vindo do portal */
 window.addEventListener('message', function(e) {
   if (e.data && e.data.type === 'senai-theme-sync') {
     document.documentElement.dataset.theme = e.data.theme;
+    var lbl = document.getElementById('theme-lbl');
+    if (lbl) lbl.textContent = e.data.theme === 'light' ? 'LIGHT' : 'DARK';
   }
 });
