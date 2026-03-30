@@ -1284,6 +1284,17 @@ button:focus-visible {
   border-radius: var(--radius-sm);
 }
 
+/* ── 10. MODO EMBEDDED (dentro do iframe do portal) ──── */
+html.embedded .topbar {
+  display: none !important;
+}
+html.embedded .main {
+  padding-top: 16px;
+}
+html.embedded .sidebar {
+  top: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     transition-duration: 0.01ms !important;
