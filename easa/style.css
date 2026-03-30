@@ -1285,6 +1285,8 @@ button:focus-visible {
 }
 
 /* ── 10. MODO EMBEDDED (dentro do iframe do portal) ──── */
+
+/* Desktop: esconde topbar redundante, sidebar encosta no topo */
 html.embedded .topbar {
   display: none !important;
 }
@@ -1293,6 +1295,34 @@ html.embedded .main {
 }
 html.embedded .sidebar {
   top: 0;
+}
+
+/* Mobile dentro do iframe: reaparece o hamburguer fora da topbar
+   para que a sidebar slide-over continue funcionando */
+@media (max-width: 700px) {
+  html.embedded .menu-btn {
+    display: flex !important;
+    position: fixed;
+    top: 8px;
+    left: 8px;
+    z-index: 100;
+    width: 36px;
+    height: 36px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--accent);
+    font-size: 18px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  html.embedded .sidebar {
+    z-index: 99;
+  }
+  html.embedded .sidebar-overlay {
+    z-index: 98;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
