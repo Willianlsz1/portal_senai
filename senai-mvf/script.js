@@ -672,4 +672,10 @@ window.addEventListener('DOMContentLoaded',()=>{
     if(nq) nq.textContent=qc;
     if(qzmn) qzmn.textContent=qc+' questões';
   }
+/* Escuta sync de tema vindo do portal */
+window.addEventListener('message', function(e) {
+  if (e.data && e.data.type === 'senai-theme-sync') {
+    document.documentElement.dataset.theme = e.data.theme;
+  }
+});
 });
