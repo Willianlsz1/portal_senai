@@ -119,10 +119,21 @@ document.addEventListener('keydown', e => {
 /* ③ Event delegation na sidebar — substitui onclick="goTo(...)" no HTML */
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('nav')?.addEventListener('click', e => {
-    const item = e.target.closest('.nav-item[data-page]');
-    if (!item) return;
-    const pg = item.dataset.page;
-    if (VALID_PAGES.includes(pg)) goTo(pg, item);
+  const item = e.target.closest('.nav-item[data-page]');
+  if (!item) return;
+  const pg = item.dataset.page;
+  if (VALID_PAGES.includes(pg)) goTo(pg, item);
+});
+
+document.addEventListener('click', e => {
+  const card = e.target.closest('[data-page]');
+  if (!card || card.classList.contains('nav-item')) return;
+  const pg = card.dataset.page;
+  if (VALID_PAGES.includes(pg)) {
+    const navEl = document.querySelector(`.nav-item[data-page="${pg}"]`);
+    goTo(pg, navEl);
+  }
+});
   });
 });
 
