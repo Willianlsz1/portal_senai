@@ -14,18 +14,18 @@ portal_senai/               ← este repositório
 ├── README.md
 ├── LICENSE
 │
-├── senai-mvf/              ← App MVF (Medição de Variáveis Físicas)
-│   ├── index.html
-│   ├── style.css
-│   ├── data.js
-│   └── script.js
+├── src/
+│   ├── components/         ← utilitários de UI compartilhados
+│   ├── modules/            ← lógica JS por módulo (portal, mvf, easa)
+│   ├── pages/              ← reservado para expansão de páginas
+│   ├── styles/             ← tokens, design system e estilos por módulo
+│   └── utils/              ← reservado para helpers utilitários
 │
-└── easa/                   ← App EASA (Eletrônica Aplicada a Sistemas de Automação)
-    ├── index.html
-    ├── style.css
-    ├── data.js
-    ├── app.js
-    └── download
+├── senai-mvf/
+│   └── index.html          ← view do módulo MVF
+│
+└── easa/
+    └── index.html          ← view do módulo EASA
 ```
 
 ---

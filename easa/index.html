@@ -23,13 +23,13 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600;700&family=Share+Tech+Mono&display=swap">
 
   <!-- 2. Tokens compartilhados (DEVE vir ANTES de tudo mais) -->
-  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../src/styles/shared/tokens.css">
 
   <!-- 3. Componentes compartilhados -->
-  <link rel="stylesheet" href="../shared/components.css">
+  <link rel="stylesheet" href="../src/styles/shared/components.css">
 
   <!-- 4. Estilo do EASA (não usa _design-system.css — tem sidebar própria) -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../src/styles/modules/easa.css">
 </head>
 <body class="ds-bg-grid">
 
@@ -110,7 +110,7 @@
 
   <!-- Overlay dentro do .app para ficar no mesmo stacking context que a sidebar -->
   <!-- (sidebar z-index:100 > overlay z-index:98, ambos dentro do .app z-index:1) -->
-  <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
   <!-- ── SIDEBAR ──────────────────────────────────────── -->
   <aside class="sidebar">
@@ -123,60 +123,60 @@
     <nav>
       <div class="nav-section">
         <div class="nav-label">Início</div>
-        <div class="nav-item active" data-page="dashboard" onclick="goTo('dashboard',this)">
+        <div class="nav-item active" data-page="dashboard">
           <div class="nav-icon">⚡</div> Dashboard
         </div>
       </div>
 
       <div class="nav-section">
         <div class="nav-label">Fundamentos</div>
-        <div class="nav-item" data-page="fund-eletrica" onclick="goTo('fund-eletrica',this)">
+        <div class="nav-item" data-page="fund-eletrica">
           <div class="nav-icon">🔌</div> Eletricidade Básica
         </div>
-        <div class="nav-item" data-page="cc" onclick="goTo('cc',this)">
+        <div class="nav-item" data-page="cc">
           <div class="nav-icon">➡️</div> Circuitos CC
         </div>
-        <div class="nav-item" data-page="kirchhoff" onclick="goTo('kirchhoff',this)">
+        <div class="nav-item" data-page="kirchhoff">
           <div class="nav-icon">⚖️</div> Kirchhoff & Thévenin
           <span class="nav-badge">NEW</span>
         </div>
-        <div class="nav-item" data-page="ca" onclick="goTo('ca',this)">
+        <div class="nav-item" data-page="ca">
           <div class="nav-icon">〰️</div> Circuitos CA
         </div>
       </div>
 
       <div class="nav-section">
         <div class="nav-label">Componentes</div>
-        <div class="nav-item" data-page="semicond" onclick="goTo('semicond',this)">
+        <div class="nav-item" data-page="semicond">
           <div class="nav-icon">🔵</div> Semicondutores
         </div>
-        <div class="nav-item" data-page="transistor" onclick="goTo('transistor',this)">
+        <div class="nav-item" data-page="transistor">
           <div class="nav-icon">📐</div> Transistores
         </div>
-        <div class="nav-item" data-page="tiristor" onclick="goTo('tiristor',this)">
+        <div class="nav-item" data-page="tiristor">
           <div class="nav-icon">🔁</div> Tiristores
           <span class="nav-badge">NEW</span>
         </div>
-        <div class="nav-item" data-page="opto" onclick="goTo('opto',this)">
+        <div class="nav-item" data-page="opto">
           <div class="nav-icon">💡</div> Optoeletrônica
           <span class="nav-badge">NEW</span>
         </div>
-        <div class="nav-item" data-page="retificador" onclick="goTo('retificador',this)">
+        <div class="nav-item" data-page="retificador">
           <div class="nav-icon">🔋</div> Retificadores
         </div>
       </div>
 
       <div class="nav-section">
         <div class="nav-label">Analógico Avançado</div>
-        <div class="nav-item" data-page="amp" onclick="goTo('amp',this)">
+        <div class="nav-item" data-page="amp">
           <div class="nav-icon">🔺</div> Amplificadores Op-Amp
           <span class="nav-badge">NEW</span>
         </div>
-        <div class="nav-item" data-page="filtros" onclick="goTo('filtros',this)">
+        <div class="nav-item" data-page="filtros">
           <div class="nav-icon">〜</div> Filtros RC
           <span class="nav-badge">NEW</span>
         </div>
-        <div class="nav-item" data-page="rcrl" onclick="goTo('rcrl',this)">
+        <div class="nav-item" data-page="rcrl">
           <div class="nav-icon">⏱</div> Transientes RC/RL
           <span class="nav-badge">v1.2</span>
         </div>
@@ -184,13 +184,13 @@
 
       <div class="nav-section">
         <div class="nav-label">Digital</div>
-        <div class="nav-item" data-page="numeracao" onclick="goTo('numeracao',this)">
+        <div class="nav-item" data-page="numeracao">
           <div class="nav-icon">01</div> Sistemas Numéricos
         </div>
-        <div class="nav-item" data-page="logica" onclick="goTo('logica',this)">
+        <div class="nav-item" data-page="logica">
           <div class="nav-icon">⊕</div> Lógica Digital
         </div>
-        <div class="nav-item" data-page="conv" onclick="goTo('conv',this)">
+        <div class="nav-item" data-page="conv">
           <div class="nav-icon">⇌</div> Conversores A/D · D/A
           <span class="nav-badge">v1.3</span>
         </div>
@@ -198,23 +198,23 @@
 
       <div class="nav-section">
         <div class="nav-label">Prática</div>
-        <div class="nav-item" data-page="formulas" onclick="goTo('formulas',this)">
+        <div class="nav-item" data-page="formulas">
           <div class="nav-icon">★</div> Fórmulas Visuais
         </div>
-        <div class="nav-item" data-page="calc" onclick="goTo('calc',this)">
+        <div class="nav-item" data-page="calc">
           <div class="nav-icon">🧮</div> Calculadora
         </div>
-        <div class="nav-item" data-page="flashcards" onclick="goTo('flashcards',this)">
+        <div class="nav-item" data-page="flashcards">
           <div class="nav-icon">🃏</div> Flashcards
         </div>
-        <div class="nav-item" data-page="quiz" onclick="goTo('quiz',this)">
+        <div class="nav-item" data-page="quiz">
           <div class="nav-icon">📝</div> Quiz
         </div>
       </div>
 
       <div class="nav-section">
         <div class="nav-label">Meta</div>
-        <div class="nav-item" data-page="updates" onclick="goTo('updates',this)">
+        <div class="nav-item" data-page="updates">
           <div class="nav-icon">📋</div> Atualizações
         </div>
       </div>
@@ -226,14 +226,14 @@
 
     <!-- Topbar -->
     <div class="topbar">
-      <div class="menu-btn" onclick="toggleSidebar()" title="Menu" id="menu-btn">☰</div>
+      <div class="menu-btn" title="Menu" id="menu-btn">☰</div>
       <div class="topbar-left">
         <h1 id="page-title">Dashboard <span>·</span> EASA</h1>
         <p><span class="live-dot"></span><a href="../index.html" class="portal-back-link" title="Voltar ao Portal">← Portal</a> · Eletrônica Aplicada a Sistemas de Automação</p>
       </div>
       <div class="topbar-right">
         <span class="theme-label" id="theme-lbl">DARK</span>
-        <div class="theme-toggle" onclick="toggleTheme()" title="Alternar tema"></div>
+        <div class="theme-toggle" title="Alternar tema"></div>
       </div>
     </div>
 
@@ -274,7 +274,7 @@
 
       <div class="section-title">Módulos de Teoria</div>
       <div class="modules-grid">
-        <div class="module-card" onclick="goTo('fund-eletrica',document.querySelector('[data-page=\"fund-eletrica\"]'))">
+        <div class="module-card" data-page="fund-eletrica" role="button" tabindex="0">
           <div class="mod-circuit">🔌</div>
           <div class="mod-num">MÓDULO 01</div>
           <div class="mod-title">Eletricidade Básica</div>
@@ -284,7 +284,7 @@
           </div>
           <div class="mod-bar"><div class="mod-bar-fill" style="width:100%"></div></div>
         </div>
-        <div class="module-card" onclick="goTo('cc',document.querySelector('[data-page=\"cc\"]'))">
+        <div class="module-card" data-page="cc" role="button" tabindex="0">
           <div class="mod-circuit">➡️</div>
           <div class="mod-num">MÓDULO 02</div>
           <div class="mod-title">Circuitos CC</div>
@@ -294,7 +294,7 @@
           </div>
           <div class="mod-bar"><div class="mod-bar-fill" style="width:100%"></div></div>
         </div>
-        <div class="module-card" onclick="goTo('ca',document.querySelector('[data-page=\"ca\"]'))">
+        <div class="module-card" data-page="ca" role="button" tabindex="0">
           <div class="mod-circuit">〰️</div>
           <div class="mod-num">MÓDULO 03</div>
           <div class="mod-title">Circuitos CA</div>
@@ -304,7 +304,7 @@
           </div>
           <div class="mod-bar"><div class="mod-bar-fill" style="width:100%"></div></div>
         </div>
-        <div class="module-card" onclick="goTo('semicond',document.querySelector('[data-page=\"semicond\"]'))">
+        <div class="module-card" data-page="semicond" role="button" tabindex="0">
           <div class="mod-circuit">🔵</div>
           <div class="mod-num">MÓDULO 04</div>
           <div class="mod-title">Semicondutores & Diodo</div>
@@ -314,7 +314,7 @@
           </div>
           <div class="mod-bar"><div class="mod-bar-fill" style="width:100%"></div></div>
         </div>
-        <div class="module-card" onclick="goTo('transistor',document.querySelector('[data-page=\"transistor\"]'))">
+        <div class="module-card" data-page="transistor" role="button" tabindex="0">
           <div class="mod-circuit">📐</div>
           <div class="mod-num">MÓDULO 05</div>
           <div class="mod-title">Transistores BJT / FET</div>
@@ -324,7 +324,7 @@
           </div>
           <div class="mod-bar"><div class="mod-bar-fill" style="width:100%"></div></div>
         </div>
-        <div class="module-card" onclick="goTo('logica',document.querySelector('[data-page=\"logica\"]'))">
+        <div class="module-card" data-page="logica" role="button" tabindex="0">
           <div class="mod-circuit">⊕</div>
           <div class="mod-num">MÓDULO 06</div>
           <div class="mod-title">Lógica Digital</div>
@@ -338,19 +338,19 @@
 
       <div class="section-title">Acesso Rápido</div>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
-        <div class="module-card" onclick="goTo('formulas',document.querySelector('[data-page=\"formulas\"]'))" style="text-align:center;padding:16px">
+        <div class="module-card" data-page="formulas" style="text-align:center;padding:16px" role="button" tabindex="0">
           <div style="font-size:28px;margin-bottom:8px">★</div>
           <div class="mod-title" style="font-size:13px">Fórmulas Visuais</div>
         </div>
-        <div class="module-card" onclick="goTo('calc',document.querySelector('[data-page=\"calc\"]'))" style="text-align:center;padding:16px">
+        <div class="module-card" data-page="calc" style="text-align:center;padding:16px" role="button" tabindex="0">
           <div style="font-size:28px;margin-bottom:8px">🧮</div>
           <div class="mod-title" style="font-size:13px">Calculadora</div>
         </div>
-        <div class="module-card" onclick="goTo('flashcards',document.querySelector('[data-page=\"flashcards\"]'))" style="text-align:center;padding:16px">
+        <div class="module-card" data-page="flashcards" style="text-align:center;padding:16px" role="button" tabindex="0">
           <div style="font-size:28px;margin-bottom:8px">🃏</div>
           <div class="mod-title" style="font-size:13px">Flashcards</div>
         </div>
-        <div class="module-card" onclick="goTo('quiz',document.querySelector('[data-page=\"quiz\"]'))" style="text-align:center;padding:16px">
+        <div class="module-card" data-page="quiz" style="text-align:center;padding:16px" role="button" tabindex="0">
           <div style="font-size:28px;margin-bottom:8px">📝</div>
           <div class="mod-title" style="font-size:13px">Quiz</div>
         </div>
@@ -1682,7 +1682,8 @@
   </main>
 </div>
 
-<script src="data.js"></script>
-<script src="app.js"></script>
+<script src="../src/components/navigation.js"></script>
+<script src="../src/modules/easa/data.js"></script>
+<script src="../src/modules/easa/app.js"></script>
 </body>
 </html>

@@ -19,16 +19,16 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
 
   <!-- 2. Tokens compartilhados (DEVE vir ANTES do design-system e do style.css) -->
-  <link rel="stylesheet" href="../shared/tokens.css">
+  <link rel="stylesheet" href="../src/styles/shared/tokens.css">
 
   <!-- 3. Componentes compartilhados (flashcard, quiz, tags, tabela) -->
-  <link rel="stylesheet" href="../shared/components.css">
+  <link rel="stylesheet" href="../src/styles/shared/components.css">
 
   <!-- 4. Design System (shell: sidebar DS, topbar, responsivo) -->
-  <link rel="stylesheet" href="../_design-system.css">
+  <link rel="stylesheet" href="../src/styles/shared/design-system.css">
 
   <!-- 5. Estilo do MVF (específico do app — sobrescreve o que for necessário) -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../src/styles/modules/mvf.css">
 </head>
 <body class="ds-bg-grid">
 
@@ -54,7 +54,7 @@
     <div class="ds-nav-section">
       <span class="ds-nav-section-label">INÍCIO</span>
       <ul class="ds-nav-list">
-        <li><button class="ds-nav-item active" id="nav-home" onclick="S('home')">
+        <li><button class="ds-nav-item active" id="nav-home" data-screen="home">
           <span class="ds-nav-icon">⊞</span><span class="ds-nav-label">Dashboard</span>
         </button></li>
       </ul>
@@ -63,16 +63,16 @@
     <div class="ds-nav-section">
       <span class="ds-nav-section-label">TEORIA</span>
       <ul class="ds-nav-list">
-        <li><button class="ds-nav-item" id="nav-m1" onclick="S('m1')">
+        <li><button class="ds-nav-item" id="nav-m1" data-screen="m1">
           <span class="ds-nav-icon">◈</span><span class="ds-nav-label">Fundamentos</span>
         </button></li>
-        <li><button class="ds-nav-item" id="nav-m2" onclick="S('m2')">
+        <li><button class="ds-nav-item" id="nav-m2" data-screen="m2">
           <span class="ds-nav-icon">⟳</span><span class="ds-nav-label">Malha de Controle</span>
         </button></li>
-        <li><button class="ds-nav-item" id="nav-m3" onclick="S('m3')">
+        <li><button class="ds-nav-item" id="nav-m3" data-screen="m3">
           <span class="ds-nav-icon">⚙</span><span class="ds-nav-label">Instrumentação</span>
         </button></li>
-        <li><button class="ds-nav-item" id="nav-m4" onclick="S('m4')">
+        <li><button class="ds-nav-item" id="nav-m4" data-screen="m4">
           <span class="ds-nav-icon">⚠</span><span class="ds-nav-label">Erros de Medição</span>
         </button></li>
       </ul>
@@ -81,19 +81,19 @@
     <div class="ds-nav-section">
       <span class="ds-nav-section-label">VARIÁVEIS</span>
       <ul class="ds-nav-list">
-        <li><button class="ds-nav-item" id="nav-formulas" onclick="S('formulas')">
+        <li><button class="ds-nav-item" id="nav-formulas" data-screen="formulas">
           <span class="ds-nav-icon">★</span><span class="ds-nav-label">Fórmulas Visuais</span>
         </button></li>
-        <li><button class="ds-nav-item" id="nav-pressao" onclick="S('pressao')">
+        <li><button class="ds-nav-item" id="nav-pressao" data-screen="pressao">
           <span class="ds-nav-icon">◉</span><span class="ds-nav-label">Pressão</span>
         </button></li>
-        <li><button class="ds-nav-item" id="nav-nivel" onclick="S('nivel')">
+        <li><button class="ds-nav-item" id="nav-nivel" data-screen="nivel">
           <span class="ds-nav-icon">≡</span><span class="ds-nav-label">Nível</span>
         </button></li>
-        <li><button class="ds-nav-item" id="nav-vazao" onclick="S('vazao')">
+        <li><button class="ds-nav-item" id="nav-vazao" data-screen="vazao">
           <span class="ds-nav-icon">≈</span><span class="ds-nav-label">Vazão</span>
         </button></li>
-        <li><button class="ds-nav-item" id="nav-temperatura" onclick="S('temperatura')">
+        <li><button class="ds-nav-item" id="nav-temperatura" data-screen="temperatura">
           <span class="ds-nav-icon">🌡</span><span class="ds-nav-label">Temperatura</span>
           <span class="ds-nav-badge">NEW</span>
         </button></li>
@@ -103,10 +103,10 @@
     <div class="ds-nav-section">
       <span class="ds-nav-section-label">CONEXÕES</span>
       <ul class="ds-nav-list">
-        <li><button class="ds-nav-item" id="nav-relacoes" onclick="S('relacoes')">
+        <li><button class="ds-nav-item" id="nav-relacoes" data-screen="relacoes">
           <span class="ds-nav-icon">⊕</span><span class="ds-nav-label">Relações P·N·Q</span>
         </button></li>
-        <li><button class="ds-nav-item" id="nav-cenarios" onclick="S('cenarios')">
+        <li><button class="ds-nav-item" id="nav-cenarios" data-screen="cenarios">
           <span class="ds-nav-icon">◈</span><span class="ds-nav-label">Cenários Reais</span>
         </button></li>
       </ul>
@@ -115,20 +115,20 @@
     <div class="ds-nav-section">
       <span class="ds-nav-section-label">PRÁTICA</span>
       <ul class="ds-nav-list">
-        <li><button class="ds-nav-item" id="nav-calibracao" onclick="S('calibracao')">
+        <li><button class="ds-nav-item" id="nav-calibracao" data-screen="calibracao">
           <span class="ds-nav-icon">◎</span><span class="ds-nav-label">Calibração</span>
           <span class="ds-nav-badge">NEW</span>
         </button></li>
-        <li><button class="ds-nav-item" id="nav-flash" onclick="S('flash')">
+        <li><button class="ds-nav-item" id="nav-flash" data-screen="flash">
           <span class="ds-nav-icon">🃏</span><span class="ds-nav-label">Flashcards</span>
         </button></li>
-        <li><button class="ds-nav-item" id="nav-quiz" onclick="S('quiz')">
+        <li><button class="ds-nav-item" id="nav-quiz" data-screen="quiz">
           <span class="ds-nav-icon">📝</span><span class="ds-nav-label">Quiz</span>
         </button></li>
-        <li><button class="ds-nav-item" id="nav-calc" onclick="S('calc')">
+        <li><button class="ds-nav-item" id="nav-calc" data-screen="calc">
           <span class="ds-nav-icon">🧮</span><span class="ds-nav-label">Calculadora</span>
         </button></li>
-        <li><button class="ds-nav-item" id="nav-bernoulli" onclick="S('bernoulli')">
+        <li><button class="ds-nav-item" id="nav-bernoulli" data-screen="bernoulli">
           <span class="ds-nav-icon">⚡</span><span class="ds-nav-label">Bernoulli ⚡</span>
         </button></li>
       </ul>
@@ -137,7 +137,7 @@
     <div class="ds-nav-section">
       <span class="ds-nav-section-label">META</span>
       <ul class="ds-nav-list">
-        <li><button class="ds-nav-item" id="nav-changelog" onclick="S('changelog')">
+        <li><button class="ds-nav-item" id="nav-changelog" data-screen="changelog">
           <span class="ds-nav-icon">📋</span><span class="ds-nav-label">Atualizações</span>
         </button></li>
       </ul>
@@ -146,7 +146,7 @@
   </nav>
 
   <div class="ds-sidebar-footer">
-    <button class="ds-theme-btn" id="theme-btn" onclick="toggleTheme()">
+    <button class="ds-theme-btn" id="theme-btn">
       <span class="ds-theme-icon">☀</span>
       <span class="ds-theme-label">Tema</span>
     </button>
@@ -156,7 +156,7 @@
 </aside>
 
 <!-- Overlay mobile (fora da sidebar, mas dentro do app-shell) -->
-<div class="ds-mobile-overlay" id="mobile-overlay" onclick="closeMobileSidebar()"></div>
+<div class="ds-mobile-overlay" id="mobile-overlay"></div>
 
 <!-- Elementos ocultos para compatibilidade com script.js (toggleDrawer/closeDrawer) -->
 <div id="overlay" style="display:none"></div>
@@ -173,7 +173,7 @@
     </div>
     <div class="topbar-actions">
       <button class="topbar-hamburger" id="hamburger-btn"
-              onclick="toggleMobileSidebar()" aria-label="Menu">☰</button>
+              aria-label="Menu">☰</button>
     </div>
   </header>
 
@@ -194,22 +194,22 @@
     <span class="cl-tag" style="background:rgba(14,165,233,0.10);color:var(--mod-accent,var(--p));border:1px solid rgba(14,165,233,0.28)">MVF v5.5</span>
   </div>
   <div class="grid g4" style="margin-bottom:18px">
-    <div class="card dash-stat" onclick="S('m1')">
+    <div class="card dash-stat" data-screen="m1">
       <div class="sc">Módulos</div>
       <div class="sv">13</div>
       <div class="ss">Teoria · Variáveis · Prática</div>
     </div>
-    <div class="card dash-stat" onclick="S('flash')">
+    <div class="card dash-stat" data-screen="flash">
       <div class="sc">Flashcards</div>
       <div class="sv" id="dash-cards">66</div>
       <div class="ss">8 categorias · flip 3D</div>
     </div>
-    <div class="card dash-stat" onclick="S('quiz')">
+    <div class="card dash-stat" data-screen="quiz">
       <div class="sc">Questões Quiz</div>
       <div class="sv" id="dash-qs">46</div>
       <div class="ss">Pressão · Vazão · Calibração</div>
     </div>
-    <div class="card dash-stat" onclick="S('calc')">
+    <div class="card dash-stat" data-screen="calc">
       <div class="sc">Calculadoras</div>
       <div class="sv">9</div>
       <div class="ss">Stevin · Reynolds · Torricelli…</div>
@@ -219,34 +219,34 @@
   <!-- Módulos de Teoria -->
   <div class="sec">Teoria</div>
   <div class="grid g4" style="margin-bottom:18px">
-    <div class="card click" onclick="S('m1')"><div class="mn">01</div><div class="mt">Fundamentos</div><div class="pb"><div class="pf"></div></div><div class="ps">PV · MV · SP · Sinais</div></div>
-    <div class="card click" onclick="S('m2')"><div class="mn">02</div><div class="mt">Malha de Controle</div><div class="pb"><div class="pf"></div></div><div class="ps">Aberta · Fechada · PID</div></div>
-    <div class="card click" onclick="S('m3')"><div class="mn">03</div><div class="mt">Instrumentação</div><div class="pb"><div class="pf"></div></div><div class="ps">Range · Span · Acurácia</div></div>
-    <div class="card click" onclick="S('m4')"><div class="mn">04</div><div class="mt">Erros de Medição</div><div class="pb"><div class="pf"></div></div><div class="ps">EA · %FS · %Span</div></div>
+    <div class="card click" data-screen="m1"><div class="mn">01</div><div class="mt">Fundamentos</div><div class="pb"><div class="pf"></div></div><div class="ps">PV · MV · SP · Sinais</div></div>
+    <div class="card click" data-screen="m2"><div class="mn">02</div><div class="mt">Malha de Controle</div><div class="pb"><div class="pf"></div></div><div class="ps">Aberta · Fechada · PID</div></div>
+    <div class="card click" data-screen="m3"><div class="mn">03</div><div class="mt">Instrumentação</div><div class="pb"><div class="pf"></div></div><div class="ps">Range · Span · Acurácia</div></div>
+    <div class="card click" data-screen="m4"><div class="mn">04</div><div class="mt">Erros de Medição</div><div class="pb"><div class="pf"></div></div><div class="ps">EA · %FS · %Span</div></div>
   </div>
 
   <!-- Variáveis de Processo -->
   <div class="sec">Variáveis de Processo</div>
   <div class="grid g4" style="margin-bottom:18px">
-    <div class="card click" onclick="S('pressao')" style="border-left:3px solid var(--p)"><div class="mn" style="color:var(--p)">PRESSÃO</div><div class="mt">Módulo 05</div><div class="pb"><div class="pf"></div></div><div class="ps">Pascal · Bar · Bourdon · Stevin</div></div>
-    <div class="card click" onclick="S('nivel')" style="border-left:3px solid var(--g)"><div class="mn" style="color:var(--g)">NÍVEL</div><div class="mt">Módulo 06</div><div class="pb"><div class="pf" style="background:var(--g)"></div></div><div class="ps">Direta · Indireta · Chaves</div></div>
-    <div class="card click" onclick="S('vazao')" style="border-left:3px solid var(--y)"><div class="mn" style="color:var(--y)">VAZÃO</div><div class="mt">Módulo 07</div><div class="pb"><div class="pf" style="background:var(--y)"></div></div><div class="ps">Deprimogênios · Lineares</div></div>
-    <div class="card click" onclick="S('temperatura')" style="border-left:3px solid var(--pu)"><div class="mn" style="color:var(--pu)">TEMPERATURA ★</div><div class="mt">Módulo 08</div><div class="pb"><div class="pf" style="background:var(--pu)"></div></div><div class="ps">Termopar · PT100 · RTD</div></div>
+    <div class="card click" data-screen="pressao" style="border-left:3px solid var(--p)"><div class="mn" style="color:var(--p)">PRESSÃO</div><div class="mt">Módulo 05</div><div class="pb"><div class="pf"></div></div><div class="ps">Pascal · Bar · Bourdon · Stevin</div></div>
+    <div class="card click" data-screen="nivel" style="border-left:3px solid var(--g)"><div class="mn" style="color:var(--g)">NÍVEL</div><div class="mt">Módulo 06</div><div class="pb"><div class="pf" style="background:var(--g)"></div></div><div class="ps">Direta · Indireta · Chaves</div></div>
+    <div class="card click" data-screen="vazao" style="border-left:3px solid var(--y)"><div class="mn" style="color:var(--y)">VAZÃO</div><div class="mt">Módulo 07</div><div class="pb"><div class="pf" style="background:var(--y)"></div></div><div class="ps">Deprimogênios · Lineares</div></div>
+    <div class="card click" data-screen="temperatura" style="border-left:3px solid var(--pu)"><div class="mn" style="color:var(--pu)">TEMPERATURA ★</div><div class="mt">Módulo 08</div><div class="pb"><div class="pf" style="background:var(--pu)"></div></div><div class="ps">Termopar · PT100 · RTD</div></div>
   </div>
 
   <!-- Conexões e Prática -->
   <div class="sec">Conexões &amp; Prática</div>
   <div class="grid g4" style="margin-bottom:18px">
-    <div class="card click" onclick="S('relacoes')" style="border-left:3px solid var(--or)"><div class="mn" style="color:var(--or)">P · N · Q</div><div class="mt">Relações</div><div class="pb"><div class="pf" style="background:var(--or)"></div></div><div class="ps">Como as 3 se conectam</div></div>
-    <div class="card click" onclick="S('cenarios')" style="border-left:3px solid var(--or)"><div class="mn" style="color:var(--or)">CENÁRIOS</div><div class="mt">Exemplos Reais</div><div class="pb"><div class="pf" style="background:var(--or)"></div></div><div class="ps">Caldeira · ETA · Reator</div></div>
-    <div class="card click" onclick="S('calibracao')" style="border-left:3px solid var(--y)"><div class="mn" style="color:var(--y)">CALIBRAÇÃO ★</div><div class="mt">Metrologia</div><div class="pb"><div class="pf" style="background:var(--y)"></div></div><div class="ps">Procedimento · INMETRO</div></div>
-    <div class="card click" onclick="S('formulas')" style="border-left:3px solid var(--y)"><div class="mn" style="color:var(--y)">★ FÓRMULAS</div><div class="mt">Visuais</div><div class="pb"><div class="pf" style="background:var(--y)"></div></div><div class="ps">Diagramas interativos</div></div>
+    <div class="card click" data-screen="relacoes" style="border-left:3px solid var(--or)"><div class="mn" style="color:var(--or)">P · N · Q</div><div class="mt">Relações</div><div class="pb"><div class="pf" style="background:var(--or)"></div></div><div class="ps">Como as 3 se conectam</div></div>
+    <div class="card click" data-screen="cenarios" style="border-left:3px solid var(--or)"><div class="mn" style="color:var(--or)">CENÁRIOS</div><div class="mt">Exemplos Reais</div><div class="pb"><div class="pf" style="background:var(--or)"></div></div><div class="ps">Caldeira · ETA · Reator</div></div>
+    <div class="card click" data-screen="calibracao" style="border-left:3px solid var(--y)"><div class="mn" style="color:var(--y)">CALIBRAÇÃO ★</div><div class="mt">Metrologia</div><div class="pb"><div class="pf" style="background:var(--y)"></div></div><div class="ps">Procedimento · INMETRO</div></div>
+    <div class="card click" data-screen="formulas" style="border-left:3px solid var(--y)"><div class="mn" style="color:var(--y)">★ FÓRMULAS</div><div class="mt">Visuais</div><div class="pb"><div class="pf" style="background:var(--y)"></div></div><div class="ps">Diagramas interativos</div></div>
   </div>
 
   <!-- Ferramentas de Estudo -->
   <div class="sec">Ferramentas de Estudo</div>
   <div class="dash-tools">
-    <div class="dash-tool dash-tool-p" onclick="S('flash')">
+    <div class="dash-tool dash-tool-p" data-screen="flash">
       <div class="dash-tool-icon">🃏</div>
       <div class="dash-tool-body">
         <div class="dash-tool-title">Flashcards</div>
@@ -254,7 +254,7 @@
       </div>
       <div class="dash-tool-arrow">›</div>
     </div>
-    <div class="dash-tool dash-tool-r" onclick="S('quiz')">
+    <div class="dash-tool dash-tool-r" data-screen="quiz">
       <div class="dash-tool-icon">📝</div>
       <div class="dash-tool-body">
         <div class="dash-tool-title">Quiz</div>
@@ -262,7 +262,7 @@
       </div>
       <div class="dash-tool-arrow">›</div>
     </div>
-    <div class="dash-tool dash-tool-p2" onclick="S('calc')">
+    <div class="dash-tool dash-tool-p2" data-screen="calc">
       <div class="dash-tool-icon">🧮</div>
       <div class="dash-tool-body">
         <div class="dash-tool-title">Calculadora</div>
@@ -270,7 +270,7 @@
       </div>
       <div class="dash-tool-arrow">›</div>
     </div>
-    <div class="dash-tool dash-tool-g" onclick="S('bernoulli')">
+    <div class="dash-tool dash-tool-g" data-screen="bernoulli">
       <div class="dash-tool-icon">⚡</div>
       <div class="dash-tool-body">
         <div class="dash-tool-title">Simuladores</div>
@@ -922,7 +922,7 @@
       <tr><td>Transmissor de ΔP</td><td>Dois diafragmas + célula sensor</td><td>0–700 bar</td><td>Vazão e nível por pressão diferencial.</td></tr>
     </tbody></table>
   </div>
-  <div class="alert ai">Fórmulas visuais de Stevin, Bernoulli e P=F/A estão em <button class="btn btn-p" onclick="S('formulas')" style="padding:4px 10px;font-size:12px">Fórmulas Visuais ★</button></div>
+  <div class="alert ai">Fórmulas visuais de Stevin, Bernoulli e P=F/A estão em <button class="btn btn-p" data-screen="formulas" style="padding:4px 10px;font-size:12px">Fórmulas Visuais ★</button></div>
 
   <!-- Você já viu isso -->
   <div class="sec">Você já viu isso</div>
@@ -981,7 +981,7 @@
       <div style="background:var(--bg4);border:1px solid rgba(255,192,64,0.2);border-radius:8px;padding:12px"><div style="font-size:13px;font-weight:600;color:var(--y);margin-bottom:6px">Vibratório (Diapasão)</div><p style="font-size:12px;color:var(--t2)">Frequência muda ao tocar fluido. Imune a espuma e turbulência.</p></div>
     </div>
   </div>
-  <div class="alert ai">A equação de balanço de massa e Torricelli com diagramas estão em <button class="btn btn-p" onclick="S('formulas')" style="padding:4px 10px;font-size:12px">Fórmulas Visuais ★</button></div>
+  <div class="alert ai">A equação de balanço de massa e Torricelli com diagramas estão em <button class="btn btn-p" data-screen="formulas" style="padding:4px 10px;font-size:12px">Fórmulas Visuais ★</button></div>
 
   <!-- Você já viu isso -->
   <div class="sec">Você já viu isso</div>
@@ -1034,7 +1034,7 @@
       <tr><td style="color:var(--or)">Coriolis</td><td>Força de Coriolis em tubos vibratórios</td><td>Qualquer fluido — medição mássica direta</td><td>Qualquer</td></tr>
     </tbody></table>
   </div>
-  <div class="alert ai">Fórmulas visuais de Qv, Qm, Reynolds e Bernoulli estão em <button class="btn btn-p" onclick="S('formulas')" style="padding:4px 10px;font-size:12px">Fórmulas Visuais ★</button></div>
+  <div class="alert ai">Fórmulas visuais de Qv, Qm, Reynolds e Bernoulli estão em <button class="btn btn-p" data-screen="formulas" style="padding:4px 10px;font-size:12px">Fórmulas Visuais ★</button></div>
 
   <!-- Você já viu isso -->
   <div class="sec">Você já viu isso</div>
@@ -1274,7 +1274,7 @@
     </div>
   </div>
 
-  <div style="text-align:center;margin-top:10px"><button class="btn btn-pu" onclick="S('calibracao')" style="padding:6px 16px;font-size:12px">Ver Módulo Calibração completo →</button></div>
+  <div style="text-align:center;margin-top:10px"><button class="btn btn-pu" data-screen="calibracao" style="padding:6px 16px;font-size:12px">Ver Módulo Calibração completo →</button></div>
 
   <!-- Você já viu isso -->
   <div class="sec">Você já viu isso</div>
@@ -1831,8 +1831,9 @@
 </div><!-- /app-shell -->
 
 <!-- Scripts externos -->
-<script src="data.js"></script>
-<script src="script.js"></script>
+<script src="../src/components/navigation.js"></script>
+<script src="../src/modules/mvf/data.js"></script>
+<script src="../src/modules/mvf/script.js"></script>
 
 <!-- Sidebar: restore desktop collapsed state
      Mobile toggle/close definidos em script.js (fonte única de verdade) -->

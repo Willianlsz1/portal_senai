@@ -84,31 +84,18 @@ function closeMobileSidebar() {
 
 /* ④ Event delegation — substitui onclick="S('...')" em cada item */
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelector('.ds-sidebar-nav')
-    ?.addEventListener('click', e => {
-      const btn = e.target.closest('.ds-nav-item[id^="nav-"]');
-      if (!btn) return;
-      const id = btn.id.replace('nav-', '');
-      if (PAGES.includes(id)) S(id);
-    });
+  document.getElementById('theme-btn')?.addEventListener('click', toggleTheme);
+  document.getElementById('hamburger-btn')?.addEventListener('click', toggleMobileSidebar);
+  document.getElementById('mobile-overlay')?.addEventListener('click', closeMobileSidebar);
 
-  /* Fallback para cards do dashboard quando onclick inline é bloqueado por CSP */
-  const dashboard = document.getElementById('screen-home');
-  const handleDashboardNav = e => {
-    const card = e.target.closest('[onclick*="S(\'"]');
-    if (!card || !dashboard?.contains(card)) return;
+  delegateNavigation(document.querySelector('.ds-sidebar-nav'), '.ds-nav-item[data-screen]', btn => {
+    const id = btn.dataset.screen;
+    if (PAGES.includes(id)) S(id);
+  });
 
-    const call = card.getAttribute('onclick') ?? '';
-    const match = call.match(/S\('([^']+)'\)/);
-    const id = match?.[1];
-    if (id && PAGES.includes(id)) S(id);
-  };
-
-  dashboard?.addEventListener('click', handleDashboardNav);
-  dashboard?.addEventListener('keydown', e => {
-    if (e.key !== 'Enter' && e.key !== ' ') return;
-    e.preventDefault();
-    handleDashboardNav(e);
+  delegateNavigation(document.getElementById('screen-home'), '[data-screen]', card => {
+    const id = card.dataset.screen;
+    if (PAGES.includes(id)) S(id);
   });
 });
 

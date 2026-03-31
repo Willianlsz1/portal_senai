@@ -118,35 +118,15 @@ document.addEventListener('keydown', e => {
 
 /* Navegação — sidebar e cards do dashboard */
 document.addEventListener('DOMContentLoaded', () => {
-  document.addEventListener('click', e => {
-    const item = e.target.closest('[data-page]');
-    if (!item) return;
+  document.getElementById('sidebar-overlay')?.addEventListener('click', closeSidebar);
+  document.getElementById('menu-btn')?.addEventListener('click', toggleSidebar);
+  document.querySelector('.theme-toggle')?.addEventListener('click', toggleTheme);
+
+  delegateNavigation(document, '[data-page]', item => {
     const pg = item.dataset.page;
     if (!VALID_PAGES.includes(pg)) return;
     const navEl = document.querySelector(`.nav-item[data-page="${pg}"]`);
     goTo(pg, navEl);
-  });
-
-  /* Fallback para cards do dashboard quando onclick inline é bloqueado por CSP */
-  const dashboard = document.getElementById('pg-dashboard');
-  const handleDashboardCardNav = e => {
-    const card = e.target.closest('.module-card[onclick*="goTo(\'"]');
-    if (!card || !dashboard?.contains(card)) return;
-
-    const call = card.getAttribute('onclick') ?? '';
-    const match = call.match(/goTo\('([^']+)'/);
-    const pg = match?.[1];
-    if (!pg || !VALID_PAGES.includes(pg)) return;
-
-    const navEl = document.querySelector(`.nav-item[data-page="${pg}"]`);
-    goTo(pg, navEl);
-  };
-
-  dashboard?.addEventListener('click', handleDashboardCardNav);
-  dashboard?.addEventListener('keydown', e => {
-    if (e.key !== 'Enter' && e.key !== ' ') return;
-    e.preventDefault();
-    handleDashboardCardNav(e);
   });
 });
 
