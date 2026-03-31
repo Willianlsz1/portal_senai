@@ -108,21 +108,12 @@ function updateThemeBtn() {
 /* ── Eventos — event delegation ─────────────────────────── */
 document.getElementById('theme-btn').addEventListener('click', toggleTheme);
 
-/* ④ Uma delegação para as tabs */
-document.querySelector('[role="tablist"]')?.addEventListener('click', e => {
-  const tab = e.target.closest('.tab[data-app]');
-  if (tab) switchApp(tab.dataset.app);
+delegateNavigation(document.querySelector('[role="tablist"]'), '.tab[data-app]', tab => {
+  switchApp(tab.dataset.app);
 });
 
-/* ④ Uma delegação para os cards do home */
-document.querySelector('.cards-grid')?.addEventListener('click', e => {
-  const card = e.target.closest('[data-target]');
-  if (card) switchApp(card.dataset.target);
-});
-document.querySelector('.cards-grid')?.addEventListener('keydown', e => {
-  if (e.key !== 'Enter' && e.key !== ' ') return;
-  const card = e.target.closest('[data-target]');
-  if (card) { e.preventDefault(); switchApp(card.dataset.target); }
+delegateNavigation(document.querySelector('.cards-grid'), '[data-target]', card => {
+  switchApp(card.dataset.target);
 });
 
 /* ── Restaurar hash ──────────────────────────────────────── */
