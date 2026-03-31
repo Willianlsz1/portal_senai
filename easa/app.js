@@ -69,7 +69,6 @@ function goTo(pg, el = null, pushHistory = true) {
       titleEl.appendChild(document.createTextNode(part));
     });
   }
-window.goTo = goTo;
 
   /* Scroll para o topo */
   document.querySelector('.main')?.scrollTo(0, 0);
@@ -81,7 +80,7 @@ window.goTo = goTo;
   /* Registra no histórico */
   if (pushHistory) history.pushState({ page: safePg }, '', '#' + safePg);
 }
-
+window.goTo = goTo;
 
 /* ── 1b. BOTÃO VOLTAR (popstate) ────────────────────────────── */
 window.addEventListener('popstate', e => {
