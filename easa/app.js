@@ -42,7 +42,6 @@ const VALID_PAGES = [
  * @param {boolean} pushHistory - false quando chamado pelo popstate
  */
 function goTo(pg, el = null, pushHistory = true) {
-window.goTo = goTo;
   /* ③ Valida antes de usar — nunca confia em dado externo */
   const safePg = VALID_PAGES.includes(pg) ? pg : 'dashboard';
 
@@ -70,6 +69,7 @@ window.goTo = goTo;
       titleEl.appendChild(document.createTextNode(part));
     });
   }
+window.goTo = goTo;
 
   /* Scroll para o topo */
   document.querySelector('.main')?.scrollTo(0, 0);
