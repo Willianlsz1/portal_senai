@@ -134,9 +134,6 @@ document.addEventListener('click', e => {
     goTo(pg, navEl);
   }
 });
-  });
-});
-
 
 /* ── 2. TEMA ────────────────────────────────────────────────── */
 /* ⑤ Usa dataset.theme exclusivamente — sem classe .light        */
