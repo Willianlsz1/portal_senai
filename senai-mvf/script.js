@@ -91,6 +91,25 @@ document.addEventListener('DOMContentLoaded', () => {
       const id = btn.id.replace('nav-', '');
       if (PAGES.includes(id)) S(id);
     });
+
+  /* Fallback para cards do dashboard quando onclick inline é bloqueado por CSP */
+  const dashboard = document.getElementById('screen-home');
+  const handleDashboardNav = e => {
+    const card = e.target.closest('[onclick*="S(\'"]');
+    if (!card || !dashboard?.contains(card)) return;
+
+    const call = card.getAttribute('onclick') ?? '';
+    const match = call.match(/S\('([^']+)'\)/);
+    const id = match?.[1];
+    if (id && PAGES.includes(id)) S(id);
+  };
+
+  dashboard?.addEventListener('click', handleDashboardNav);
+  dashboard?.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    e.preventDefault();
+    handleDashboardNav(e);
+  });
 });
 
 /* ── § 2. TEMA CLARO/ESCURO ──────────────────────────────────── */
