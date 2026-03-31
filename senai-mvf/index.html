@@ -1843,7 +1843,7 @@
   var KEY = 'senai-mvf-sidebar-collapsed';
 
   // Restaura estado colapsado (desktop)
-  if(localStorage.getItem(KEY) === 'true') sidebar.classList.add('collapsed');
+  if(localStorage.getItem(KEY) === 'true' && window.innerWidth > 768) sidebar.classList.add('collapsed');
 
   // Desktop collapse toggle com persistência
   if(toggle) toggle.addEventListener('click', function(){
